@@ -72,8 +72,8 @@ namespace WinForm_RFBN_APP
         public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
         {
             var lines = File.ReadAllLines(filePath).Skip(1);
-            var inputs = new List<double[]>();
-            var targets = new List<double>();
+            List<double[]> inputs = new List<double[]>();
+            List<double> targets = new List<double>();
 
             foreach (var line in lines)
             {
