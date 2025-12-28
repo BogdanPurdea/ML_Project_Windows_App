@@ -30,13 +30,14 @@ namespace WinForm_RFBN_APP
         /// <param name="e"></param>
         private async void TrainButton_Click(object sender, EventArgs e)
         {
-            var data = LoadCsv("train_80k_normalized_data.csv");
             RichTextBoxOutput.AppendText("--------------------------------------------------\n");
-            RichTextBoxOutput.AppendText("Data Loaded. Starting Training...\n");
+            RichTextBoxOutput.AppendText("Starting...\n");
 
-            // Normalize data (Crucial for RBF/K-Means)
-            // NOTE: In production, save Min/Max stats to DB to normalize new inputs similarly
-            // For brevity, skipping explicit normalization code here, but HIGHLY recommended.
+            var data = DataLoader.LoadCsv("train_80k_normalized_data.csv");
+
+            RichTextBoxOutput.AppendText($"Data Loaded.\n");
+            RichTextBoxOutput.AppendText($"\tInput Dimension: {data.Inputs[0].Length}.\n");
+            RichTextBoxOutput.AppendText("Starting Training...\n");
 
             // Input data from TextBoxes
             bool successRead = true;
@@ -52,8 +53,8 @@ namespace WinForm_RFBN_APP
             if (!successRead)
             {
                 hiddenNeurons = 25;
-                epochs = 100;
-                learningRate = 0.01d;
+                epochs        = 100;
+                learningRate  = 0.01d;
             }
 
             var trainer = new RbfTrainer();

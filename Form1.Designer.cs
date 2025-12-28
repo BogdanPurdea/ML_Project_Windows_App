@@ -48,11 +48,13 @@
             TrainingPageButton = new MaterialSkin.Controls.MaterialButton();
             TestingPageButton = new MaterialSkin.Controls.MaterialButton();
             ControlPanel = new Panel();
+            ManualTestingPageButton = new MaterialSkin.Controls.MaterialButton();
             NavigationPanel.SuspendLayout();
             SuspendLayout();
             // 
             // NavigationPanel
             // 
+            NavigationPanel.Controls.Add(ManualTestingPageButton);
             NavigationPanel.Controls.Add(TrainingPageButton);
             NavigationPanel.Controls.Add(TestingPageButton);
             NavigationPanel.Dock = DockStyle.Left;
@@ -68,7 +70,7 @@
             TrainingPageButton.Depth = 0;
             TrainingPageButton.HighEmphasis = true;
             TrainingPageButton.Icon = null;
-            TrainingPageButton.Location = new Point(13, 15);
+            TrainingPageButton.Location = new Point(14, 15);
             TrainingPageButton.Margin = new Padding(4, 6, 4, 6);
             TrainingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
             TrainingPageButton.Name = "TrainingPageButton";
@@ -89,7 +91,7 @@
             TestingPageButton.Depth = 0;
             TestingPageButton.HighEmphasis = true;
             TestingPageButton.Icon = null;
-            TestingPageButton.Location = new Point(13, 63);
+            TestingPageButton.Location = new Point(18, 63);
             TestingPageButton.Margin = new Padding(4, 6, 4, 6);
             TestingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
             TestingPageButton.Name = "TestingPageButton";
@@ -109,6 +111,27 @@
             ControlPanel.Name = "ControlPanel";
             ControlPanel.Size = new Size(800, 400);
             ControlPanel.TabIndex = 1;
+            // 
+            // ManualTestingPageButton
+            // 
+            ManualTestingPageButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            ManualTestingPageButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ManualTestingPageButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            ManualTestingPageButton.Depth = 0;
+            ManualTestingPageButton.HighEmphasis = true;
+            ManualTestingPageButton.Icon = null;
+            ManualTestingPageButton.Location = new Point(7, 111);
+            ManualTestingPageButton.Margin = new Padding(4, 6, 4, 6);
+            ManualTestingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
+            ManualTestingPageButton.Name = "ManualTestingPageButton";
+            ManualTestingPageButton.NoAccentTextColor = Color.Empty;
+            ManualTestingPageButton.Size = new Size(145, 36);
+            ManualTestingPageButton.TabIndex = 2;
+            ManualTestingPageButton.Text = "Manual Testing\r\nPage";
+            ManualTestingPageButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            ManualTestingPageButton.UseAccentColor = false;
+            ManualTestingPageButton.UseVisualStyleBackColor = true;
+            ManualTestingPageButton.Click += ManualTestingPageButton_Click;
             // 
             // Form1
             // 
@@ -138,6 +161,11 @@
         private void TestingPageButton_Click(object sender, EventArgs e)
         {
             LoadPageWithButtonControl(new TestingPage(), TestingPageButton);
+        }
+
+        private void ManualTestingPageButton_Click(object sender, EventArgs e)
+        {
+            LoadPageWithButtonControl(new ManualTestingPage(), TestingPageButton);
         }
 
         #endregion
@@ -172,5 +200,6 @@
 
         #endregion
 
+        private MaterialSkin.Controls.MaterialButton ManualTestingPageButton;
     }
 }

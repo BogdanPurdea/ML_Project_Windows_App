@@ -1,6 +1,6 @@
 ﻿using Source;
+using Source.Data;
 using System.Data;
-using System.Globalization;
 
 namespace WinForm_RFBN_APP
 {
@@ -35,7 +35,7 @@ namespace WinForm_RFBN_APP
             }
 
             // Reconstruct Network
-            var model = new Source.RbfNetwork(entity.InputCount, entity.HiddenCount, 1);
+            var model = new RbfNetwork(entity.InputCount, entity.HiddenCount, 1);
             model.Bias = entity.Bias;
             // Note: Ensure CultureInfo.InvariantCulture is used if these were saved with dots
             model.Weights = entity.WeightsData.Split(';').Select(val => double.Parse(val, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
@@ -43,7 +43,9 @@ namespace WinForm_RFBN_APP
             model.Centroids = DeserializeCentroids(entity.CentroidsData);
 
             // 2. Load Test Data 
-            var testData = LoadCsv("test_20k_normalized_data.csv");
+            var testData = DataLoader.LoadCsv("test_20k_normalized_data.csv");
+            RichTextBoxOutput.AppendText("Test Data Loaded (NutriScore ignored). Finding Optimal Threshold...\r\n");
+
             RichTextBoxOutput.AppendText("--------------------------------------------------\n");
             RichTextBoxOutput.AppendText("Test Data Loaded.\r\n");
 
@@ -61,7 +63,7 @@ namespace WinForm_RFBN_APP
 
                 // B. Find Optimal Threshold
                 double bestThreshold = 0.5;
-                double bestAccuracy  = 0.0;
+                double bestAccuracy = 0.0;
                 EvaluationMetrics bestMetrics = new EvaluationMetrics();
 
                 // Scan from 0.05 to 0.95 to find the sweet spot
@@ -72,9 +74,9 @@ namespace WinForm_RFBN_APP
                     // You can optimize for Accuracy, F-Measure, or Precision depending on your goal
                     if (metrics.Accuracy > bestAccuracy)
                     {
-                        bestAccuracy  = metrics.Accuracy;
+                        bestAccuracy = metrics.Accuracy;
                         bestThreshold = sweetSpot;
-                        bestMetrics   = metrics;
+                        bestMetrics = metrics;
                     }
                 }
 
@@ -95,70 +97,7 @@ namespace WinForm_RFBN_APP
         #endregion
 
 
-        #region Data Access ---------------------------------------------------------
-
-        /// <summary>
-        /// LoadCsv
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
-        {
-            // Read all lines
-            var lines = File.ReadAllLines(filePath);
-
-            // Skip header if it exists (assuming header is purely text)
-            // If your CSV strictly has no header, remove the .Skip(1)
-            var dataLines = lines.Skip(1).Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
-
-            List<double[]> inputs = new List<double[]>();
-            List<double> targets = new List<double>();
-
-            if (dataLines.Count == 0) return (inputs, targets);
-
-            // Detect dimension from the first data row
-            // We assume the LAST column is the target, so InputDim = TotalColumns - 1
-            int totalColumns = dataLines[0].Split(';').Length;
-            int inputDim = totalColumns - 1;
-
-            foreach (var line in dataLines)
-            {
-                var parts = line.Split(';');
-
-                // Safety check to ensure row consistency
-                if (parts.Length != totalColumns) continue;
-
-                double[] rowInput = new double[inputDim];
-
-                // Loop dynamically up to inputDim
-                for (int i = 0; i < inputDim; i++)
-                {
-                    if (double.TryParse(parts[i], CultureInfo.InvariantCulture, out double val))
-                    {
-                        rowInput[i] = val;
-                    }
-                    else
-                    {
-                        rowInput[i] = 0.0; // Handle missing/bad data safely
-                    }
-                }
-
-                // Parse Target (Last Column)
-                if (double.TryParse(parts[inputDim], CultureInfo.InvariantCulture, out double target))
-                {
-                    targets.Add(target);
-                }
-                else
-                {
-                    // If target is invalid, you might want to skip this row entirely
-                    continue;
-                }
-
-                inputs.Add(rowInput);
-            }
-
-            return (inputs, targets);
-        }
+        #region Auxiliary -----------------------------------------------------------
 
         /// <summary>
         /// DeserializeCentroids

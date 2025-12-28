@@ -21,12 +21,87 @@ namespace WinForm_RFBN_APP
 
         private void TestFullButton_Click(object sender, EventArgs e)
         {
-
+            string inputRaw = FullInputTextBox.Text.Trim();
+            TestManualInput(inputRaw);
         }
 
         private void TestCustomButton_Click(object sender, EventArgs e)
         {
+            // As input schema "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;"
+            string inputRaw = 
+                ProteinTextBox.Text.Trim() + ";" +
+                TotalFatTextBox.Text.Trim() + ";" +
+                CarbohydratesTextBox.Text.Trim() + ";" +
+                KiloCaloriesTextBox.Text.Trim() + ";" +
+                FiberTextBox.Text.Trim() + ";" +
+                SaturatedFatTextBox.Text.Trim() + ";" +
+                SugarTextBox.Text.Trim();
 
+            TestManualInput(inputRaw);
+        }
+
+        private void TestManualInput(string inputRaw)
+        {
+            if (string.IsNullOrEmpty(inputRaw))
+            {
+                MessageBox.Show("Please enter data in the text box first.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 1. Parse Single Input
+            double[] singleInput;
+            try
+            {
+                // Split by semicolon and parse using InvariantCulture to handle dots correctly
+                singleInput = inputRaw.Split(';')
+                                      .Select(val => double.Parse(val.Trim(), System.Globalization.CultureInfo.InvariantCulture))
+                                      .ToArray();
+
+                // Validate Dimension (Should be 7 based on your previous update)
+                if (singleInput.Length != 7)
+                {
+                    MessageBox.Show($"Expected 7 values (Protein, Fat, Carbs, Energy, Fiber, SatFat, Sugars). Got {singleInput.Length}.", "Dimension Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid number format. Please ensure inputs are numbers separated by semicolons (e.g. -0.44;-1.02...)", "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 2. Load Model (Same logic as batch test)
+            using var db = new Source.Data.AppDbContext();
+            var entity = db.TrainedModels
+                            .OrderByDescending(m => m.CreatedAt)
+                            .FirstOrDefault(m => m.ModelName == "FoodClassifier_V1");
+
+            if (entity == null)
+            {
+                RichTextBoxOutput.AppendText("No model found. Please train first.\r\n");
+                return;
+            }
+
+            // Reconstruct Network
+            var model = new Source.RbfNetwork(entity.InputCount, entity.HiddenCount, 1);
+            model.Bias = entity.Bias;
+            model.Weights = entity.WeightsData.Split(';').Select(val => double.Parse(val, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
+            model.Sigmas = entity.SigmasData.Split(';').Select(val => double.Parse(val, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
+            model.Centroids = DeserializeCentroids(entity.CentroidsData);
+
+            // 3. Execute Single Prediction
+            double score = model.Forward(singleInput);
+
+            // threshold 0.5 is standard for single-shot unless you stored the "bestThreshold" from training
+            int predictedClass = score >= 0.5 ? 1 : 0;
+            string label = predictedClass == 0 ? "UNHEALTHY (0)" : "HEALTHY (1)";
+
+            // 4. Update UI
+            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+            RichTextBoxOutput.AppendText($"Manual Test Input: {inputRaw}\n");
+            RichTextBoxOutput.AppendText($"Raw Network Score: {score:F4}\n");
+            RichTextBoxOutput.AppendText($"Prediction: {label}\n");
+            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
         }
 
         #endregion
