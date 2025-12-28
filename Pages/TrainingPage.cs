@@ -31,7 +31,7 @@ namespace WinForm_RFBN_APP
             // For brevity, skipping explicit normalization code here, but HIGHLY recommended.
 
             // Input data from TextBoxes
-            bool successRead true;
+            bool successRead = true;
             int hiddenNeurons, epochs, learningRate;
             successRead |= int.TryParse(HiddenNeuronsTextBox.Text.ToString(), out hiddenNeurons);
             successRead |= int.TryParse(EpochsTextBox.Text.ToString(), out epochs);
