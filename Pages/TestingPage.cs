@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace WinForm_RFBN_APP
         private void TestButton_Click(object sender, EventArgs e)
         {
             // 1. Load the trained model from SQLite
-            var model = Source.Data.ModelRepository.LoadModel("FoodClassifier_V1");
+            RbfNetwork? model = Source.Data.ModelRepository.LoadModel("FoodClassifier_V1");
             if (model == null)
             {
                 RichTextBoxOutput.AppendText("No trained model found. Please train first...\r\n");
@@ -44,8 +45,11 @@ namespace WinForm_RFBN_APP
             {
                 foreach (var input in testData.Inputs)
                 {
-                    // Get raw continuous output (e.g., 0.85, 0.12) instead of class (0, 1)
                     double score = model.Forward(input);
+
+                    // DEBUG: Check what the model is actually outputting
+                    //if (score > 0.1) System.Diagnostics.Debug.WriteLine($"Score: {score}");
+
                     rawScores.Add(score);
                 }
 
@@ -73,22 +77,22 @@ namespace WinForm_RFBN_APP
         /// <returns></returns>
         public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
         {
-            var lines = File.ReadAllLines(filePath).Skip(1); // Skip header
+            var lines = File.ReadAllLines(filePath).Skip(1);
             var inputs = new List<double[]>();
             var targets = new List<double>();
 
             foreach (var line in lines)
             {
                 var parts = line.Split(';');
-                // Indexes 0-7 are inputs (8 features), Index 8 is Class
                 double[] rowInput = new double[8];
                 for (int i = 0; i < 8; i++)
                 {
-                    rowInput[i] = double.Parse(parts[i]);
+                    // FIX: Use CultureInfo.InvariantCulture to handle "." decimals correctly
+                    rowInput[i] = double.Parse(parts[i], CultureInfo.InvariantCulture);
                 }
 
                 inputs.Add(rowInput);
-                targets.Add(double.Parse(parts[8]));
+                targets.Add(double.Parse(parts[8], CultureInfo.InvariantCulture));
             }
 
             return (inputs, targets);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +34,8 @@ namespace WinForm_RFBN_APP
             // Run on background thread to keep UI responsive
             RbfNetwork model = await Task.Run(() =>
             {
-                // 10 Hidden Neurons, 50 Epochs, 0.01 Learning Rate
-                return trainer.Train(data.Inputs, data.Targets, 10, 1, 0.01);
+                // 25 Hidden Neurons, 100 Epochs, 0.01 Learning Rate
+                return trainer.Train(data.Inputs, data.Targets, 25, 100, 0.01);
             });
             RichTextBoxOutput.AppendText("Training Complete!\n");
 
@@ -52,22 +53,22 @@ namespace WinForm_RFBN_APP
         /// <returns></returns>
         public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
         {
-            var lines = File.ReadAllLines(filePath).Skip(1); // Skip header
+            var lines = File.ReadAllLines(filePath).Skip(1);
             var inputs = new List<double[]>();
             var targets = new List<double>();
 
             foreach (var line in lines)
             {
                 var parts = line.Split(';');
-                // Indexes 0-7 are inputs (8 features), Index 8 is Class
                 double[] rowInput = new double[8];
                 for (int i = 0; i < 8; i++)
                 {
-                    rowInput[i] = double.Parse(parts[i]);
+                    // FIX: Use CultureInfo.InvariantCulture to handle "." decimals correctly
+                    rowInput[i] = double.Parse(parts[i], CultureInfo.InvariantCulture);
                 }
 
                 inputs.Add(rowInput);
-                targets.Add(double.Parse(parts[8]));
+                targets.Add(double.Parse(parts[8], CultureInfo.InvariantCulture));
             }
 
             return (inputs, targets);

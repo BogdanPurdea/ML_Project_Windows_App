@@ -34,7 +34,7 @@ namespace Source
 
             double[] hiddenOutputs = new double[HiddenCount];
 
-            // 1. Calculate RBF (Gaussian) activations
+            // 1. RBF Layer
             for (int j = 0; j < HiddenCount; j++)
             {
                 double distSq = 0.0;
@@ -43,22 +43,18 @@ namespace Source
                     double diff = inputs[i] - Centroids[j][i];
                     distSq += diff * diff;
                 }
-
-                // Gaussian Function: exp(- ||x-c||^2 / (2*sigma^2))
                 hiddenOutputs[j] = Math.Exp(-distSq / (2 * Math.Pow(Sigmas[j], 2)));
             }
 
-            // 2. Linear Combination (Weighted Sum)
+            // 2. Linear Layer
             double outputSum = Bias;
             for (int j = 0; j < HiddenCount; j++)
             {
                 outputSum += hiddenOutputs[j] * Weights[j];
             }
 
-            // 3. Optional: Pass through sigmoid if you want strictly 0-1 probability,
-            // but pure RBFN output is usually just the linear sum. 
-            // For classification (0 or 1), we can threshold the result later.
-            return outputSum;
+            // 3. FIX: Sigmoid Activation (Forces output 0.0 to 1.0)
+            return 1.0 / (1.0 + Math.Exp(-outputSum));
         }
 
         public int Classify(double[] inputs)

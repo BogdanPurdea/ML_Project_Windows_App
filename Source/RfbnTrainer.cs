@@ -15,17 +15,16 @@ namespace Source
             int inputDim = inputs[0].Length;
             var network = new RbfNetwork(inputDim, hiddenNeurons, 1);
 
-            // PHASE 1: Unsupervised Learning (K-Means) to find Centroids
+            // 1. Unsupervised: Centroids (K-Means)
             network.Centroids = ComputeCentroidsKMeans(inputs, hiddenNeurons);
 
-            // PHASE 2: Calculate Sigmas (Widths)
-            // Heuristic: Average distance to nearest neighbor centroid or global variance
+            // 2. Heuristic: Sigmas
+            // Note: Since data is Z-Score (approx -3 to 3), avgDist is usually ideal.
             network.Sigmas = ComputeSigmas(network.Centroids);
 
-            // PHASE 3: Supervised Learning (Gradient Descent) for Weights
-            // Initialize weights randomly
+            // 3. Supervised: Weights (Gradient Descent with Sigmoid)
             network.Weights = new double[hiddenNeurons];
-            for (int i = 0; i < hiddenNeurons; i++) network.Weights[i] = _rnd.NextDouble() * 0.1;
+            for (int i = 0; i < hiddenNeurons; i++) network.Weights[i] = (_rnd.NextDouble() * 2 - 1) * 0.1; // Init -0.1 to 0.1
             network.Bias = 0.0;
 
             for (int epoch = 0; epoch < epochs; epoch++)
@@ -34,7 +33,7 @@ namespace Source
 
                 for (int i = 0; i < inputs.Count; i++)
                 {
-                    // Forward pass to get hidden layer activations
+                    // --- Forward Pass ---
                     double[] hiddenActivations = new double[hiddenNeurons];
                     for (int h = 0; h < hiddenNeurons; h++)
                     {
@@ -47,29 +46,28 @@ namespace Source
                         hiddenActivations[h] = Math.Exp(-distSq / (2 * Math.Pow(network.Sigmas[h], 2)));
                     }
 
-                    // Compute current output
-                    double currentOutput = network.Bias;
-                    for (int h = 0; h < hiddenNeurons; h++)
-                    {
-                        currentOutput += hiddenActivations[h] * network.Weights[h];
-                    }
+                    // Calculate Output (Sigmoid)
+                    double linearSum = network.Bias;
+                    for (int h = 0; h < hiddenNeurons; h++) linearSum += hiddenActivations[h] * network.Weights[h];
+                    double output = 1.0 / (1.0 + Math.Exp(-linearSum));
 
-                    // Compute Error (Target - Output)
-                    double error = targets[i] - currentOutput;
+                    // --- Backward Pass ---
+                    double error = targets[i] - output;
                     totalError += error * error;
 
-                    // Update Weights (LMS / Delta Rule)
+                    // Gradient for Sigmoid: Error * Output * (1 - Output)
+                    double gradient = error * output * (1.0 - output);
+
                     for (int h = 0; h < hiddenNeurons; h++)
                     {
-                        network.Weights[h] += learningRate * error * hiddenActivations[h];
+                        network.Weights[h] += learningRate * gradient * hiddenActivations[h];
                     }
-                    network.Bias += learningRate * error;
+                    network.Bias += learningRate * gradient;
                 }
             }
 
             return network;
         }
-
         private double[][] ComputeCentroidsKMeans(List<double[]> data, int k)
         {
             int dim = data[0].Length;
@@ -142,32 +140,49 @@ namespace Source
         private double[] ComputeSigmas(double[][] centroids)
         {
             int k = centroids.Length;
-            int dim = centroids[0].Length;
             double[] sigmas = new double[k];
 
-            // Simple heuristic: distance to nearest other centroid
-            // A more robust one is: max_distance / sqrt(2*k)
+            // Fallback if there is only one hidden neuron
+            if (k <= 1)
+            {
+                return new double[] { 1.0 };
+            }
 
-            if (k == 1) return new double[] { 1.0 }; // Fallback
+            // 1. Calculate the average distance between all pairs of centroids
+            double totalDist = 0;
+            int pairCount = 0;
+            int dim = centroids[0].Length;
 
             for (int i = 0; i < k; i++)
             {
-                double minDst = double.MaxValue;
-                for (int j = 0; j < k; j++)
+                for (int j = i + 1; j < k; j++)
                 {
-                    if (i == j) continue;
-                    double dist = 0;
+                    double distSq = 0;
                     for (int d = 0; d < dim; d++)
                     {
                         double diff = centroids[i][d] - centroids[j][d];
-                        dist += diff * diff;
+                        distSq += diff * diff;
                     }
-                    dist = Math.Sqrt(dist);
-                    if (dist < minDst) minDst = dist;
+                    totalDist += Math.Sqrt(distSq);
+                    pairCount++;
                 }
-                // Sigma is often set to d_nearest * constant (e.g., 2.0 to ensure overlap)
-                sigmas[i] = minDst * 1.5;
             }
+
+            // Avoid division by zero if something went wrong
+            if (pairCount == 0) return Enumerable.Repeat(1.0, k).ToArray();
+
+            double avgDist = totalDist / pairCount;
+
+            // 2. Set all sigmas to a multiple of this average.
+            // FIX: Reduced multiplier from 2.0 to 1.0 to prevent oversaturation.
+            // If you still see "All 1s", try 0.8.
+            double sigmaValue = avgDist * 1.0;
+
+            for (int i = 0; i < k; i++)
+            {
+                sigmas[i] = sigmaValue;
+            }
+
             return sigmas;
         }
     }
