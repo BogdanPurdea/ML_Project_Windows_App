@@ -32,17 +32,20 @@ namespace WinForm_RFBN_APP
 
             // Input data from TextBoxes
             bool successRead = true;
-            int hiddenNeurons, epochs, learningRate;
+
+            int hiddenNeurons, epochs;
             successRead |= int.TryParse(HiddenNeuronsTextBox.Text.ToString(), out hiddenNeurons);
             successRead |= int.TryParse(EpochsTextBox.Text.ToString(), out epochs);
-            successRead |= int.TryParse(LearningRateTextBox.Text.ToString(), out learningRate);
+
+            double learningRate;
+            successRead |= double.TryParse(LearningRateTextBox.Text.ToString(), out learningRate);
 
             // 25 Hidden Neurons, 100 Epochs, 0.01 Learning Rate
             if (!successRead)
             {
                 hiddenNeurons = 25;
                 epochs        = 100;
-                learningRate  = 0.01;
+                learningRate  = 0.01d;
             }
 
             var trainer = new RbfTrainer();
