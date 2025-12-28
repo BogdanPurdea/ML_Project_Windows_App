@@ -3,6 +3,21 @@
     partial class Form1
     {
 
+        #region Fields --------------------------------------------------------------
+
+        private UserControl currentPage;
+
+        // PANNELS
+        private Panel NavigationPanel;
+        private Panel ControlPanel;
+
+        // BUTTONS
+        private MaterialSkin.Controls.MaterialButton TrainingPageButton;
+        private MaterialSkin.Controls.MaterialButton TestingPageButton;
+
+        #endregion
+
+
         #region Windows Form Designer generated code ----------------------------------------
 
         /// <summary>
@@ -105,21 +120,12 @@
             NavigationPanel.ResumeLayout(false);
             NavigationPanel.PerformLayout();
             ResumeLayout(false);
+
+            // Dev
+            TrainingPageButton.Click += TrainingPageButton_Click;
+            TestingPageButton.Click += TestingPageButton_Click;
+
         }
-
-        #endregion
-
-        #region Fields --------------------------------------------------------------
-
-        private UserControl currentPage;
-
-        // PANNELS
-        private Panel NavigationPanel;
-        private Panel ControlPanel;
-
-        // BUTTONS
-        private MaterialSkin.Controls.MaterialButton TrainingPageButton;
-        private MaterialSkin.Controls.MaterialButton TestingPageButton;
 
         #endregion
 

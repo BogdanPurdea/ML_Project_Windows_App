@@ -30,8 +30,8 @@
         private void InitializeComponent()
         {
             ButtonsPannel = new Panel();
-            ViewerPannel = new Panel();
             TrainButton = new MaterialSkin.Controls.MaterialButton();
+            ViewerPannel = new Panel();
             RichTextBoxOutput = new RichTextBox();
             ButtonsPannel.SuspendLayout();
             ViewerPannel.SuspendLayout();
@@ -45,15 +45,6 @@
             ButtonsPannel.Name = "ButtonsPannel";
             ButtonsPannel.Size = new Size(73, 444);
             ButtonsPannel.TabIndex = 0;
-            // 
-            // ViewerPannel
-            // 
-            ViewerPannel.Controls.Add(RichTextBoxOutput);
-            ViewerPannel.Dock = DockStyle.Fill;
-            ViewerPannel.Location = new Point(73, 0);
-            ViewerPannel.Name = "ViewerPannel";
-            ViewerPannel.Size = new Size(636, 444);
-            ViewerPannel.TabIndex = 1;
             // 
             // TrainButton
             // 
@@ -73,6 +64,16 @@
             TrainButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             TrainButton.UseAccentColor = false;
             TrainButton.UseVisualStyleBackColor = true;
+            TrainButton.Click += TrainButton_Click;
+            // 
+            // ViewerPannel
+            // 
+            ViewerPannel.Controls.Add(RichTextBoxOutput);
+            ViewerPannel.Dock = DockStyle.Fill;
+            ViewerPannel.Location = new Point(73, 0);
+            ViewerPannel.Name = "ViewerPannel";
+            ViewerPannel.Size = new Size(636, 444);
+            ViewerPannel.TabIndex = 1;
             // 
             // RichTextBoxOutput
             // 
@@ -95,42 +96,6 @@
             ButtonsPannel.PerformLayout();
             ViewerPannel.ResumeLayout(false);
             ResumeLayout(false);
-        }
-
-        #endregion
-
-
-
-
-
-        #region Data Access ---------------------------------------------------------
-
-        /// <summary>
-        /// LoadCsv
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
-        {
-            var lines = File.ReadAllLines(filePath).Skip(1); // Skip header
-            var inputs = new List<double[]>();
-            var targets = new List<double>();
-
-            foreach (var line in lines)
-            {
-                var parts = line.Split(';');
-                // Indexes 0-7 are inputs (8 features), Index 8 is Class
-                double[] rowInput = new double[8];
-                for (int i = 0; i < 8; i++)
-                {
-                    rowInput[i] = double.Parse(parts[i]);
-                }
-
-                inputs.Add(rowInput);
-                targets.Add(double.Parse(parts[8]));
-            }
-
-            return (inputs, targets);
         }
 
         #endregion
