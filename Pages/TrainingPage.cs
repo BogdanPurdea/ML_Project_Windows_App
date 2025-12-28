@@ -19,10 +19,9 @@ namespace WinForm_RFBN_APP
             InitializeComponent();
         }
 
-        private void TrainButton_Click(object sender, EventArgs e)
+        private async void TrainButton_Click(object sender, EventArgs e)
         {
-            var data = LoadCsv("food_data.csv");
-
+            var data = LoadCsv("train_80k.csv");
             RichTextBoxOutput.AppendText("Data Loaded. Starting Training...\n");
 
             // Normalize data (Crucial for RBF/K-Means)
@@ -35,13 +34,12 @@ namespace WinForm_RFBN_APP
             RbfNetwork model = await Task.Run(() =>
             {
                 // 10 Hidden Neurons, 50 Epochs, 0.01 Learning Rate
-                return trainer.Train(data.Inputs, data.Targets, 10, 50, 0.01);
+                return trainer.Train(data.Inputs, data.Targets, 10, 1, 0.01);
             });
-
             RichTextBoxOutput.AppendText("Training Complete!\n");
 
             ModelRepository.SaveModel("FoodClassifier_V1", model);
-            MessageBox.Show("Training Complete and Saved!");
+            RichTextBoxOutput.AppendText("Model Saved to Repository.\n");
         }
 
 
