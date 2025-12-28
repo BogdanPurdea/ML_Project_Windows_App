@@ -1,29 +1,37 @@
 ﻿using Source;
 using Source.Data;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WinForm_RFBN_APP
 {
     public partial class TrainingPage : UserControl
     {
+
+        #region Constructor ---------------------------------------------------------
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public TrainingPage()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+
+        #region Button Commands -----------------------------------------------------
+
+        /// <summary>
+        /// Train Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void TrainButton_Click(object sender, EventArgs e)
         {
             var data = LoadCsv("train_80k_normalized_data.csv");
+            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
             RichTextBoxOutput.AppendText("Data Loaded. Starting Training...\n");
 
             // Normalize data (Crucial for RBF/K-Means)
@@ -44,8 +52,8 @@ namespace WinForm_RFBN_APP
             if (!successRead)
             {
                 hiddenNeurons = 25;
-                epochs        = 100;
-                learningRate  = 0.01d;
+                epochs = 100;
+                learningRate = 0.01d;
             }
 
             var trainer = new RbfTrainer();
@@ -55,11 +63,48 @@ namespace WinForm_RFBN_APP
             {
                 return trainer.Train(data.Inputs, data.Targets, hiddenNeurons, epochs, learningRate);
             });
+            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
             RichTextBoxOutput.AppendText("Training Complete!\n");
 
             ModelRepository.SaveModel("FoodClassifier_V1", model);
+            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
             RichTextBoxOutput.AppendText("Model Saved to Repository.\n");
         }
+
+        /// <summary>
+        /// Clean Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CleanButton_Click(object sender, EventArgs e)
+        {
+            var confirm = MessageBox.Show(
+                "Are you sure you want to delete all trained models? This cannot be undone.",
+                "Confirm Clear",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    ModelRepository.ClearModel();
+
+                    RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+                    RichTextBoxOutput.AppendText($"[System]: Database cleared at {DateTime.Now.ToShortTimeString()}.\n");
+                    RichTextBoxOutput.AppendText("Ready for clean training.\n");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error clearing database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+                    RichTextBoxOutput.AppendText($"Error clearing database: {ex.Message}");
+                }
+            }
+        }
+
+        #endregion
 
 
         #region Data Access ---------------------------------------------------------
@@ -71,22 +116,57 @@ namespace WinForm_RFBN_APP
         /// <returns></returns>
         public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
         {
-            var lines = File.ReadAllLines(filePath).Skip(1);
+            // Read all lines
+            var lines = File.ReadAllLines(filePath);
+
+            // Skip header if it exists (assuming header is purely text)
+            // If your CSV strictly has no header, remove the .Skip(1)
+            var dataLines = lines.Skip(1).Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+
             List<double[]> inputs = new List<double[]>();
             List<double> targets = new List<double>();
 
-            foreach (var line in lines)
+            if (dataLines.Count == 0) return (inputs, targets);
+
+            // Detect dimension from the first data row
+            // We assume the LAST column is the target, so InputDim = TotalColumns - 1
+            int totalColumns = dataLines[0].Split(';').Length;
+            int inputDim = totalColumns - 1;
+
+            foreach (var line in dataLines)
             {
                 var parts = line.Split(';');
-                double[] rowInput = new double[8];
-                for (int i = 0; i < 8; i++)
+
+                // Safety check to ensure row consistency
+                if (parts.Length != totalColumns) continue;
+
+                double[] rowInput = new double[inputDim];
+
+                // Loop dynamically up to inputDim
+                for (int i = 0; i < inputDim; i++)
                 {
-                    // FIX: Use CultureInfo.InvariantCulture to handle "." decimals correctly
-                    rowInput[i] = double.Parse(parts[i], CultureInfo.InvariantCulture);
+                    if (double.TryParse(parts[i], CultureInfo.InvariantCulture, out double val))
+                    {
+                        rowInput[i] = val;
+                    }
+                    else
+                    {
+                        rowInput[i] = 0.0; // Handle missing/bad data safely
+                    }
+                }
+
+                // Parse Target (Last Column)
+                if (double.TryParse(parts[inputDim], CultureInfo.InvariantCulture, out double target))
+                {
+                    targets.Add(target);
+                }
+                else
+                {
+                    // If target is invalid, you might want to skip this row entirely
+                    continue;
                 }
 
                 inputs.Add(rowInput);
-                targets.Add(double.Parse(parts[8], CultureInfo.InvariantCulture));
             }
 
             return (inputs, targets);

@@ -6,10 +6,18 @@ namespace WinForm_RFBN_APP
 {
     public partial class TestingPage : UserControl
     {
+
+        #region Constructor ---------------------------------------------------------
+
         public TestingPage()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+
+        #region Button Commands -----------------------------------------------------
 
         private void TestButton_Click(object sender, EventArgs e)
         {
@@ -21,6 +29,7 @@ namespace WinForm_RFBN_APP
 
             if (entity == null)
             {
+                RichTextBoxOutput.AppendText("--------------------------------------------------\n");
                 RichTextBoxOutput.AppendText("No model found. Please train first.\r\n");
                 return;
             }
@@ -34,9 +43,9 @@ namespace WinForm_RFBN_APP
             model.Centroids = DeserializeCentroids(entity.CentroidsData);
 
             // 2. Load Test Data 
-            // (Crucial: LoadCsv must use CultureInfo.InvariantCulture as discussed previously)
             var testData = LoadCsv("test_20k_normalized_data.csv");
-            RichTextBoxOutput.AppendText("Test Data Loaded. Finding Optimal Threshold...\r\n");
+            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+            RichTextBoxOutput.AppendText("Test Data Loaded.\r\n");
 
             List<double> rawScores = new List<double>();
             List<double> actuals = testData.Targets;
@@ -52,36 +61,39 @@ namespace WinForm_RFBN_APP
 
                 // B. Find Optimal Threshold
                 double bestThreshold = 0.5;
-                double bestAccuracy = 0.0;
-                // FIX: Added 'new' keyword here
+                double bestAccuracy  = 0.0;
                 EvaluationMetrics bestMetrics = new EvaluationMetrics();
 
                 // Scan from 0.05 to 0.95 to find the sweet spot
-                for (double t = 0.05; t < 0.95; t += 0.05)
+                for (double sweetSpot = 0.05; sweetSpot < 0.95; sweetSpot += 0.05)
                 {
-                    var m = MetricsCalculator.Calculate(rawScores, actuals, t);
+                    EvaluationMetrics metrics = MetricsCalculator.Calculate(rawScores, actuals, sweetSpot);
 
                     // You can optimize for Accuracy, F-Measure, or Precision depending on your goal
-                    if (m.Accuracy > bestAccuracy)
+                    if (metrics.Accuracy > bestAccuracy)
                     {
-                        bestAccuracy = m.Accuracy;
-                        bestThreshold = t;
-                        bestMetrics = m;
+                        bestAccuracy  = metrics.Accuracy;
+                        bestThreshold = sweetSpot;
+                        bestMetrics   = metrics;
                     }
                 }
 
                 // C. Update UI
                 this.Invoke((MethodInvoker)delegate
                 {
-                    RichTextBoxOutput.AppendText($"\n--- OPTIMIZED RESULTS (Threshold: {bestThreshold:F2}) ---\r\n");
+                    RichTextBoxOutput.AppendText("--------------------------------------------------\n");
                     RichTextBoxOutput.AppendText(bestMetrics.ToString() + "\r\n");
 
                     // Comparison with default
-                    var defaultMetrics = Source.MetricsCalculator.Calculate(rawScores, actuals, 0.5);
-                    RichTextBoxOutput.AppendText($"\n(Default 0.5 Accuracy was: {defaultMetrics.Accuracy:P2})\r\n");
+                    //var defaultMetrics = MetricsCalculator.Calculate(rawScores, actuals, 0.5);
+                    //RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+                    //RichTextBoxOutput.AppendText($"\n(Default 0.5 Accuracy was: {defaultMetrics.Accuracy:P2})\r\n");
                 });
             });
         }
+
+        #endregion
+
 
         #region Data Access ---------------------------------------------------------
 
@@ -92,22 +104,57 @@ namespace WinForm_RFBN_APP
         /// <returns></returns>
         public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
         {
-            var lines = File.ReadAllLines(filePath).Skip(1);
-            var inputs = new List<double[]>();
-            var targets = new List<double>();
+            // Read all lines
+            var lines = File.ReadAllLines(filePath);
 
-            foreach (var line in lines)
+            // Skip header if it exists (assuming header is purely text)
+            // If your CSV strictly has no header, remove the .Skip(1)
+            var dataLines = lines.Skip(1).Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+
+            List<double[]> inputs = new List<double[]>();
+            List<double> targets = new List<double>();
+
+            if (dataLines.Count == 0) return (inputs, targets);
+
+            // Detect dimension from the first data row
+            // We assume the LAST column is the target, so InputDim = TotalColumns - 1
+            int totalColumns = dataLines[0].Split(';').Length;
+            int inputDim = totalColumns - 1;
+
+            foreach (var line in dataLines)
             {
                 var parts = line.Split(';');
-                double[] rowInput = new double[8];
-                for (int i = 0; i < 8; i++)
+
+                // Safety check to ensure row consistency
+                if (parts.Length != totalColumns) continue;
+
+                double[] rowInput = new double[inputDim];
+
+                // Loop dynamically up to inputDim
+                for (int i = 0; i < inputDim; i++)
                 {
-                    // FIX: Use CultureInfo.InvariantCulture to handle "." decimals correctly
-                    rowInput[i] = double.Parse(parts[i], CultureInfo.InvariantCulture);
+                    if (double.TryParse(parts[i], CultureInfo.InvariantCulture, out double val))
+                    {
+                        rowInput[i] = val;
+                    }
+                    else
+                    {
+                        rowInput[i] = 0.0; // Handle missing/bad data safely
+                    }
+                }
+
+                // Parse Target (Last Column)
+                if (double.TryParse(parts[inputDim], CultureInfo.InvariantCulture, out double target))
+                {
+                    targets.Add(target);
+                }
+                else
+                {
+                    // If target is invalid, you might want to skip this row entirely
+                    continue;
                 }
 
                 inputs.Add(rowInput);
-                targets.Add(double.Parse(parts[8], CultureInfo.InvariantCulture));
             }
 
             return (inputs, targets);

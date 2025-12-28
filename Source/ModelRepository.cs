@@ -1,5 +1,4 @@
-﻿using Source;
-using Source.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace Source.Data
@@ -45,6 +44,16 @@ namespace Source.Data
             network.Centroids = DeserializeCentroids(entity.CentroidsData);
 
             return network;
+        }
+
+        public static void ClearModel()
+        {
+            // Efficiently deletes all rows in the TrainedModels table
+            using var db = new AppDbContext();
+            db.TrainedModels.ExecuteDelete();
+
+            // Deletes the physical .db file
+            db.Database.EnsureDeleted();   
         }
 
         // Helpers

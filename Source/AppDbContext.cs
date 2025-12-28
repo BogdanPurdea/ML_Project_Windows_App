@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Source.Data
 {
+
     public class AppDbContext : DbContext
     {
         public DbSet<TrainedModel> TrainedModels { get; set; }
@@ -40,4 +36,5 @@ namespace Source.Data
         public int InputCount { get; set; }
         public int HiddenCount { get; set; }
     }
+
 }

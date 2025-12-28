@@ -39,12 +39,14 @@
             LearningRateTextBox = new MaterialSkin.Controls.MaterialTextBox();
             HiddenNeuronsTextBox = new MaterialSkin.Controls.MaterialTextBox();
             EpochsTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            CleanButton = new MaterialSkin.Controls.MaterialButton();
             ButtonsPannel.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // ButtonsPannel
             // 
+            ButtonsPannel.Controls.Add(CleanButton);
             ButtonsPannel.Controls.Add(TrainButton);
             ButtonsPannel.Dock = DockStyle.Left;
             ButtonsPannel.Location = new Point(0, 0);
@@ -182,6 +184,26 @@
             EpochsTextBox.Text = "100";
             EpochsTextBox.TrailingIcon = null;
             // 
+            // CleanButton
+            // 
+            CleanButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            CleanButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            CleanButton.Depth = 0;
+            CleanButton.HighEmphasis = true;
+            CleanButton.Icon = null;
+            CleanButton.Location = new Point(17, 54);
+            CleanButton.Margin = new Padding(4, 6, 4, 6);
+            CleanButton.MouseState = MaterialSkin.MouseState.HOVER;
+            CleanButton.Name = "CleanButton";
+            CleanButton.NoAccentTextColor = Color.Empty;
+            CleanButton.Size = new Size(64, 36);
+            CleanButton.TabIndex = 1;
+            CleanButton.Text = "Clean";
+            CleanButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            CleanButton.UseAccentColor = false;
+            CleanButton.UseVisualStyleBackColor = true;
+            CleanButton.Click += CleanButton_Click;
+            // 
             // TrainingPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -210,5 +232,6 @@
         private MaterialSkin.Controls.MaterialTextBox HiddenNeuronsTextBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
+        private MaterialSkin.Controls.MaterialButton CleanButton;
     }
 }
