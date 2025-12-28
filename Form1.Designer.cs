@@ -2,6 +2,9 @@
 {
     partial class Form1
     {
+
+        #region Windows Form Designer generated code ----------------------------------------
+
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -19,8 +22,6 @@
             }
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
 
         /// <summary>
         ///  Required method for Designer support - do not modify
@@ -108,8 +109,52 @@
 
         #endregion
 
+        #region Items ---------------------------------------------------------------
+
+        // PANNELS
         private Panel NavigationPanel;
         private Panel ControlPanel;
+
+        // BUTTONS
+        private MaterialSkin.Controls.MaterialButton TrainingPageButton;
+        private MaterialSkin.Controls.MaterialButton TestingPageButton;
+
+        #endregion
+
+
+        #region Data Access ---------------------------------------------------------
+
+        /// <summary>
+        /// LoadCsv
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
+        {
+            var lines = File.ReadAllLines(filePath).Skip(1); // Skip header
+            var inputs = new List<double[]>();
+            var targets = new List<double>();
+
+            foreach (var line in lines)
+            {
+                var parts = line.Split(';');
+                // Indexes 0-7 are inputs (8 features), Index 8 is Class
+                double[] rowInput = new double[8];
+                for (int i = 0; i < 8; i++)
+                {
+                    rowInput[i] = double.Parse(parts[i]);
+                }
+
+                inputs.Add(rowInput);
+                targets.Add(double.Parse(parts[8]));
+            }
+
+            return (inputs, targets);
+        }
+
+        #endregion
+
+        #region Buttons -------------------------------------------------------------
 
         private void LoadPage(UserControl page)
         {
@@ -118,7 +163,8 @@
             ControlPanel.Controls.Add(page);
         }
 
-        private MaterialSkin.Controls.MaterialButton TrainingPageButton;
-        private MaterialSkin.Controls.MaterialButton TestingPageButton;
+
+        #endregion
+
     }
 }
