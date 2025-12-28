@@ -34,15 +34,17 @@ namespace Source
 
     public static class MetricsCalculator
     {
-        public static EvaluationMetrics Calculate(List<double> rawScores, List<double> actualLabels)
+        // FIX: Added threshold parameter (default 0.5)
+        public static EvaluationMetrics Calculate(List<double> rawScores, List<double> actualLabels, double threshold = 0.5)
         {
             var metrics = new EvaluationMetrics();
             int n = rawScores.Count;
 
-            // 1. Calculate Confusion Matrix (Threshold = 0.5)
+            // 1. Calculate Confusion Matrix using dynamic threshold
             for (int i = 0; i < n; i++)
             {
-                int predictedClass = rawScores[i] >= 0.5 ? 1 : 0;
+                // FIX: Use the passed threshold
+                int predictedClass = rawScores[i] >= threshold ? 1 : 0;
                 int actualClass = (int)actualLabels[i];
 
                 if (predictedClass == 1 && actualClass == 1) metrics.TP++;
@@ -64,8 +66,7 @@ namespace Source
                 metrics.FMeasure = 2 * (metrics.Precision * metrics.Recall) / (metrics.Precision + metrics.Recall);
             }
 
-            // 3. AUC - ROC Calculation (Trapezoidal Rule)
-            // We need pairs of (Score, Label) sorted by Score Descending
+            // 3. AUC - ROC Calculation (Threshold independent)
             var predictions = rawScores.Zip(actualLabels, (s, l) => new { Score = s, Label = l })
                                        .OrderByDescending(x => x.Score)
                                        .ToList();

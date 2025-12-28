@@ -41,7 +41,7 @@
             ButtonsPannel.Dock = DockStyle.Left;
             ButtonsPannel.Location = new Point(0, 0);
             ButtonsPannel.Name = "ButtonsPannel";
-            ButtonsPannel.Size = new Size(73, 548);
+            ButtonsPannel.Size = new Size(100, 400);
             ButtonsPannel.TabIndex = 1;
             // 
             // TestButton
@@ -51,7 +51,7 @@
             TestButton.Depth = 0;
             TestButton.HighEmphasis = true;
             TestButton.Icon = null;
-            TestButton.Location = new Point(4, 6);
+            TestButton.Location = new Point(18, 6);
             TestButton.Margin = new Padding(4, 6, 4, 6);
             TestButton.MouseState = MaterialSkin.MouseState.HOVER;
             TestButton.Name = "TestButton";
@@ -67,9 +67,9 @@
             // RichTextBoxOutput
             // 
             RichTextBoxOutput.Dock = DockStyle.Fill;
-            RichTextBoxOutput.Location = new Point(73, 0);
+            RichTextBoxOutput.Location = new Point(100, 0);
             RichTextBoxOutput.Name = "RichTextBoxOutput";
-            RichTextBoxOutput.Size = new Size(802, 548);
+            RichTextBoxOutput.Size = new Size(600, 400);
             RichTextBoxOutput.TabIndex = 3;
             RichTextBoxOutput.Text = "";
             // 
@@ -80,7 +80,7 @@
             Controls.Add(RichTextBoxOutput);
             Controls.Add(ButtonsPannel);
             Name = "TestingPage";
-            Size = new Size(875, 548);
+            Size = new Size(700, 400);
             ButtonsPannel.ResumeLayout(false);
             ButtonsPannel.PerformLayout();
             ResumeLayout(false);

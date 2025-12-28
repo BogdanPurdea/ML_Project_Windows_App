@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <StartupObject>WinForm_RFBN_APP.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,8 +18,20 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(ProjectDir)train_80k.csv&quot; &quot;$(TargetDir)train_80k_normalized_data.csv&quot; /Y&#xD;&#xA;copy &quot;$(ProjectDir)test_20k.csv&quot; &quot;$(TargetDir)test_20k_normalized_data.csv&quot; /Y&#xD;&#xA;copy &quot;$(ProjectDir)train_80k.csv&quot; &quot;$(TargetDir)train_80k.csv&quot; /Y&#xD;&#xA;copy &quot;$(ProjectDir)test_20k.csv&quot; &quot;$(TargetDir)test_20k.csv&quot; /Y&#xD;&#xA;" />
-  </Target>
+	<ItemGroup>
+		<None Update="train_80k.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="test_20k.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="copy &quot;$(ProjectDir)train_80k_normalized_data.csv&quot; &quot;$(TargetDir)train_80k_normalized_data.csv&quot; /Y" />
+		<Exec Command="copy &quot;$(ProjectDir)test_20k_normalized_data.csv&quot; &quot;$(TargetDir)test_20k_normalized_data.csv&quot; /Y" />
+		<Exec Command="copy &quot;$(ProjectDir)train_80k.csv&quot; &quot;$(TargetDir)train_80k.csv&quot; /Y" />
+		<Exec Command="copy &quot;$(ProjectDir)test_20k.csv&quot; &quot;$(TargetDir)test_20k.csv&quot; /Y" />
+	</Target>
 
 </Project>

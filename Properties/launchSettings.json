@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "WinForm_RFBN_APP": {
+      "commandName": "Project",
+      "nativeDebugging": false,
+      "sqlDebugging": false
+    }
+  }
+}

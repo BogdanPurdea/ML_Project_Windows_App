@@ -45,9 +45,9 @@
         private void InitializeComponent()
         {
             NavigationPanel = new Panel();
-            ControlPanel = new Panel();
-            TestingPageButton = new MaterialSkin.Controls.MaterialButton();
             TrainingPageButton = new MaterialSkin.Controls.MaterialButton();
+            TestingPageButton = new MaterialSkin.Controls.MaterialButton();
+            ControlPanel = new Panel();
             NavigationPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -58,16 +58,28 @@
             NavigationPanel.Dock = DockStyle.Left;
             NavigationPanel.Location = new Point(0, 0);
             NavigationPanel.Name = "NavigationPanel";
-            NavigationPanel.Size = new Size(154, 450);
+            NavigationPanel.Size = new Size(159, 400);
             NavigationPanel.TabIndex = 0;
             // 
-            // ControlPanel
+            // TrainingPageButton
             // 
-            ControlPanel.Dock = DockStyle.Fill;
-            ControlPanel.Location = new Point(154, 0);
-            ControlPanel.Name = "ControlPanel";
-            ControlPanel.Size = new Size(646, 450);
-            ControlPanel.TabIndex = 1;
+            TrainingPageButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            TrainingPageButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            TrainingPageButton.Depth = 0;
+            TrainingPageButton.HighEmphasis = true;
+            TrainingPageButton.Icon = null;
+            TrainingPageButton.Location = new Point(13, 15);
+            TrainingPageButton.Margin = new Padding(4, 6, 4, 6);
+            TrainingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
+            TrainingPageButton.Name = "TrainingPageButton";
+            TrainingPageButton.NoAccentTextColor = Color.Empty;
+            TrainingPageButton.Size = new Size(130, 36);
+            TrainingPageButton.TabIndex = 1;
+            TrainingPageButton.Text = "Training Page";
+            TrainingPageButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            TrainingPageButton.UseAccentColor = false;
+            TrainingPageButton.UseVisualStyleBackColor = true;
+            TrainingPageButton.Click += TrainingPageButton_Click;
             // 
             // TestingPageButton
             // 
@@ -88,31 +100,21 @@
             TestingPageButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             TestingPageButton.UseAccentColor = false;
             TestingPageButton.UseVisualStyleBackColor = true;
+            TestingPageButton.Click += TestingPageButton_Click;
             // 
-            // TrainingPageButton
+            // ControlPanel
             // 
-            TrainingPageButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            TrainingPageButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            TrainingPageButton.Depth = 0;
-            TrainingPageButton.HighEmphasis = true;
-            TrainingPageButton.Icon = null;
-            TrainingPageButton.Location = new Point(13, 15);
-            TrainingPageButton.Margin = new Padding(4, 6, 4, 6);
-            TrainingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
-            TrainingPageButton.Name = "TrainingPageButton";
-            TrainingPageButton.NoAccentTextColor = Color.Empty;
-            TrainingPageButton.Size = new Size(130, 36);
-            TrainingPageButton.TabIndex = 1;
-            TrainingPageButton.Text = "Training Page";
-            TrainingPageButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            TrainingPageButton.UseAccentColor = false;
-            TrainingPageButton.UseVisualStyleBackColor = true;
+            ControlPanel.Dock = DockStyle.Fill;
+            ControlPanel.Location = new Point(159, 0);
+            ControlPanel.Name = "ControlPanel";
+            ControlPanel.Size = new Size(800, 400);
+            ControlPanel.TabIndex = 1;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(959, 400);
             Controls.Add(ControlPanel);
             Controls.Add(NavigationPanel);
             Name = "Form1";
@@ -120,10 +122,6 @@
             NavigationPanel.ResumeLayout(false);
             NavigationPanel.PerformLayout();
             ResumeLayout(false);
-
-            // Dev
-            TrainingPageButton.Click += TrainingPageButton_Click;
-            TestingPageButton.Click += TestingPageButton_Click;
 
         }
 
