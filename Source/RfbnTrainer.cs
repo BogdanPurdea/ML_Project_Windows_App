@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Source
+﻿namespace Source
 {
     public class RbfTrainer
     {
+
+        #region Fields --------------------------------------------------------------
+
         private Random _rnd = new Random();
+
+        #endregion
+
+
+        #region Public Methods ------------------------------------------------------
 
         public RbfNetwork Train(List<double[]> inputs, List<double> targets, int hiddenNeurons, int epochs, double learningRate)
         {
@@ -68,6 +70,12 @@ namespace Source
 
             return network;
         }
+
+        #endregion
+
+
+        #region Private Methods ------------------------------------------------------
+
         private double[][] ComputeCentroidsKMeans(List<double[]> data, int k)
         {
             int dim = data[0].Length;
@@ -185,5 +193,8 @@ namespace Source
 
             return sigmas;
         }
+
+        #endregion
+
     }
 }

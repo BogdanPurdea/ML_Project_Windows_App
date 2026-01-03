@@ -5,7 +5,9 @@ namespace Source.Data
 {
     public static class ModelRepository
     {
-        // UPDATE: Added meanStr and stdStr parameters
+
+        #region Public Methods ------------------------------------------------------
+
         public static void SaveModel(string name, RbfNetwork network, string meanStr, string stdStr)
         {
             using var db = new AppDbContext();
@@ -19,9 +21,9 @@ namespace Source.Data
                 Bias = network.Bias,
                 WeightsData = string.Join(";", network.Weights),
                 SigmasData = string.Join(";", network.Sigmas),
-                CentroidsData = SerializeCentroids(network.Centroids),
+                CentroidsData = SerializeCentroids(network.Centroids), // Helper method inside Repository
 
-                // NEW: Save Normalization Stats
+                // These are the new fields we just prepared in TrainingPage
                 NormalizationMeans = meanStr,
                 NormalizationStdDevs = stdStr
             };
@@ -30,7 +32,7 @@ namespace Source.Data
             db.SaveChanges();
         }
 
-        public static RbfNetwork? LoadModel(string name)
+        public static FoodClassifier LoadClassifier(string name)
         {
             using var db = new AppDbContext();
             db.Database.EnsureCreated();
@@ -41,23 +43,33 @@ namespace Source.Data
 
             if (entity == null) return null;
 
+            // 1. Rehydrate Network
             var network = new RbfNetwork(entity.InputCount, entity.HiddenCount, 1);
             network.Bias = entity.Bias;
             network.Weights = entity.WeightsData.Split(';').Select(double.Parse).ToArray();
             network.Sigmas = entity.SigmasData.Split(';').Select(double.Parse).ToArray();
             network.Centroids = DeserializeCentroids(entity.CentroidsData);
 
-            return network;
+            // 2. Rehydrate Stats
+            var means = NormalizationHelper.DeserializeArray(entity.NormalizationMeans);
+            var stdDevs = NormalizationHelper.DeserializeArray(entity.NormalizationStdDevs);
+
+            // 3. Return Wrapper
+            return new FoodClassifier(network, means, stdDevs);
         }
 
         public static void ClearModel()
         {
             using var db = new AppDbContext();
+            // Delete all entries but keep DB file structure if preferred, or delete file
             db.TrainedModels.ExecuteDelete();
-            db.Database.EnsureDeleted();
         }
 
-        // Helpers
+        #endregion
+
+
+        #region Private Methods -----------------------------------------------------
+
         private static string SerializeCentroids(double[][] centroids)
         {
             var sb = new StringBuilder();
@@ -69,7 +81,7 @@ namespace Source.Data
             return sb.ToString().TrimEnd('|');
         }
 
-        public static double[][] DeserializeCentroids(string data)
+        private static double[][] DeserializeCentroids(string data)
         {
             var rows = data.Split('|');
             var result = new double[rows.Length][];
@@ -79,5 +91,8 @@ namespace Source.Data
             }
             return result;
         }
+
+        #endregion
+
     }
 }

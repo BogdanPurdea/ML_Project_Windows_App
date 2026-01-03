@@ -5,68 +5,99 @@ namespace WinForm_RFBN_APP
 {
     public partial class TrainingPage : UserControl
     {
+
+        #region Constructor ---------------------------------------------------------
+
         public TrainingPage()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+
+        #region Button Commands -----------------------------------------------------
+
         private async void TrainButton_Click(object sender, EventArgs e)
         {
-            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
-            RichTextBoxOutput.AppendText("Starting Training Pipeline...\n");
-
-            // 1. Load RAW Data
-            // Assumes file has columns: 0-6 Features, 7 Ignored, 8 Target
-            var rawData = DataLoader.LoadCsv("train_80k_raw_data.csv");
-
-            RichTextBoxOutput.AppendText($"Raw Data Loaded: {rawData.Inputs.Count} records.\n");
-
-            // 2. Compute Normalization Stats (Z-Score)
-            // We must compute these on the TRAINING set only
-            var (means, stdDevs) = NormalizationHelper.ComputeZScoreStats(rawData.Inputs);
-
-            RichTextBoxOutput.AppendText("Normalization Stats Computed (Mean/StdDev).\n");
-
-            // 3. Normalize the Training Data
-            var normalizedInputs = new List<double[]>();
-            foreach (var row in rawData.Inputs)
+            try
             {
-                normalizedInputs.Add(NormalizationHelper.NormalizeRow(row, means, stdDevs));
+                TrainButton.Enabled = false;
+                RichTextBoxOutput.Clear();
+                RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+                RichTextBoxOutput.AppendText("Starting Training Pipeline...\n");
+
+                // 1. Load RAW Data
+                // The DataLoader reads the CSV. Ensure "train_80k.csv" exists in your bin folder.
+                var rawData = await Task.Run(() => DataLoader.LoadCsv("train_80k.csv"));
+
+                if (rawData.Inputs.Count == 0)
+                {
+                    RichTextBoxOutput.AppendText("Error: No training data found.\n");
+                    return;
+                }
+
+                RichTextBoxOutput.AppendText($"Raw Data Loaded: {rawData.Inputs.Count} records.\n");
+
+                // 2. Compute Normalization Stats (Z-Score)
+                // We MUST compute these on the TRAINING set. These exact values will be saved 
+                // and used to normalize future user inputs in the FoodClassifier wrapper.
+                var (means, stdDevs) = NormalizationHelper.ComputeZScoreStats(rawData.Inputs);
+
+                RichTextBoxOutput.AppendText("Normalization Stats Computed (Mean & StdDev).\n");
+
+                // 3. Normalize the Training Data
+                // The network never sees raw data, only data scaled ~ -3 to +3
+                var normalizedInputs = new List<double[]>();
+                foreach (var row in rawData.Inputs)
+                {
+                    normalizedInputs.Add(NormalizationHelper.NormalizeRow(row, means, stdDevs));
+                }
+
+                // 4. Parse UI Parameters
+                int hiddenNeurons = 25;
+                int epochs = 100;
+                double learningRate = 0.01d;
+
+                int.TryParse(HiddenNeuronsTextBox.Text, out hiddenNeurons);
+                int.TryParse(EpochsTextBox.Text, out epochs);
+                double.TryParse(LearningRateTextBox.Text, out learningRate);
+
+                RichTextBoxOutput.AppendText($"Training with {hiddenNeurons} hidden neurons, {epochs} epochs, LR: {learningRate}...\n");
+
+                // 5. Train Model (Using NORMALIZED inputs)
+                var trainer = new RbfTrainer();
+                RbfNetwork network = await Task.Run(() =>
+                {
+                    return trainer.Train(normalizedInputs, rawData.Targets, hiddenNeurons, epochs, learningRate);
+                });
+
+                RichTextBoxOutput.AppendText("Training Complete!\n");
+
+                // 6. Save Model AND Normalization Stats
+                // We serialize the arrays to strings (e.g., "0.5;1.2;-0.3") to store in SQLite.
+                string meanStr = NormalizationHelper.SerializeArray(means);
+                string stdStr = NormalizationHelper.SerializeArray(stdDevs);
+
+                // This saves everything the FoodClassifier wrapper needs to rebuild itself later.
+                ModelRepository.SaveModel("FoodClassifier_V1", network, meanStr, stdStr);
+
+                RichTextBoxOutput.AppendText("--------------------------------------------------\n");
+                RichTextBoxOutput.AppendText("SUCCESS: Model and Normalization Stats saved to DB.\n");
+                RichTextBoxOutput.AppendText("You can now go to 'Manual Testing' and test with raw inputs.\n");
             }
-
-            // 4. Parse UI Parameters
-            int hiddenNeurons = 25;
-            int epochs = 100;
-            double learningRate = 0.01d;
-
-            int.TryParse(HiddenNeuronsTextBox.Text, out hiddenNeurons);
-            int.TryParse(EpochsTextBox.Text, out epochs);
-            double.TryParse(LearningRateTextBox.Text, out learningRate);
-
-            RichTextBoxOutput.AppendText($"Training with {hiddenNeurons} hidden neurons, {epochs} epochs...\n");
-
-            // 5. Train Model (Using NORMALIZED inputs)
-            var trainer = new RbfTrainer();
-            RbfNetwork model = await Task.Run(() =>
+            catch (Exception ex)
             {
-                return trainer.Train(normalizedInputs, rawData.Targets, hiddenNeurons, epochs, learningRate);
-            });
-
-            RichTextBoxOutput.AppendText("Training Complete!\n");
-
-            // 6. Save Model AND Normalization Stats
-            string meanStr = NormalizationHelper.SerializeArray(means);
-            string stdStr = NormalizationHelper.SerializeArray(stdDevs);
-
-            ModelRepository.SaveModel("FoodClassifier_V1", model, meanStr, stdStr);
-
-            RichTextBoxOutput.AppendText("--------------------------------------------------\n");
-            RichTextBoxOutput.AppendText("Model and Normalization Stats Saved to Repository.\n");
+                RichTextBoxOutput.AppendText($"\nCRITICAL ERROR: {ex.Message}\n");
+            }
+            finally
+            {
+                TrainButton.Enabled = true;
+            }
         }
 
         private void CleanButton_Click(object sender, EventArgs e)
         {
-            // ... (Existing clean logic)
             var confirm = MessageBox.Show(
                "Are you sure you want to delete all trained models? This cannot be undone.",
                "Confirm Clear",
@@ -79,5 +110,8 @@ namespace WinForm_RFBN_APP
                 RichTextBoxOutput.AppendText("Database cleared.\n");
             }
         }
+
+        #endregion
+
     }
 }

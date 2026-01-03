@@ -51,8 +51,10 @@
             materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             FullInputTextBox = new MaterialSkin.Controls.MaterialTextBox();
             materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            panel2 = new Panel();
             ButtonsPannel.SuspendLayout();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // ButtonsPannel
@@ -107,8 +109,8 @@
             // 
             // RichTextBoxOutput
             // 
-            RichTextBoxOutput.Dock = DockStyle.Bottom;
-            RichTextBoxOutput.Location = new Point(100, 338);
+            RichTextBoxOutput.Dock = DockStyle.Fill;
+            RichTextBoxOutput.Location = new Point(0, 0);
             RichTextBoxOutput.Name = "RichTextBoxOutput";
             RichTextBoxOutput.Size = new Size(600, 62);
             RichTextBoxOutput.TabIndex = 3;
@@ -133,7 +135,7 @@
             panel1.Controls.Add(materialLabel2);
             panel1.Controls.Add(FullInputTextBox);
             panel1.Controls.Add(materialLabel1);
-            panel1.Dock = DockStyle.Fill;
+            panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(100, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(600, 338);
@@ -383,12 +385,21 @@
             materialLabel1.TabIndex = 0;
             materialLabel1.Text = "Full input:";
             // 
+            // panel2
+            // 
+            panel2.Controls.Add(RichTextBoxOutput);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(100, 338);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(600, 62);
+            panel2.TabIndex = 5;
+            // 
             // ManualTestingPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(panel2);
             Controls.Add(panel1);
-            Controls.Add(RichTextBoxOutput);
             Controls.Add(ButtonsPannel);
             Name = "ManualTestingPage";
             Size = new Size(700, 400);
@@ -396,6 +407,7 @@
             ButtonsPannel.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -423,5 +435,6 @@
         private MaterialSkin.Controls.MaterialTextBox KiloCaloriesTextBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel9;
         private MaterialSkin.Controls.MaterialButton TestCustomButton;
+        private Panel panel2;
     }
 }

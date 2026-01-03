@@ -1,56 +1,51 @@
 ﻿using Source;
 using Source.Data;
-using System.Data;
 
 namespace WinForm_RFBN_APP
 {
     public partial class TestingPage : UserControl
     {
+
+        #region Constructor ---------------------------------------------------------
+
         public TestingPage()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+
+        #region Button Commands -----------------------------------------------------
+
         private void TestButton_Click(object sender, EventArgs e)
         {
             RichTextBoxOutput.AppendText("--------------------------------------------------\n");
 
-            // 1. Load Model Entity from DB
-            using var db = new AppDbContext();
-            var entity = db.TrainedModels
-                            .OrderByDescending(m => m.CreatedAt)
-                            .FirstOrDefault(m => m.ModelName == "FoodClassifier_V1");
+            // 1. Load the Wrapper (Network + Normalization Stats)
+            // We use the new LoadClassifier method which returns the ready-to-use object.
+            FoodClassifier classifier = ModelRepository.LoadClassifier("FoodClassifier_V1");
 
-            if (entity == null)
+            if (classifier == null)
             {
                 RichTextBoxOutput.AppendText("No model found. Please train first.\r\n");
                 return;
             }
 
-            // 2. Reconstruct Network
-            var model = new RbfNetwork(entity.InputCount, entity.HiddenCount, 1);
-            model.Bias = entity.Bias;
-            model.Weights = entity.WeightsData.Split(';').Select(val => double.Parse(val, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
-            model.Sigmas = entity.SigmasData.Split(';').Select(val => double.Parse(val, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
-            model.Centroids = ModelRepository.DeserializeCentroids(entity.CentroidsData);
+            // 2. Load RAW Test Data
+            // "test_20k.csv" should contain raw values (Protein, Fat, etc.)
+            var rawTestData = DataLoader.LoadCsv("test_20k.csv");
 
-            // 3. Load Normalization Stats from DB
-            var means = NormalizationHelper.DeserializeArray(entity.NormalizationMeans);
-            var stdDevs = NormalizationHelper.DeserializeArray(entity.NormalizationStdDevs);
-
-            if (means.Length == 0 || stdDevs.Length == 0)
+            if (rawTestData.Inputs.Count == 0)
             {
-                RichTextBoxOutput.AppendText("Error: Model is missing normalization stats. Please retrain.\r\n");
+                RichTextBoxOutput.AppendText("Error: No test data found in CSV.\r\n");
                 return;
             }
 
-            // 4. Load RAW Test Data
-            var rawTestData = DataLoader.LoadCsv("test_20k_raw_data.csv");
-
             RichTextBoxOutput.AppendText($"Loaded {rawTestData.Inputs.Count} raw test records.\n");
+            RichTextBoxOutput.AppendText("Starting Batch Prediction...\n");
 
-            // 5. Normalize Test Data (Using SAVED Stats)
-            // IMPORTANT: Do NOT re-compute stats on test data. Use the training stats.
+            // 3. Run Predictions in Background
             List<double> rawScores = new List<double>();
             List<double> actuals = rawTestData.Targets;
 
@@ -58,18 +53,20 @@ namespace WinForm_RFBN_APP
             {
                 foreach (var rawInput in rawTestData.Inputs)
                 {
-                    // Normalize single row
-                    double[] normInput = NormalizationHelper.NormalizeRow(rawInput, means, stdDevs);
+                    // The wrapper automatically:
+                    // 1. Applies the Z-Score normalization (using stats from Training).
+                    // 2. Runs the RBF Network forward pass.
+                    double score = classifier.Predict(rawInput);
 
-                    // Forward pass
-                    rawScores.Add(model.Forward(normInput));
+                    rawScores.Add(score);
                 }
 
-                // 6. Find Optimal Threshold & Metrics
+                // 4. Find Optimal Threshold & Metrics (Same logic as before)
                 double bestThreshold = 0.5;
                 double bestAccuracy = 0.0;
                 EvaluationMetrics bestMetrics = new EvaluationMetrics();
 
+                // Scan thresholds to find the "sweet spot"
                 for (double sweetSpot = 0.05; sweetSpot < 0.95; sweetSpot += 0.05)
                 {
                     EvaluationMetrics metrics = MetricsCalculator.Calculate(rawScores, actuals, sweetSpot);
@@ -81,14 +78,17 @@ namespace WinForm_RFBN_APP
                     }
                 }
 
-                // 7. Update UI
+                // 5. Update UI safely
                 this.Invoke((MethodInvoker)delegate
                 {
+                    RichTextBoxOutput.AppendText($"Batch Prediction Complete.\n");
                     RichTextBoxOutput.AppendText($"Optimal Threshold: {bestThreshold:F2}\n");
                     RichTextBoxOutput.AppendText(bestMetrics.ToString() + "\r\n");
                 });
             });
         }
-       
+
+        #endregion
+
     }
 }

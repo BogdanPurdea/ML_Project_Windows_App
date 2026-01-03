@@ -1,6 +1,6 @@
 ﻿namespace WinForm_RFBN_APP
 {
-    partial class Form1
+    partial class MainScreen
     {
 
         #region Fields --------------------------------------------------------------
