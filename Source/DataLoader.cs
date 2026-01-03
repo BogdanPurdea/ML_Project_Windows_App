@@ -4,39 +4,100 @@ namespace Source.Data
 {
     public static class DataLoader
     {
-        public static (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath)
+        /// <summary>
+        /// Loads CSV data dynamically based on a provided schema string.
+        /// </summary>
+        /// <param name="filePath">Path to the CSV file.</param>
+        /// <param name="schema">Semicolon-separated columns to use (e.g., "PROTEIN;FAT;CLASSIFICATION"). Last item is always the Target.</param>
+        public static (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath, string schema)
         {
-            // Skip the header row
-            var lines = File.ReadAllLines(filePath).Skip(1);
+            var lines = File.ReadAllLines(filePath);
 
+            if (lines.Length < 2)
+                throw new Exception("CSV file is empty or missing data.");
+
+            // 1. Parse the CSV Header to map Column Names -> Index
+            //    e.g. { "PROTEIN": 0, "TOTAL_FAT": 1, ... }
+            var headerLine = lines[0];
+            var headerParts = headerLine.Split(';')
+                                        .Select(h => h.Trim().ToUpperInvariant()) // Normalize to UPPER keys
+                                        .ToArray();
+
+            var csvColumnMap = new Dictionary<string, int>();
+            for (int i = 0; i < headerParts.Length; i++)
+            {
+                // Safety check for duplicate headers
+                if (!csvColumnMap.ContainsKey(headerParts[i]))
+                {
+                    csvColumnMap.Add(headerParts[i], i);
+                }
+            }
+
+            // 2. Parse the User's Schema
+            //    e.g. "PROTEIN;TOTAL_FAT;CLASSIFICATION"
+            var schemaParts = schema.Split(';')
+                                    .Select(s => s.Trim().ToUpperInvariant())
+                                    .Where(s => !string.IsNullOrEmpty(s))
+                                    .ToArray();
+
+            if (schemaParts.Length < 2)
+                throw new Exception("Schema must contain at least one Input feature and one Target (e.g., 'PROTEIN;CLASS').");
+
+            // The LAST item in the schema is strictly the TARGET.
+            string targetColumn = schemaParts.Last();
+
+            // All PRECEDING items are INPUT features.
+            string[] featureColumns = schemaParts.Take(schemaParts.Length - 1).ToArray();
+
+            // 3. Validate that Schema columns exist in the CSV
+            if (!csvColumnMap.ContainsKey(targetColumn))
+                throw new Exception($"Target column '{targetColumn}' not found in CSV header.");
+
+            foreach (var col in featureColumns)
+            {
+                if (!csvColumnMap.ContainsKey(col))
+                    throw new Exception($"Feature column '{col}' not found in CSV header.");
+            }
+
+            // 4. Extract Data
             var inputs = new List<double[]>();
             var targets = new List<double>();
 
-            foreach (var line in lines)
+            // Skip header (start at index 1)
+            for (int i = 1; i < lines.Length; i++)
             {
+                var line = lines[i];
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
-                var parts = line.Split(';');
+                var rowParts = line.Split(';');
 
-                // We expect at least 9 columns based on your structure.
-                // 0:PROTEIN, 1:FAT, 2:CARBS, 3:ENERGY, 4:FIBER, 5:SAT_FAT, 6:SUGARS
-                // 7:NUTRI_SCORE (IGNORED)
-                // 8:CLASSIFICATION (TARGET)
-
-                if (parts.Length < 9) continue;
-
-                // 1. Parse Inputs (Indices 0 to 6) -> Dimension = 7
-                double[] rowInput = new double[7];
-                for (int i = 0; i < 7; i++)
+                // Parse Inputs
+                double[] rowInput = new double[featureColumns.Length];
+                for (int j = 0; j < featureColumns.Length; j++)
                 {
-                    rowInput[i] = double.Parse(parts[i], CultureInfo.InvariantCulture);
+                    string colName = featureColumns[j];
+                    int csvIndex = csvColumnMap[colName];
+
+                    if (csvIndex >= rowParts.Length) continue; // Safety for malformed lines
+
+                    if (double.TryParse(rowParts[csvIndex], NumberStyles.Any, CultureInfo.InvariantCulture, out double val))
+                    {
+                        rowInput[j] = val;
+                    }
+                    else
+                    {
+                        rowInput[j] = 0.0; // Handle missing/bad data
+                    }
                 }
 
-                // 2. Parse Target (Index 8) -> Skip Index 7 entirely
-                double target = double.Parse(parts[8], CultureInfo.InvariantCulture);
-
-                inputs.Add(rowInput);
-                targets.Add(target);
+                // Parse Target
+                int targetIndex = csvColumnMap[targetColumn];
+                if (targetIndex < rowParts.Length &&
+                    double.TryParse(rowParts[targetIndex], NumberStyles.Any, CultureInfo.InvariantCulture, out double targetVal))
+                {
+                    targets.Add(targetVal);
+                    inputs.Add(rowInput);
+                }
             }
 
             return (inputs, targets);

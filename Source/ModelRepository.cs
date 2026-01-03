@@ -8,7 +8,15 @@ namespace Source.Data
 
         #region Public Methods ------------------------------------------------------
 
-        public static void SaveModel(string name, RbfNetwork network, string meanStr, string stdStr)
+        /// <summary>
+        /// Added 'schema' parameter
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="network"></param>
+        /// <param name="meanStr"></param>
+        /// <param name="stdStr"></param>
+        /// <param name="schema"></param>
+        public static void SaveModel(string name, RbfNetwork network, string meanStr, string stdStr, string schema)
         {
             using var db = new AppDbContext();
             db.Database.EnsureCreated();
@@ -21,11 +29,12 @@ namespace Source.Data
                 Bias = network.Bias,
                 WeightsData = string.Join(";", network.Weights),
                 SigmasData = string.Join(";", network.Sigmas),
-                CentroidsData = SerializeCentroids(network.Centroids), // Helper method inside Repository
-
-                // These are the new fields we just prepared in TrainingPage
+                CentroidsData = SerializeCentroids(network.Centroids),
                 NormalizationMeans = meanStr,
-                NormalizationStdDevs = stdStr
+                NormalizationStdDevs = stdStr,
+
+                // Save the schema
+                InputSchema = schema
             };
 
             db.TrainedModels.Add(entity);
@@ -43,19 +52,20 @@ namespace Source.Data
 
             if (entity == null) return null;
 
-            // 1. Rehydrate Network
             var network = new RbfNetwork(entity.InputCount, entity.HiddenCount, 1);
             network.Bias = entity.Bias;
             network.Weights = entity.WeightsData.Split(';').Select(double.Parse).ToArray();
             network.Sigmas = entity.SigmasData.Split(';').Select(double.Parse).ToArray();
             network.Centroids = DeserializeCentroids(entity.CentroidsData);
 
-            // 2. Rehydrate Stats
             var means = NormalizationHelper.DeserializeArray(entity.NormalizationMeans);
             var stdDevs = NormalizationHelper.DeserializeArray(entity.NormalizationStdDevs);
 
-            // 3. Return Wrapper
-            return new FoodClassifier(network, means, stdDevs);
+            // Pass the loaded schema to the wrapper
+            // Fallback to empty string if null (for backward compatibility with old DBs)
+            string schema = entity.InputSchema ?? string.Empty;
+
+            return new FoodClassifier(network, means, stdDevs, schema);
         }
 
         public static void ClearModel()

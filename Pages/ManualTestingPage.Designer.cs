@@ -155,7 +155,7 @@
             KiloCaloriesTextBox.Name = "KiloCaloriesTextBox";
             KiloCaloriesTextBox.Size = new Size(195, 50);
             KiloCaloriesTextBox.TabIndex = 16;
-            KiloCaloriesTextBox.Text = "-0.37";
+            KiloCaloriesTextBox.Text = "481";
             KiloCaloriesTextBox.TrailingIcon = null;
             // 
             // materialLabel9
@@ -208,7 +208,7 @@
             FiberTextBox.Name = "FiberTextBox";
             FiberTextBox.Size = new Size(195, 50);
             FiberTextBox.TabIndex = 12;
-            FiberTextBox.Text = "-0.75";
+            FiberTextBox.Text = "3.7";
             FiberTextBox.TrailingIcon = null;
             // 
             // SugarTextBox
@@ -225,7 +225,7 @@
             SugarTextBox.Name = "SugarTextBox";
             SugarTextBox.Size = new Size(195, 50);
             SugarTextBox.TabIndex = 11;
-            SugarTextBox.Text = "-0.87";
+            SugarTextBox.Text = "33.33";
             SugarTextBox.TrailingIcon = null;
             // 
             // CarbohydratesTextBox
@@ -242,7 +242,7 @@
             CarbohydratesTextBox.Name = "CarbohydratesTextBox";
             CarbohydratesTextBox.Size = new Size(195, 50);
             CarbohydratesTextBox.TabIndex = 10;
-            CarbohydratesTextBox.Text = "1.50";
+            CarbohydratesTextBox.Text = "55.56";
             CarbohydratesTextBox.TrailingIcon = null;
             // 
             // materialLabel8
@@ -295,7 +295,7 @@
             SaturatedFatTextBox.Name = "SaturatedFatTextBox";
             SaturatedFatTextBox.Size = new Size(195, 50);
             SaturatedFatTextBox.TabIndex = 6;
-            SaturatedFatTextBox.Text = "-0.81";
+            SaturatedFatTextBox.Text = "7.41";
             SaturatedFatTextBox.TrailingIcon = null;
             // 
             // TotalFatTextBox
@@ -312,7 +312,7 @@
             TotalFatTextBox.Name = "TotalFatTextBox";
             TotalFatTextBox.Size = new Size(195, 50);
             TotalFatTextBox.TabIndex = 5;
-            TotalFatTextBox.Text = "-1.02";
+            TotalFatTextBox.Text = "25.93";
             TotalFatTextBox.TrailingIcon = null;
             // 
             // ProteinTextBox
@@ -329,7 +329,7 @@
             ProteinTextBox.Name = "ProteinTextBox";
             ProteinTextBox.Size = new Size(195, 50);
             ProteinTextBox.TabIndex = 4;
-            ProteinTextBox.Text = "-0.44";
+            ProteinTextBox.Text = "7.41";
             ProteinTextBox.TrailingIcon = null;
             // 
             // materialLabel3
@@ -370,7 +370,7 @@
             FullInputTextBox.Name = "FullInputTextBox";
             FullInputTextBox.Size = new Size(594, 50);
             FullInputTextBox.TabIndex = 1;
-            FullInputTextBox.Text = "-0.44;-1.02;1.50;-0.37;-0.75;-0.81;-0.87";
+            FullInputTextBox.Text = "7.41;25.93;55.56;481;3.7;7.41;33.33";
             FullInputTextBox.TrailingIcon = null;
             // 
             // materialLabel1

@@ -34,11 +34,24 @@ namespace WinForm_RFBN_APP
 
             // 2. Load RAW Test Data
             // "test_20k.csv" should contain raw values (Protein, Fat, etc.)
-            var rawTestData = DataLoader.LoadCsv("test_20k.csv");
+
+            string inputDocumentName = InputDocumentTextbox.Text.Trim();
+
+            if (inputDocumentName.Length <= 1)
+            {
+                inputDocumentName = "test_20k.csv";
+            }
+
+            var rawTestData = DataLoader.LoadCsv(inputDocumentName, classifier.InputSchema);
 
             if (rawTestData.Inputs.Count == 0)
             {
-                RichTextBoxOutput.AppendText("Error: No test data found in CSV.\r\n");
+                RichTextBoxOutput.AppendText("Error: No test data found in CSV!\r\n");
+                return;
+            }
+            if (classifier.InputSchema.Length < 1)
+            {
+                RichTextBoxOutput.AppendText($"Error: Invalid user input features schema {classifier.InputSchema}!\r\n");
                 return;
             }
 

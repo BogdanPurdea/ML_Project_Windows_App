@@ -27,9 +27,27 @@ namespace WinForm_RFBN_APP
                 RichTextBoxOutput.AppendText("--------------------------------------------------\n");
                 RichTextBoxOutput.AppendText("Starting Training Pipeline...\n");
 
-                // 1. Load RAW Data
+                // 1. Get the Schema from your TextBox (assuming you named it SchemaInputTextBox)
+                // Example text: "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION"
+                string userFeatureSchema = FeaturesTextBox.Text.Trim();
+
+                if (userFeatureSchema.Length <= 1)
+                {
+                    userFeatureSchema = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+                }
+
+                RichTextBoxOutput.AppendText($"Using Schema: {userFeatureSchema}\n");
+
+                // 2. Load RAW Data
                 // The DataLoader reads the CSV. Ensure "train_80k.csv" exists in your bin folder.
-                var rawData = await Task.Run(() => DataLoader.LoadCsv("train_80k.csv"));
+                string inputDocumentName = InputDocumentTextbox.Text.Trim();
+                
+                if (inputDocumentName.Length <= 1)
+                {
+                    inputDocumentName = "train_80k.csv";
+                }
+
+                var rawData = await Task.Run(() => DataLoader.LoadCsv(inputDocumentName, userFeatureSchema));
 
                 if (rawData.Inputs.Count == 0)
                 {
@@ -39,14 +57,14 @@ namespace WinForm_RFBN_APP
 
                 RichTextBoxOutput.AppendText($"Raw Data Loaded: {rawData.Inputs.Count} records.\n");
 
-                // 2. Compute Normalization Stats (Z-Score)
+                // 3. Compute Normalization Stats (Z-Score)
                 // We MUST compute these on the TRAINING set. These exact values will be saved 
                 // and used to normalize future user inputs in the FoodClassifier wrapper.
                 var (means, stdDevs) = NormalizationHelper.ComputeZScoreStats(rawData.Inputs);
 
                 RichTextBoxOutput.AppendText("Normalization Stats Computed (Mean & StdDev).\n");
 
-                // 3. Normalize the Training Data
+                // 4. Normalize the Training Data
                 // The network never sees raw data, only data scaled ~ -3 to +3
                 var normalizedInputs = new List<double[]>();
                 foreach (var row in rawData.Inputs)
@@ -54,7 +72,7 @@ namespace WinForm_RFBN_APP
                     normalizedInputs.Add(NormalizationHelper.NormalizeRow(row, means, stdDevs));
                 }
 
-                // 4. Parse UI Parameters
+                // 5. Parse UI Parameters
                 int hiddenNeurons = 25;
                 int epochs = 100;
                 double learningRate = 0.01d;
@@ -65,7 +83,7 @@ namespace WinForm_RFBN_APP
 
                 RichTextBoxOutput.AppendText($"Training with {hiddenNeurons} hidden neurons, {epochs} epochs, LR: {learningRate}...\n");
 
-                // 5. Train Model (Using NORMALIZED inputs)
+                // 6. Train Model (Using NORMALIZED inputs)
                 var trainer = new RbfTrainer();
                 RbfNetwork network = await Task.Run(() =>
                 {
@@ -74,13 +92,13 @@ namespace WinForm_RFBN_APP
 
                 RichTextBoxOutput.AppendText("Training Complete!\n");
 
-                // 6. Save Model AND Normalization Stats
-                // We serialize the arrays to strings (e.g., "0.5;1.2;-0.3") to store in SQLite.
+                // 7. Save Model AND Normalization Stats
+                // Serialize the arrays to strings (e.g., "0.5;1.2;-0.3") to store in SQLite.
                 string meanStr = NormalizationHelper.SerializeArray(means);
                 string stdStr = NormalizationHelper.SerializeArray(stdDevs);
 
-                // This saves everything the FoodClassifier wrapper needs to rebuild itself later.
-                ModelRepository.SaveModel("FoodClassifier_V1", network, meanStr, stdStr);
+                // Saves everything the FoodClassifier wrapper needs to rebuild itself later.
+                ModelRepository.SaveModel("FoodClassifier_V1", network, meanStr, stdStr, userFeatureSchema);
 
                 RichTextBoxOutput.AppendText("--------------------------------------------------\n");
                 RichTextBoxOutput.AppendText("SUCCESS: Model and Normalization Stats saved to DB.\n");
