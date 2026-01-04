@@ -1,24 +1,29 @@
-﻿namespace WinForm_RFBN_APP
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace WinForm_RFBN_APP
 {
-    partial class MainScreen
+    public partial class MainScreen : Form
     {
 
         #region Fields --------------------------------------------------------------
 
         private UserControl currentPage;
 
-        // PANNELS
+        // PANELS
         private Panel NavigationPanel;
         private Panel ControlPanel;
 
         // BUTTONS
         private MaterialSkin.Controls.MaterialButton TrainingPageButton;
         private MaterialSkin.Controls.MaterialButton TestingPageButton;
+        private MaterialSkin.Controls.MaterialButton ManualTestingPageButton;
 
         #endregion
 
 
-        #region Windows Form Designer generated code ----------------------------------------
+        #region Windows Form Designer generated code --------------------------------
 
         /// <summary>
         ///  Required designer variable.
@@ -45,10 +50,10 @@
         private void InitializeComponent()
         {
             NavigationPanel = new Panel();
+            ManualTestingPageButton = new MaterialSkin.Controls.MaterialButton();
             TrainingPageButton = new MaterialSkin.Controls.MaterialButton();
             TestingPageButton = new MaterialSkin.Controls.MaterialButton();
             ControlPanel = new Panel();
-            ManualTestingPageButton = new MaterialSkin.Controls.MaterialButton();
             NavigationPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,11 +62,32 @@
             NavigationPanel.Controls.Add(ManualTestingPageButton);
             NavigationPanel.Controls.Add(TrainingPageButton);
             NavigationPanel.Controls.Add(TestingPageButton);
-            NavigationPanel.Dock = DockStyle.Left;
+            NavigationPanel.Dock = DockStyle.Top;
             NavigationPanel.Location = new Point(0, 0);
             NavigationPanel.Name = "NavigationPanel";
-            NavigationPanel.Size = new Size(159, 400);
+            NavigationPanel.Size = new Size(784, 37);
             NavigationPanel.TabIndex = 0;
+            // 
+            // ManualTestingPageButton
+            // 
+            ManualTestingPageButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            ManualTestingPageButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ManualTestingPageButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            ManualTestingPageButton.Depth = 0;
+            ManualTestingPageButton.HighEmphasis = true;
+            ManualTestingPageButton.Icon = null;
+            ManualTestingPageButton.Location = new Point(268, 0);
+            ManualTestingPageButton.Margin = new Padding(4, 6, 4, 6);
+            ManualTestingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
+            ManualTestingPageButton.Name = "ManualTestingPageButton";
+            ManualTestingPageButton.NoAccentTextColor = Color.Empty;
+            ManualTestingPageButton.Size = new Size(145, 36);
+            ManualTestingPageButton.TabIndex = 2;
+            ManualTestingPageButton.Text = "Manual Testing\r\nPage";
+            ManualTestingPageButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            ManualTestingPageButton.UseAccentColor = false;
+            ManualTestingPageButton.UseVisualStyleBackColor = true;
+            ManualTestingPageButton.Click += ManualTestingPageButton_Click;
             // 
             // TrainingPageButton
             // 
@@ -70,7 +96,7 @@
             TrainingPageButton.Depth = 0;
             TrainingPageButton.HighEmphasis = true;
             TrainingPageButton.Icon = null;
-            TrainingPageButton.Location = new Point(14, 15);
+            TrainingPageButton.Location = new Point(0, 0);
             TrainingPageButton.Margin = new Padding(4, 6, 4, 6);
             TrainingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
             TrainingPageButton.Name = "TrainingPageButton";
@@ -91,7 +117,7 @@
             TestingPageButton.Depth = 0;
             TestingPageButton.HighEmphasis = true;
             TestingPageButton.Icon = null;
-            TestingPageButton.Location = new Point(18, 63);
+            TestingPageButton.Location = new Point(138, 0);
             TestingPageButton.Margin = new Padding(4, 6, 4, 6);
             TestingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
             TestingPageButton.Name = "TestingPageButton";
@@ -107,40 +133,19 @@
             // ControlPanel
             // 
             ControlPanel.Dock = DockStyle.Fill;
-            ControlPanel.Location = new Point(159, 0);
+            ControlPanel.Location = new Point(0, 37);
             ControlPanel.Name = "ControlPanel";
-            ControlPanel.Size = new Size(800, 400);
+            ControlPanel.Size = new Size(784, 524);
             ControlPanel.TabIndex = 1;
             // 
-            // ManualTestingPageButton
-            // 
-            ManualTestingPageButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            ManualTestingPageButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ManualTestingPageButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            ManualTestingPageButton.Depth = 0;
-            ManualTestingPageButton.HighEmphasis = true;
-            ManualTestingPageButton.Icon = null;
-            ManualTestingPageButton.Location = new Point(7, 111);
-            ManualTestingPageButton.Margin = new Padding(4, 6, 4, 6);
-            ManualTestingPageButton.MouseState = MaterialSkin.MouseState.HOVER;
-            ManualTestingPageButton.Name = "ManualTestingPageButton";
-            ManualTestingPageButton.NoAccentTextColor = Color.Empty;
-            ManualTestingPageButton.Size = new Size(145, 36);
-            ManualTestingPageButton.TabIndex = 2;
-            ManualTestingPageButton.Text = "Manual Testing\r\nPage";
-            ManualTestingPageButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            ManualTestingPageButton.UseAccentColor = false;
-            ManualTestingPageButton.UseVisualStyleBackColor = true;
-            ManualTestingPageButton.Click += ManualTestingPageButton_Click;
-            // 
-            // Form1
+            // MainScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(959, 400);
+            ClientSize = new Size(784, 561);
             Controls.Add(ControlPanel);
             Controls.Add(NavigationPanel);
-            Name = "Form1";
+            Name = "MainScreen";
             Text = "Form1";
             NavigationPanel.ResumeLayout(false);
             NavigationPanel.PerformLayout();
@@ -150,29 +155,51 @@
 
         #endregion
 
-
         #region Buttons -------------------------------------------------------------
 
+        /// <summary>
+        /// Handles the click event for the Training Page button.
+        /// Loads the TrainingPage and updates button states.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void TrainingPageButton_Click(object sender, EventArgs e)
         {
             LoadPageWithButtonControl(new TrainingPage(), TrainingPageButton);
         }
 
+        /// <summary>
+        /// Handles the click event for the Testing Page button.
+        /// Loads the TestingPage and updates button states.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void TestingPageButton_Click(object sender, EventArgs e)
         {
             LoadPageWithButtonControl(new TestingPage(), TestingPageButton);
         }
 
+        /// <summary>
+        /// Handles the click event for the Manual Testing Page button.
+        /// Loads the ManualTestingPage and updates button states.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void ManualTestingPageButton_Click(object sender, EventArgs e)
         {
-            LoadPageWithButtonControl(new ManualTestingPage(), TestingPageButton);
+            // Corrected: Now passes ManualTestingPageButton instead of TestingPageButton
+            LoadPageWithButtonControl(new ManualTestingPage(), ManualTestingPageButton);
         }
 
         #endregion
 
-
         #region Logics --------------------------------------------------------------
 
+        /// <summary>
+        /// Clears the ControlPanel and loads the specified UserControl into it.
+        /// Sets the current page reference to the new page.
+        /// </summary>
+        /// <param name="page">The UserControl to load.</param>
         private void LoadPage(UserControl page)
         {
             ControlPanel.Controls.Clear();
@@ -181,25 +208,37 @@
             currentPage = page;
         }
 
+        /// <summary>
+        /// Manages the navigation logic by updating the visual state of buttons and loading the requested page.
+        /// Automatically enables all other navigation buttons and disables the clicked button.
+        /// </summary>
+        /// <param name="page">The UserControl to display.</param>
+        /// <param name="clickedButton">The MaterialButton that triggered the navigation.</param>
         private void LoadPageWithButtonControl(UserControl page, MaterialSkin.Controls.MaterialButton clickedButton)
         {
-            // If the same page is already loaded, do nothing
+            // Checks if the requested page type is already the current page to prevent unnecessary reloading
             if (currentPage != null && currentPage.GetType() == page.GetType())
                 return;
 
-            // Enable all buttons first
-            TrainingPageButton.Enabled = true;
-            TestingPageButton.Enabled = true;
+            // Iterates through all controls in the NavigationPanel to reset their state.
+            // This ensures that any new buttons added to the panel are automatically handled 
+            // without modifying this logic.
+            foreach (Control control in NavigationPanel.Controls)
+            {
+                if (control is MaterialSkin.Controls.MaterialButton button)
+                {
+                    button.Enabled = true;
+                }
+            }
 
-            // Disable the clicked button
+            // Disables the specific button that was clicked to indicate the active page
             clickedButton.Enabled = false;
 
-            // Load the page
+            // Proceeds to load the content of the page
             LoadPage(page);
         }
 
         #endregion
 
-        private MaterialSkin.Controls.MaterialButton ManualTestingPageButton;
     }
 }

@@ -29,63 +29,390 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ButtonsPannel = new Panel();
-            TestCustomButton = new MaterialSkin.Controls.MaterialButton();
-            TestFullButton = new MaterialSkin.Controls.MaterialButton();
-            RichTextBoxOutput = new RichTextBox();
-            panel1 = new Panel();
-            KiloCaloriesTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            materialLabel9 = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
-            FiberTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            SugarTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            CarbohydratesTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            materialLabel8 = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
-            SaturatedFatTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            TotalFatTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            ProteinTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            FullInputTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            MainLayout = new TableLayoutPanel();
+            InputGroupBox = new GroupBox();
+            InputLayout = new TableLayoutPanel();
             materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            panel2 = new Panel();
-            ButtonsPannel.SuspendLayout();
-            panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            FullInputTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            ProteinTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
+            TotalFatTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
+            SaturatedFatTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel8 = new MaterialSkin.Controls.MaterialLabel();
+            CarbohydratesTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
+            SugarTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
+            FiberTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            materialLabel9 = new MaterialSkin.Controls.MaterialLabel();
+            KiloCaloriesTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            ActionsGroupBox = new GroupBox();
+            ActionsLayout = new FlowLayoutPanel();
+            TestFullButton = new MaterialSkin.Controls.MaterialButton();
+            TestCustomButton = new MaterialSkin.Controls.MaterialButton();
+            OutputGroupBox = new GroupBox();
+            RichTextBoxOutput = new RichTextBox();
+            MainLayout.SuspendLayout();
+            InputGroupBox.SuspendLayout();
+            InputLayout.SuspendLayout();
+            ActionsGroupBox.SuspendLayout();
+            ActionsLayout.SuspendLayout();
+            OutputGroupBox.SuspendLayout();
             SuspendLayout();
             // 
-            // ButtonsPannel
+            // MainLayout
             // 
-            ButtonsPannel.Controls.Add(TestCustomButton);
-            ButtonsPannel.Controls.Add(TestFullButton);
-            ButtonsPannel.Dock = DockStyle.Left;
-            ButtonsPannel.Location = new Point(0, 0);
-            ButtonsPannel.Name = "ButtonsPannel";
-            ButtonsPannel.Size = new Size(100, 400);
-            ButtonsPannel.TabIndex = 1;
+            MainLayout.ColumnCount = 1;
+            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            MainLayout.Controls.Add(InputGroupBox, 0, 0);
+            MainLayout.Controls.Add(ActionsGroupBox, 0, 1);
+            MainLayout.Controls.Add(OutputGroupBox, 0, 2);
+            MainLayout.Dock = DockStyle.Fill;
+            MainLayout.Location = new Point(0, 0);
+            MainLayout.Name = "MainLayout";
+            MainLayout.RowCount = 3;
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 340F)); // Input height
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F)); // Actions height
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Output fills rest
+            MainLayout.Size = new Size(700, 400);
+            MainLayout.TabIndex = 0;
             // 
-            // TestCustomButton
+            // InputGroupBox
             // 
-            TestCustomButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            TestCustomButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            TestCustomButton.Depth = 0;
-            TestCustomButton.HighEmphasis = true;
-            TestCustomButton.Icon = null;
-            TestCustomButton.Location = new Point(9, 81);
-            TestCustomButton.Margin = new Padding(4, 6, 4, 6);
-            TestCustomButton.MouseState = MaterialSkin.MouseState.HOVER;
-            TestCustomButton.Name = "TestCustomButton";
-            TestCustomButton.NoAccentTextColor = Color.Empty;
-            TestCustomButton.Size = new Size(81, 36);
-            TestCustomButton.TabIndex = 1;
-            TestCustomButton.Text = "Test\r\nCustom";
-            TestCustomButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            TestCustomButton.UseAccentColor = false;
-            TestCustomButton.UseVisualStyleBackColor = true;
-            TestCustomButton.Click += TestCustomButton_Click;
+            InputGroupBox.Controls.Add(InputLayout);
+            InputGroupBox.Dock = DockStyle.Fill;
+            InputGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            InputGroupBox.Location = new Point(3, 3);
+            InputGroupBox.Name = "InputGroupBox";
+            InputGroupBox.Size = new Size(694, 334);
+            InputGroupBox.TabIndex = 0;
+            InputGroupBox.TabStop = false;
+            InputGroupBox.Text = "Manual Input";
+            // 
+            // InputLayout
+            // 
+            InputLayout.ColumnCount = 4;
+            InputLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            InputLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            InputLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            InputLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            InputLayout.Controls.Add(materialLabel1, 0, 0);
+            InputLayout.Controls.Add(FullInputTextBox, 1, 0);
+            InputLayout.Controls.Add(materialLabel2, 0, 1);
+            InputLayout.Controls.Add(materialLabel3, 0, 2);
+            InputLayout.Controls.Add(ProteinTextBox, 1, 2);
+            InputLayout.Controls.Add(materialLabel4, 2, 2);
+            InputLayout.Controls.Add(TotalFatTextBox, 3, 2);
+            InputLayout.Controls.Add(materialLabel5, 0, 3);
+            InputLayout.Controls.Add(SaturatedFatTextBox, 1, 3);
+            InputLayout.Controls.Add(materialLabel8, 2, 3);
+            InputLayout.Controls.Add(CarbohydratesTextBox, 3, 3);
+            InputLayout.Controls.Add(materialLabel7, 0, 4);
+            InputLayout.Controls.Add(SugarTextBox, 1, 4);
+            InputLayout.Controls.Add(materialLabel6, 2, 4);
+            InputLayout.Controls.Add(FiberTextBox, 3, 4);
+            InputLayout.Controls.Add(materialLabel9, 0, 5);
+            InputLayout.Controls.Add(KiloCaloriesTextBox, 1, 5);
+            InputLayout.Dock = DockStyle.Fill;
+            InputLayout.Location = new Point(3, 21);
+            InputLayout.Name = "InputLayout";
+            InputLayout.RowCount = 6;
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F)); // Header for Custom
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
+            InputLayout.Size = new Size(688, 310);
+            InputLayout.TabIndex = 0;
+            // 
+            // materialLabel1 (Full Input)
+            // 
+            materialLabel1.Anchor = AnchorStyles.Left;
+            materialLabel1.AutoSize = true;
+            materialLabel1.Depth = 0;
+            materialLabel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel1.Location = new Point(3, 18);
+            materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel1.Name = "materialLabel1";
+            materialLabel1.Size = new Size(71, 19);
+            materialLabel1.TabIndex = 0;
+            materialLabel1.Text = "Full input:";
+            // 
+            // FullInputTextBox
+            // 
+            FullInputTextBox.AnimateReadOnly = false;
+            FullInputTextBox.BorderStyle = BorderStyle.None;
+            InputLayout.SetColumnSpan(FullInputTextBox, 3);
+            FullInputTextBox.Depth = 0;
+            FullInputTextBox.Dock = DockStyle.Fill;
+            FullInputTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            FullInputTextBox.LeadingIcon = null;
+            FullInputTextBox.Location = new Point(123, 3);
+            FullInputTextBox.MaxLength = 50;
+            FullInputTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            FullInputTextBox.Multiline = false;
+            FullInputTextBox.Name = "FullInputTextBox";
+            FullInputTextBox.Size = new Size(562, 50);
+            FullInputTextBox.TabIndex = 1;
+            FullInputTextBox.Text = "7.41;25.93;55.56;481;3.7;7.41;33.33";
+            FullInputTextBox.TrailingIcon = null;
+            // 
+            // materialLabel2 (Custom Header)
+            // 
+            materialLabel2.Anchor = AnchorStyles.Left;
+            materialLabel2.AutoSize = true;
+            InputLayout.SetColumnSpan(materialLabel2, 4);
+            materialLabel2.Depth = 0;
+            materialLabel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel2.Location = new Point(3, 60);
+            materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel2.Name = "materialLabel2";
+            materialLabel2.Size = new Size(100, 19);
+            materialLabel2.TabIndex = 2;
+            materialLabel2.Text = "Custom input:";
+            // 
+            // materialLabel3 (Protein)
+            // 
+            materialLabel3.Anchor = AnchorStyles.Left;
+            materialLabel3.AutoSize = true;
+            materialLabel3.Depth = 0;
+            materialLabel3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel3.Location = new Point(3, 103);
+            materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel3.Name = "materialLabel3";
+            materialLabel3.Size = new Size(51, 19);
+            materialLabel3.TabIndex = 3;
+            materialLabel3.Text = "Protein";
+            // 
+            // ProteinTextBox
+            // 
+            ProteinTextBox.AnimateReadOnly = false;
+            ProteinTextBox.BorderStyle = BorderStyle.None;
+            ProteinTextBox.Depth = 0;
+            ProteinTextBox.Dock = DockStyle.Fill;
+            ProteinTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            ProteinTextBox.LeadingIcon = null;
+            ProteinTextBox.Location = new Point(123, 88);
+            ProteinTextBox.MaxLength = 50;
+            ProteinTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            ProteinTextBox.Multiline = false;
+            ProteinTextBox.Name = "ProteinTextBox";
+            ProteinTextBox.Size = new Size(218, 50);
+            ProteinTextBox.TabIndex = 4;
+            ProteinTextBox.Text = "7.41";
+            ProteinTextBox.TrailingIcon = null;
+            // 
+            // materialLabel4 (Total Fat)
+            // 
+            materialLabel4.Anchor = AnchorStyles.Left;
+            materialLabel4.AutoSize = true;
+            materialLabel4.Depth = 0;
+            materialLabel4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel4.Location = new Point(347, 103);
+            materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel4.Name = "materialLabel4";
+            materialLabel4.Size = new Size(65, 19);
+            materialLabel4.TabIndex = 7;
+            materialLabel4.Text = "Total Fat";
+            // 
+            // TotalFatTextBox
+            // 
+            TotalFatTextBox.AnimateReadOnly = false;
+            TotalFatTextBox.BorderStyle = BorderStyle.None;
+            TotalFatTextBox.Depth = 0;
+            TotalFatTextBox.Dock = DockStyle.Fill;
+            TotalFatTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            TotalFatTextBox.LeadingIcon = null;
+            TotalFatTextBox.Location = new Point(467, 88);
+            TotalFatTextBox.MaxLength = 50;
+            TotalFatTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            TotalFatTextBox.Multiline = false;
+            TotalFatTextBox.Name = "TotalFatTextBox";
+            TotalFatTextBox.Size = new Size(218, 50);
+            TotalFatTextBox.TabIndex = 5;
+            TotalFatTextBox.Text = "25.93";
+            TotalFatTextBox.TrailingIcon = null;
+            // 
+            // materialLabel5 (Saturated Fat)
+            // 
+            materialLabel5.Anchor = AnchorStyles.Left;
+            materialLabel5.AutoSize = true;
+            materialLabel5.Depth = 0;
+            materialLabel5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel5.Location = new Point(3, 158);
+            materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel5.Name = "materialLabel5";
+            materialLabel5.Size = new Size(97, 19);
+            materialLabel5.TabIndex = 8;
+            materialLabel5.Text = "Saturated Fat";
+            // 
+            // SaturatedFatTextBox
+            // 
+            SaturatedFatTextBox.AnimateReadOnly = false;
+            SaturatedFatTextBox.BorderStyle = BorderStyle.None;
+            SaturatedFatTextBox.Depth = 0;
+            SaturatedFatTextBox.Dock = DockStyle.Fill;
+            SaturatedFatTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            SaturatedFatTextBox.LeadingIcon = null;
+            SaturatedFatTextBox.Location = new Point(123, 143);
+            SaturatedFatTextBox.MaxLength = 50;
+            SaturatedFatTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            SaturatedFatTextBox.Multiline = false;
+            SaturatedFatTextBox.Name = "SaturatedFatTextBox";
+            SaturatedFatTextBox.Size = new Size(218, 50);
+            SaturatedFatTextBox.TabIndex = 6;
+            SaturatedFatTextBox.Text = "7.41";
+            SaturatedFatTextBox.TrailingIcon = null;
+            // 
+            // materialLabel8 (Carbohydrates)
+            // 
+            materialLabel8.Anchor = AnchorStyles.Left;
+            materialLabel8.AutoSize = true;
+            materialLabel8.Depth = 0;
+            materialLabel8.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel8.Location = new Point(347, 158);
+            materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel8.Name = "materialLabel8";
+            materialLabel8.Size = new Size(104, 19);
+            materialLabel8.TabIndex = 9;
+            materialLabel8.Text = "Carbohydrates";
+            // 
+            // CarbohydratesTextBox
+            // 
+            CarbohydratesTextBox.AnimateReadOnly = false;
+            CarbohydratesTextBox.BorderStyle = BorderStyle.None;
+            CarbohydratesTextBox.Depth = 0;
+            CarbohydratesTextBox.Dock = DockStyle.Fill;
+            CarbohydratesTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            CarbohydratesTextBox.LeadingIcon = null;
+            CarbohydratesTextBox.Location = new Point(467, 143);
+            CarbohydratesTextBox.MaxLength = 50;
+            CarbohydratesTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            CarbohydratesTextBox.Multiline = false;
+            CarbohydratesTextBox.Name = "CarbohydratesTextBox";
+            CarbohydratesTextBox.Size = new Size(218, 50);
+            CarbohydratesTextBox.TabIndex = 10;
+            CarbohydratesTextBox.Text = "55.56";
+            CarbohydratesTextBox.TrailingIcon = null;
+            // 
+            // materialLabel7 (Sugar)
+            // 
+            materialLabel7.Anchor = AnchorStyles.Left;
+            materialLabel7.AutoSize = true;
+            materialLabel7.Depth = 0;
+            materialLabel7.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel7.Location = new Point(3, 213);
+            materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel7.Name = "materialLabel7";
+            materialLabel7.Size = new Size(43, 19);
+            materialLabel7.TabIndex = 13;
+            materialLabel7.Text = "Sugar";
+            // 
+            // SugarTextBox
+            // 
+            SugarTextBox.AnimateReadOnly = false;
+            SugarTextBox.BorderStyle = BorderStyle.None;
+            SugarTextBox.Depth = 0;
+            SugarTextBox.Dock = DockStyle.Fill;
+            SugarTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            SugarTextBox.LeadingIcon = null;
+            SugarTextBox.Location = new Point(123, 198);
+            SugarTextBox.MaxLength = 50;
+            SugarTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            SugarTextBox.Multiline = false;
+            SugarTextBox.Name = "SugarTextBox";
+            SugarTextBox.Size = new Size(218, 50);
+            SugarTextBox.TabIndex = 11;
+            SugarTextBox.Text = "33.33";
+            SugarTextBox.TrailingIcon = null;
+            // 
+            // materialLabel6 (Fiber)
+            // 
+            materialLabel6.Anchor = AnchorStyles.Left;
+            materialLabel6.AutoSize = true;
+            materialLabel6.Depth = 0;
+            materialLabel6.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel6.Location = new Point(347, 213);
+            materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel6.Name = "materialLabel6";
+            materialLabel6.Size = new Size(36, 19);
+            materialLabel6.TabIndex = 14;
+            materialLabel6.Text = "Fiber";
+            // 
+            // FiberTextBox
+            // 
+            FiberTextBox.AnimateReadOnly = false;
+            FiberTextBox.BorderStyle = BorderStyle.None;
+            FiberTextBox.Depth = 0;
+            FiberTextBox.Dock = DockStyle.Fill;
+            FiberTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            FiberTextBox.LeadingIcon = null;
+            FiberTextBox.Location = new Point(467, 198);
+            FiberTextBox.MaxLength = 50;
+            FiberTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            FiberTextBox.Multiline = false;
+            FiberTextBox.Name = "FiberTextBox";
+            FiberTextBox.Size = new Size(218, 50);
+            FiberTextBox.TabIndex = 12;
+            FiberTextBox.Text = "3.7";
+            FiberTextBox.TrailingIcon = null;
+            // 
+            // materialLabel9 (Kilo Calories)
+            // 
+            materialLabel9.Anchor = AnchorStyles.Left;
+            materialLabel9.AutoSize = true;
+            materialLabel9.Depth = 0;
+            materialLabel9.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel9.Location = new Point(3, 268);
+            materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel9.Name = "materialLabel9";
+            materialLabel9.Size = new Size(89, 19);
+            materialLabel9.TabIndex = 15;
+            materialLabel9.Text = "Kilo Calories";
+            // 
+            // KiloCaloriesTextBox
+            // 
+            KiloCaloriesTextBox.AnimateReadOnly = false;
+            KiloCaloriesTextBox.BorderStyle = BorderStyle.None;
+            KiloCaloriesTextBox.Depth = 0;
+            KiloCaloriesTextBox.Dock = DockStyle.Fill;
+            KiloCaloriesTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            KiloCaloriesTextBox.LeadingIcon = null;
+            KiloCaloriesTextBox.Location = new Point(123, 253);
+            KiloCaloriesTextBox.MaxLength = 50;
+            KiloCaloriesTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            KiloCaloriesTextBox.Multiline = false;
+            KiloCaloriesTextBox.Name = "KiloCaloriesTextBox";
+            KiloCaloriesTextBox.Size = new Size(218, 50);
+            KiloCaloriesTextBox.TabIndex = 16;
+            KiloCaloriesTextBox.Text = "481";
+            KiloCaloriesTextBox.TrailingIcon = null;
+            // 
+            // ActionsGroupBox
+            // 
+            ActionsGroupBox.Controls.Add(ActionsLayout);
+            ActionsGroupBox.Dock = DockStyle.Fill;
+            ActionsGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            ActionsGroupBox.Location = new Point(3, 343);
+            ActionsGroupBox.Name = "ActionsGroupBox";
+            ActionsGroupBox.Size = new Size(694, 64);
+            ActionsGroupBox.TabIndex = 1;
+            ActionsGroupBox.TabStop = false;
+            ActionsGroupBox.Text = "Actions";
+            // 
+            // ActionsLayout
+            // 
+            ActionsLayout.Controls.Add(TestFullButton);
+            ActionsLayout.Controls.Add(TestCustomButton);
+            ActionsLayout.Dock = DockStyle.Fill;
+            ActionsLayout.Location = new Point(3, 21);
+            ActionsLayout.Name = "ActionsLayout";
+            ActionsLayout.Size = new Size(688, 40);
+            ActionsLayout.TabIndex = 0;
             // 
             // TestFullButton
             // 
@@ -94,7 +421,7 @@
             TestFullButton.Depth = 0;
             TestFullButton.HighEmphasis = true;
             TestFullButton.Icon = null;
-            TestFullButton.Location = new Point(17, 6);
+            TestFullButton.Location = new Point(4, 6);
             TestFullButton.Margin = new Padding(4, 6, 4, 6);
             TestFullButton.MouseState = MaterialSkin.MouseState.HOVER;
             TestFullButton.Name = "TestFullButton";
@@ -107,316 +434,79 @@
             TestFullButton.UseVisualStyleBackColor = true;
             TestFullButton.Click += TestFullButton_Click;
             // 
+            // TestCustomButton
+            // 
+            TestCustomButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            TestCustomButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            TestCustomButton.Depth = 0;
+            TestCustomButton.HighEmphasis = true;
+            TestCustomButton.Icon = null;
+            TestCustomButton.Location = new Point(76, 6);
+            TestCustomButton.Margin = new Padding(4, 6, 4, 6);
+            TestCustomButton.MouseState = MaterialSkin.MouseState.HOVER;
+            TestCustomButton.Name = "TestCustomButton";
+            TestCustomButton.NoAccentTextColor = Color.Empty;
+            TestCustomButton.Size = new Size(81, 36);
+            TestCustomButton.TabIndex = 1;
+            TestCustomButton.Text = "Test\r\nCustom";
+            TestCustomButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            TestCustomButton.UseAccentColor = false;
+            TestCustomButton.UseVisualStyleBackColor = true;
+            TestCustomButton.Click += TestCustomButton_Click;
+            // 
+            // OutputGroupBox
+            // 
+            OutputGroupBox.Controls.Add(RichTextBoxOutput);
+            OutputGroupBox.Dock = DockStyle.Fill;
+            OutputGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            OutputGroupBox.Location = new Point(3, 413);
+            OutputGroupBox.Name = "OutputGroupBox";
+            OutputGroupBox.Size = new Size(694, 0); // Fills rest
+            OutputGroupBox.TabIndex = 2;
+            OutputGroupBox.TabStop = false;
+            OutputGroupBox.Text = "Logs";
+            // 
             // RichTextBoxOutput
             // 
             RichTextBoxOutput.Dock = DockStyle.Fill;
-            RichTextBoxOutput.Location = new Point(0, 0);
+            RichTextBoxOutput.Font = new Font("Segoe UI", 9F);
+            RichTextBoxOutput.Location = new Point(3, 21);
             RichTextBoxOutput.Name = "RichTextBoxOutput";
-            RichTextBoxOutput.Size = new Size(600, 62);
-            RichTextBoxOutput.TabIndex = 3;
+            RichTextBoxOutput.Size = new Size(688, 0);
+            RichTextBoxOutput.TabIndex = 1;
             RichTextBoxOutput.Text = "";
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(KiloCaloriesTextBox);
-            panel1.Controls.Add(materialLabel9);
-            panel1.Controls.Add(materialLabel6);
-            panel1.Controls.Add(materialLabel7);
-            panel1.Controls.Add(FiberTextBox);
-            panel1.Controls.Add(SugarTextBox);
-            panel1.Controls.Add(CarbohydratesTextBox);
-            panel1.Controls.Add(materialLabel8);
-            panel1.Controls.Add(materialLabel5);
-            panel1.Controls.Add(materialLabel4);
-            panel1.Controls.Add(SaturatedFatTextBox);
-            panel1.Controls.Add(TotalFatTextBox);
-            panel1.Controls.Add(ProteinTextBox);
-            panel1.Controls.Add(materialLabel3);
-            panel1.Controls.Add(materialLabel2);
-            panel1.Controls.Add(FullInputTextBox);
-            panel1.Controls.Add(materialLabel1);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(100, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(600, 338);
-            panel1.TabIndex = 4;
-            // 
-            // KiloCaloriesTextBox
-            // 
-            KiloCaloriesTextBox.AnimateReadOnly = false;
-            KiloCaloriesTextBox.BorderStyle = BorderStyle.None;
-            KiloCaloriesTextBox.Depth = 0;
-            KiloCaloriesTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            KiloCaloriesTextBox.LeadingIcon = null;
-            KiloCaloriesTextBox.Location = new Point(0, 282);
-            KiloCaloriesTextBox.MaxLength = 50;
-            KiloCaloriesTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            KiloCaloriesTextBox.Multiline = false;
-            KiloCaloriesTextBox.Name = "KiloCaloriesTextBox";
-            KiloCaloriesTextBox.Size = new Size(195, 50);
-            KiloCaloriesTextBox.TabIndex = 16;
-            KiloCaloriesTextBox.Text = "481";
-            KiloCaloriesTextBox.TrailingIcon = null;
-            // 
-            // materialLabel9
-            // 
-            materialLabel9.AutoSize = true;
-            materialLabel9.Depth = 0;
-            materialLabel9.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel9.Location = new Point(55, 260);
-            materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel9.Name = "materialLabel9";
-            materialLabel9.Size = new Size(89, 19);
-            materialLabel9.TabIndex = 15;
-            materialLabel9.Text = "Kilo Calories";
-            // 
-            // materialLabel6
-            // 
-            materialLabel6.AutoSize = true;
-            materialLabel6.Depth = 0;
-            materialLabel6.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel6.Location = new Point(487, 182);
-            materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel6.Name = "materialLabel6";
-            materialLabel6.Size = new Size(36, 19);
-            materialLabel6.TabIndex = 14;
-            materialLabel6.Text = "Fiber";
-            // 
-            // materialLabel7
-            // 
-            materialLabel7.AutoSize = true;
-            materialLabel7.Depth = 0;
-            materialLabel7.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel7.Location = new Point(276, 182);
-            materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel7.Name = "materialLabel7";
-            materialLabel7.Size = new Size(43, 19);
-            materialLabel7.TabIndex = 13;
-            materialLabel7.Text = "Sugar";
-            // 
-            // FiberTextBox
-            // 
-            FiberTextBox.AnimateReadOnly = false;
-            FiberTextBox.BorderStyle = BorderStyle.None;
-            FiberTextBox.Depth = 0;
-            FiberTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            FiberTextBox.LeadingIcon = null;
-            FiberTextBox.Location = new Point(401, 204);
-            FiberTextBox.MaxLength = 50;
-            FiberTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            FiberTextBox.Multiline = false;
-            FiberTextBox.Name = "FiberTextBox";
-            FiberTextBox.Size = new Size(195, 50);
-            FiberTextBox.TabIndex = 12;
-            FiberTextBox.Text = "3.7";
-            FiberTextBox.TrailingIcon = null;
-            // 
-            // SugarTextBox
-            // 
-            SugarTextBox.AnimateReadOnly = false;
-            SugarTextBox.BorderStyle = BorderStyle.None;
-            SugarTextBox.Depth = 0;
-            SugarTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            SugarTextBox.LeadingIcon = null;
-            SugarTextBox.Location = new Point(200, 204);
-            SugarTextBox.MaxLength = 50;
-            SugarTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            SugarTextBox.Multiline = false;
-            SugarTextBox.Name = "SugarTextBox";
-            SugarTextBox.Size = new Size(195, 50);
-            SugarTextBox.TabIndex = 11;
-            SugarTextBox.Text = "33.33";
-            SugarTextBox.TrailingIcon = null;
-            // 
-            // CarbohydratesTextBox
-            // 
-            CarbohydratesTextBox.AnimateReadOnly = false;
-            CarbohydratesTextBox.BorderStyle = BorderStyle.None;
-            CarbohydratesTextBox.Depth = 0;
-            CarbohydratesTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            CarbohydratesTextBox.LeadingIcon = null;
-            CarbohydratesTextBox.Location = new Point(0, 204);
-            CarbohydratesTextBox.MaxLength = 50;
-            CarbohydratesTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            CarbohydratesTextBox.Multiline = false;
-            CarbohydratesTextBox.Name = "CarbohydratesTextBox";
-            CarbohydratesTextBox.Size = new Size(195, 50);
-            CarbohydratesTextBox.TabIndex = 10;
-            CarbohydratesTextBox.Text = "55.56";
-            CarbohydratesTextBox.TrailingIcon = null;
-            // 
-            // materialLabel8
-            // 
-            materialLabel8.AutoSize = true;
-            materialLabel8.Depth = 0;
-            materialLabel8.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel8.Location = new Point(47, 182);
-            materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel8.Name = "materialLabel8";
-            materialLabel8.Size = new Size(104, 19);
-            materialLabel8.TabIndex = 9;
-            materialLabel8.Text = "Carbohydrates";
-            // 
-            // materialLabel5
-            // 
-            materialLabel5.AutoSize = true;
-            materialLabel5.Depth = 0;
-            materialLabel5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel5.Location = new Point(456, 105);
-            materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel5.Name = "materialLabel5";
-            materialLabel5.Size = new Size(97, 19);
-            materialLabel5.TabIndex = 8;
-            materialLabel5.Text = "Saturated Fat";
-            // 
-            // materialLabel4
-            // 
-            materialLabel4.AutoSize = true;
-            materialLabel4.Depth = 0;
-            materialLabel4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel4.Location = new Point(266, 105);
-            materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel4.Name = "materialLabel4";
-            materialLabel4.Size = new Size(65, 19);
-            materialLabel4.TabIndex = 7;
-            materialLabel4.Text = "Total Fat";
-            // 
-            // SaturatedFatTextBox
-            // 
-            SaturatedFatTextBox.AnimateReadOnly = false;
-            SaturatedFatTextBox.BorderStyle = BorderStyle.None;
-            SaturatedFatTextBox.Depth = 0;
-            SaturatedFatTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            SaturatedFatTextBox.LeadingIcon = null;
-            SaturatedFatTextBox.Location = new Point(401, 127);
-            SaturatedFatTextBox.MaxLength = 50;
-            SaturatedFatTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            SaturatedFatTextBox.Multiline = false;
-            SaturatedFatTextBox.Name = "SaturatedFatTextBox";
-            SaturatedFatTextBox.Size = new Size(195, 50);
-            SaturatedFatTextBox.TabIndex = 6;
-            SaturatedFatTextBox.Text = "7.41";
-            SaturatedFatTextBox.TrailingIcon = null;
-            // 
-            // TotalFatTextBox
-            // 
-            TotalFatTextBox.AnimateReadOnly = false;
-            TotalFatTextBox.BorderStyle = BorderStyle.None;
-            TotalFatTextBox.Depth = 0;
-            TotalFatTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            TotalFatTextBox.LeadingIcon = null;
-            TotalFatTextBox.Location = new Point(200, 127);
-            TotalFatTextBox.MaxLength = 50;
-            TotalFatTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            TotalFatTextBox.Multiline = false;
-            TotalFatTextBox.Name = "TotalFatTextBox";
-            TotalFatTextBox.Size = new Size(195, 50);
-            TotalFatTextBox.TabIndex = 5;
-            TotalFatTextBox.Text = "25.93";
-            TotalFatTextBox.TrailingIcon = null;
-            // 
-            // ProteinTextBox
-            // 
-            ProteinTextBox.AnimateReadOnly = false;
-            ProteinTextBox.BorderStyle = BorderStyle.None;
-            ProteinTextBox.Depth = 0;
-            ProteinTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            ProteinTextBox.LeadingIcon = null;
-            ProteinTextBox.Location = new Point(0, 127);
-            ProteinTextBox.MaxLength = 50;
-            ProteinTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            ProteinTextBox.Multiline = false;
-            ProteinTextBox.Name = "ProteinTextBox";
-            ProteinTextBox.Size = new Size(195, 50);
-            ProteinTextBox.TabIndex = 4;
-            ProteinTextBox.Text = "7.41";
-            ProteinTextBox.TrailingIcon = null;
-            // 
-            // materialLabel3
-            // 
-            materialLabel3.AutoSize = true;
-            materialLabel3.Depth = 0;
-            materialLabel3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel3.Location = new Point(73, 105);
-            materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel3.Name = "materialLabel3";
-            materialLabel3.Size = new Size(51, 19);
-            materialLabel3.TabIndex = 3;
-            materialLabel3.Text = "Protein";
-            // 
-            // materialLabel2
-            // 
-            materialLabel2.AutoSize = true;
-            materialLabel2.Depth = 0;
-            materialLabel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel2.Location = new Point(6, 81);
-            materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel2.Name = "materialLabel2";
-            materialLabel2.Size = new Size(100, 19);
-            materialLabel2.TabIndex = 2;
-            materialLabel2.Text = "Custom input:";
-            // 
-            // FullInputTextBox
-            // 
-            FullInputTextBox.AnimateReadOnly = false;
-            FullInputTextBox.BorderStyle = BorderStyle.None;
-            FullInputTextBox.Depth = 0;
-            FullInputTextBox.Font = new Font("Microsoft Sans Serif", 12F);
-            FullInputTextBox.LeadingIcon = null;
-            FullInputTextBox.Location = new Point(6, 28);
-            FullInputTextBox.MaxLength = 50;
-            FullInputTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            FullInputTextBox.Multiline = false;
-            FullInputTextBox.Name = "FullInputTextBox";
-            FullInputTextBox.Size = new Size(594, 50);
-            FullInputTextBox.TabIndex = 1;
-            FullInputTextBox.Text = "7.41;25.93;55.56;481;3.7;7.41;33.33";
-            FullInputTextBox.TrailingIcon = null;
-            // 
-            // materialLabel1
-            // 
-            materialLabel1.AutoSize = true;
-            materialLabel1.Depth = 0;
-            materialLabel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel1.Location = new Point(6, 6);
-            materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel1.Name = "materialLabel1";
-            materialLabel1.Size = new Size(71, 19);
-            materialLabel1.TabIndex = 0;
-            materialLabel1.Text = "Full input:";
-            // 
-            // panel2
-            // 
-            panel2.Controls.Add(RichTextBoxOutput);
-            panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(100, 338);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(600, 62);
-            panel2.TabIndex = 5;
             // 
             // ManualTestingPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(panel2);
-            Controls.Add(panel1);
-            Controls.Add(ButtonsPannel);
+            Controls.Add(MainLayout);
             Name = "ManualTestingPage";
             Size = new Size(700, 400);
-            ButtonsPannel.ResumeLayout(false);
-            ButtonsPannel.PerformLayout();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
+            MainLayout.ResumeLayout(false);
+            InputGroupBox.ResumeLayout(false);
+            InputLayout.ResumeLayout(false);
+            InputLayout.PerformLayout();
+            ActionsGroupBox.ResumeLayout(false);
+            ActionsLayout.ResumeLayout(false);
+            ActionsLayout.PerformLayout();
+            OutputGroupBox.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel ButtonsPannel;
+        private TableLayoutPanel MainLayout;
+        private GroupBox InputGroupBox;
+        private TableLayoutPanel InputLayout;
+        private GroupBox ActionsGroupBox;
+        private FlowLayoutPanel ActionsLayout;
+        private GroupBox OutputGroupBox;
+
         private MaterialSkin.Controls.MaterialButton TestFullButton;
+        private MaterialSkin.Controls.MaterialButton TestCustomButton;
         private RichTextBox RichTextBoxOutput;
-        private Panel panel1;
+        
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         private MaterialSkin.Controls.MaterialTextBox FullInputTextBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
@@ -434,7 +524,5 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel8;
         private MaterialSkin.Controls.MaterialTextBox KiloCaloriesTextBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel9;
-        private MaterialSkin.Controls.MaterialButton TestCustomButton;
-        private Panel panel2;
     }
 }
