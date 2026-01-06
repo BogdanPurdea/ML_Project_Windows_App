@@ -13,9 +13,16 @@ namespace ConsoleRunner
         static string _trainFile = Path.Combine("DataSet", "train_80k.csv");
         static string _testFile = Path.Combine("DataSet", "test_20k.csv");
         static string _schema = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;NUTRI_SCORE;CLASSIFICATION";
+        
+        // RBF Params
         static int _hiddenNeurons = 25;
         static int _epochs = 50;
         static double _learningRate = 0.01;
+        
+        // Decision Tree Params
+        static int _minSamplesSplit = 10;
+        static int _maxDepth = 10;
+
         static int _modelType = 1; // 1: RBF Network, 2: Decision Tree
 
         static void Main(string[] args)
@@ -50,14 +57,28 @@ namespace ConsoleRunner
                         Console.ReadLine();
                         break;
                     case "1":
-                        if (_modelType == 2) { Console.WriteLine("Invalid option."); break; }
-                        Console.Write($"Enter Epochs (Current: {_epochs}): ");
-                        if (int.TryParse(Console.ReadLine(), out int ep)) _epochs = ep;
+                        if (_modelType == 1) // RBF - Epochs
+                        {
+                            Console.Write($"Enter Epochs (Current: {_epochs}): ");
+                            if (int.TryParse(Console.ReadLine(), out int ep)) _epochs = ep;
+                        }
+                        else // DT - Min Samples Split
+                        {
+                            Console.Write($"Enter Min Samples Per Split (Current: {_minSamplesSplit}): ");
+                            if (int.TryParse(Console.ReadLine(), out int ms)) _minSamplesSplit = ms;
+                        }
                         break;
                     case "2":
-                        if (_modelType == 2) { Console.WriteLine("Invalid option."); break; }
-                        Console.Write($"Enter Learning Rate (Current: {_learningRate}): ");
-                        if (double.TryParse(Console.ReadLine(), out double lr)) _learningRate = lr;
+                        if (_modelType == 1) // RBF - LR
+                        {
+                            Console.Write($"Enter Learning Rate (Current: {_learningRate}): ");
+                            if (double.TryParse(Console.ReadLine(), out double lr)) _learningRate = lr;
+                        }
+                        else // DT - Max Depth
+                        {
+                            Console.Write($"Enter Max Depth (Current: {_maxDepth}): ");
+                            if (int.TryParse(Console.ReadLine(), out int md)) _maxDepth = md;
+                        }
                         break;
                     case "3":
                          if (_modelType == 2) { Console.WriteLine("Invalid option."); break; }
@@ -104,6 +125,12 @@ namespace ConsoleRunner
                 Console.WriteLine($" [2] Learning Rate:    {_learningRate}");
                 Console.WriteLine($" [3] Hidden Neurons:   {_hiddenNeurons}");
             }
+            else
+            {
+                Console.WriteLine($" [1] Min Samples/Split:{_minSamplesSplit}");
+                Console.WriteLine($" [2] Max Depth:        {_maxDepth}");
+                // Hidden Neurons N/A
+            }
             
             Console.WriteLine($" [4] Training File:    {_trainFile}");
             Console.WriteLine($" [5] Schema:           {_schema}");
@@ -137,7 +164,7 @@ namespace ConsoleRunner
                 }
                 else // Decision Tree
                 {
-                   ConsoleRunner.Modules.DecisionTreeModule.Run(inputs, targets);
+                   ConsoleRunner.Modules.DecisionTreeModule.Run(inputs, targets, _minSamplesSplit, _maxDepth, _schema);
                 }
             }
             catch (Exception ex)

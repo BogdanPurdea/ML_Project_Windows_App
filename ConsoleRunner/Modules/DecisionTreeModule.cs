@@ -2,13 +2,15 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using ML_Project_Windows_App;
+using Source;
 
 namespace ConsoleRunner.Modules
 {
     public static class DecisionTreeModule
     {
-        public static void Run(List<double[]> inputs, List<double> targets)
+        public static void Run(List<double[]> inputs, List<double> targets, int minSamplesSplit, int maxDepth, string schema)
         {
+
             // 1. Split Data (Train/Val)
             Console.WriteLine("[2/4] Splitting Data (80% Train, 20% Validation)...");
             
@@ -29,18 +31,22 @@ namespace ConsoleRunner.Modules
             Console.WriteLine($" > Val Set:   {valInputs.Length} samples");
 
             // 2. Training
-            Console.WriteLine($"\n[3/4] Training Decision Tree...");
-            // Using defaults from Python (min_samples_split=2, max_depth=2) OR we probably want slightly deeper?
-            // Python code default was 2, 2. I will stick to 10/10 as used in the previous verification run.
+            Console.WriteLine($"\n[3/4] Training Decision Tree (MinSamplesSplit={minSamplesSplit}, MaxDepth={maxDepth})...");
             
-            var dt = new DecisionTreeRegressor(minSamplesSplit: 10, maxDepth: 10);
+            var dt = new DecisionTreeRegressor(minSamplesSplit: minSamplesSplit, maxDepth: maxDepth);
             dt.Fit(trainInputs, trainTargets);
             Console.WriteLine(" > Training Complete!");
             
             // 3. Evaluation
             Console.WriteLine("\n[4/4] Evaluating on Validation Set... ");
             
-            double[] predictions = dt.Predict(valInputs);
+            var predictor = new ScorePredictor(dt, schema);
+            
+            var predictions = new List<double>();
+            foreach (var input in valInputs)
+            {
+                predictions.Add(predictor.Predict(input));
+            }
             
             var metrics = Source.RegressionMetricsCalculator.Calculate(predictions.ToList(), valTargets.ToList());
 
@@ -50,7 +56,7 @@ namespace ConsoleRunner.Modules
             
             // Show a few examples
             Console.WriteLine("\n Sample Predictions:");
-            for(int i=0; i<Math.Min(5, predictions.Length); i++)
+            for(int i=0; i<Math.Min(5, predictions.Count); i++)
             {
                  Console.WriteLine($"   Actual: {valTargets[i]:F2} | Predicted: {predictions[i]:F2}");
             }
