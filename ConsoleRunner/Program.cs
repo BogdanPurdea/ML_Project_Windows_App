@@ -20,6 +20,7 @@ namespace ConsoleRunner
         static double _learningRate = 0.01;
         
         // Decision Tree Params
+        static int _dtTotalSamples = 0; // 0 = All
         static int _minSamplesSplit = 10;
         static int _maxDepth = 10;
 
@@ -62,10 +63,10 @@ namespace ConsoleRunner
                             Console.Write($"Enter Epochs (Current: {_epochs}): ");
                             if (int.TryParse(Console.ReadLine(), out int ep)) _epochs = ep;
                         }
-                        else // DT - Min Samples Split
+                        else // DT - Total Sample Size
                         {
-                            Console.Write($"Enter Min Samples Per Split (Current: {_minSamplesSplit}): ");
-                            if (int.TryParse(Console.ReadLine(), out int ms)) _minSamplesSplit = ms;
+                            Console.Write($"Enter Total Sample Size (0 = All, Current: {_dtTotalSamples}): ");
+                            if (int.TryParse(Console.ReadLine(), out int ts)) _dtTotalSamples = ts;
                         }
                         break;
                     case "2":
@@ -74,16 +75,25 @@ namespace ConsoleRunner
                             Console.Write($"Enter Learning Rate (Current: {_learningRate}): ");
                             if (double.TryParse(Console.ReadLine(), out double lr)) _learningRate = lr;
                         }
-                        else // DT - Max Depth
+                        else // DT - Min Samples Split
                         {
-                            Console.Write($"Enter Max Depth (Current: {_maxDepth}): ");
-                            if (int.TryParse(Console.ReadLine(), out int md)) _maxDepth = md;
+                            Console.Write($"Enter Min Samples Per Split (Current: {_minSamplesSplit}): ");
+                            if (int.TryParse(Console.ReadLine(), out int ms)) _minSamplesSplit = ms;
                         }
                         break;
                     case "3":
-                         if (_modelType == 2) { Console.WriteLine("Invalid option."); break; }
-                        Console.Write($"Enter Hidden Neurons (Current: {_hiddenNeurons}): ");
-                        if (int.TryParse(Console.ReadLine(), out int hn)) _hiddenNeurons = hn;
+                        if (_modelType == 2) 
+                        { 
+                             // DT - Max Depth
+                            Console.Write($"Enter Max Depth (Current: {_maxDepth}): ");
+                            if (int.TryParse(Console.ReadLine(), out int md)) _maxDepth = md;
+                        }
+                        else
+                        {
+                             // RBF - Hidden Neurons
+                             Console.Write($"Enter Hidden Neurons (Current: {_hiddenNeurons}): ");
+                             if (int.TryParse(Console.ReadLine(), out int hn)) _hiddenNeurons = hn;
+                        }
                         break;
                     case "4":
                         Console.Write($"Enter Training File Path (Current: {_trainFile}): ");
@@ -127,9 +137,9 @@ namespace ConsoleRunner
             }
             else
             {
-                Console.WriteLine($" [1] Min Samples/Split:{_minSamplesSplit}");
-                Console.WriteLine($" [2] Max Depth:        {_maxDepth}");
-                // Hidden Neurons N/A
+                Console.WriteLine($" [1] Total Dataset Size: {(_dtTotalSamples == 0 ? "All" : _dtTotalSamples.ToString())}");
+                Console.WriteLine($" [2] Min Samples/Split:  {_minSamplesSplit}");
+                Console.WriteLine($" [3] Max Depth:          {_maxDepth}");
             }
             
             Console.WriteLine($" [4] Training File:    {_trainFile}");
@@ -164,6 +174,12 @@ namespace ConsoleRunner
                 }
                 else // Decision Tree
                 {
+                   if (_dtTotalSamples > 0 && _dtTotalSamples < inputs.Count)
+                   {
+                       Console.WriteLine($"[Config] Limiting dataset to {_dtTotalSamples} samples.");
+                       inputs = inputs.Take(_dtTotalSamples).ToList();
+                       targets = targets.Take(_dtTotalSamples).ToList();
+                   }
                    ConsoleRunner.Modules.DecisionTreeModule.Run(inputs, targets, _minSamplesSplit, _maxDepth, _schema);
                 }
             }
