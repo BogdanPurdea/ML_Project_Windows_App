@@ -62,6 +62,11 @@ namespace ML_Project_Windows_App
             return predictions;
         }
 
+        public double PredictSingle(double[] x)
+        {
+            return MakePrediction(x, Root);
+        }
+
         private double MakePrediction(double[] x, Node node)
         {
             if (node.Value.HasValue)
