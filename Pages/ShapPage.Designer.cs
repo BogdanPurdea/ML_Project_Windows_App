@@ -19,6 +19,10 @@ namespace WinForm_RFBN_APP
 
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+
             MainLayout = new TableLayoutPanel();
             ConfigGroupBox = new GroupBox();
             ConfigLayout = new TableLayoutPanel();
@@ -34,8 +38,11 @@ namespace WinForm_RFBN_APP
             ActionsGroupBox = new GroupBox();
             ActionsLayout = new FlowLayoutPanel();
             ExplainButton = new MaterialSkin.Controls.MaterialButton();
+            ExplainButton = new MaterialSkin.Controls.MaterialButton();
             OutputGroupBox = new GroupBox();
-            MainLayout.SuspendLayout();
+            ShapChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+
+            OutputGroupBox.SuspendLayout();
             ConfigGroupBox.SuspendLayout();
             ConfigLayout.SuspendLayout();
             ActionsGroupBox.SuspendLayout();
@@ -313,6 +320,7 @@ namespace WinForm_RFBN_APP
             // 
             // OutputGroupBox
             // 
+            OutputGroupBox.Controls.Add(ShapChart);
             OutputGroupBox.Dock = DockStyle.Fill;
             OutputGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             OutputGroupBox.Location = new Point(3, 563);
@@ -321,6 +329,23 @@ namespace WinForm_RFBN_APP
             OutputGroupBox.TabIndex = 2;
             OutputGroupBox.TabStop = false;
             OutputGroupBox.Text = "SHAP Explainability Chart";
+            // 
+            // ShapChart
+            // 
+            chartArea1.Name = "ChartArea1";
+            ShapChart.ChartAreas.Add(chartArea1);
+            ShapChart.Dock = DockStyle.Fill;
+            legend1.Name = "Legend1";
+            ShapChart.Legends.Add(legend1);
+            ShapChart.Location = new Point(3, 21);
+            ShapChart.Name = "ShapChart";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "ShapValues";
+            ShapChart.Series.Add(series1);
+            ShapChart.Size = new Size(788, 160);
+            ShapChart.TabIndex = 0;
+            ShapChart.Text = "SHAP Values";
             // 
             // ShapPage
             // 
