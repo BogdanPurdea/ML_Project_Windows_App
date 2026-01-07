@@ -19,171 +19,236 @@ namespace WinForm_RFBN_APP
 
         private void InitializeComponent()
         {
-            this.ConfigPanel = new System.Windows.Forms.Panel();
-            this.LearningRateTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            this.StepTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            this.EndNeuronTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            this.StartNeuronTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            this.KFoldsTextBox = new MaterialSkin.Controls.MaterialTextBox();
-            this.RunGridSearchButton = new MaterialSkin.Controls.MaterialButton();
-            this.ConfigLabel = new MaterialSkin.Controls.MaterialLabel();
-            this.LogRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.ConfigPanel.SuspendLayout();
-            this.SuspendLayout();
+            ConfigPanel = new Panel();
+            EpochTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            CsvPathTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            SchemaTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            LearningRateTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            StepTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            EndNeuronTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            StartNeuronTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            KFoldsTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            RunGridSearchButton = new MaterialSkin.Controls.MaterialButton();
+            ConfigLabel = new MaterialSkin.Controls.MaterialLabel();
+            LogRichTextBox = new RichTextBox();
+            ConfigPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // ConfigPanel
             // 
-            this.ConfigPanel.Controls.Add(this.LearningRateTextBox);
-            this.ConfigPanel.Controls.Add(this.StepTextBox);
-            this.ConfigPanel.Controls.Add(this.EndNeuronTextBox);
-            this.ConfigPanel.Controls.Add(this.StartNeuronTextBox);
-            this.ConfigPanel.Controls.Add(this.KFoldsTextBox);
-            this.ConfigPanel.Controls.Add(this.RunGridSearchButton);
-            this.ConfigPanel.Controls.Add(this.ConfigLabel);
-            this.ConfigPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ConfigPanel.Location = new System.Drawing.Point(0, 0);
-            this.ConfigPanel.Name = "ConfigPanel";
-            this.ConfigPanel.Size = new System.Drawing.Size(800, 200);
-            this.ConfigPanel.TabIndex = 0;
+            ConfigPanel.Controls.Add(EpochTextBox);
+            ConfigPanel.Controls.Add(CsvPathTextBox);
+            ConfigPanel.Controls.Add(SchemaTextBox);
+            ConfigPanel.Controls.Add(LearningRateTextBox);
+            ConfigPanel.Controls.Add(StepTextBox);
+            ConfigPanel.Controls.Add(EndNeuronTextBox);
+            ConfigPanel.Controls.Add(StartNeuronTextBox);
+            ConfigPanel.Controls.Add(KFoldsTextBox);
+            ConfigPanel.Controls.Add(RunGridSearchButton);
+            ConfigPanel.Controls.Add(ConfigLabel);
+            ConfigPanel.Dock = DockStyle.Top;
+            ConfigPanel.Location = new Point(0, 0);
+            ConfigPanel.Name = "ConfigPanel";
+            ConfigPanel.Size = new Size(800, 260);
+            ConfigPanel.TabIndex = 0;
+            // 
+            // EpochTextBox
+            // 
+            EpochTextBox.AnimateReadOnly = false;
+            EpochTextBox.BorderStyle = BorderStyle.None;
+            EpochTextBox.Depth = 0;
+            EpochTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            EpochTextBox.Hint = "Epoch";
+            EpochTextBox.LeadingIcon = null;
+            EpochTextBox.Location = new Point(446, 160);
+            EpochTextBox.MaxLength = 50;
+            EpochTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            EpochTextBox.Multiline = false;
+            EpochTextBox.Name = "EpochTextBox";
+            EpochTextBox.Size = new Size(100, 50);
+            EpochTextBox.TabIndex = 9;
+            EpochTextBox.Text = "100";
+            EpochTextBox.TrailingIcon = null;
+            // 
+            // CsvPathTextBox
+            // 
+            CsvPathTextBox.AnimateReadOnly = false;
+            CsvPathTextBox.BorderStyle = BorderStyle.None;
+            CsvPathTextBox.Depth = 0;
+            CsvPathTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            CsvPathTextBox.Hint = "CSV File Path (e.g. train_80k.csv)";
+            CsvPathTextBox.LeadingIcon = null;
+            CsvPathTextBox.Location = new Point(10, 40);
+            CsvPathTextBox.MaxLength = 500;
+            CsvPathTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            CsvPathTextBox.Multiline = false;
+            CsvPathTextBox.Name = "CsvPathTextBox";
+            CsvPathTextBox.Size = new Size(780, 50);
+            CsvPathTextBox.TabIndex = 1;
+            CsvPathTextBox.Text = "train_80k.csv";
+            CsvPathTextBox.TrailingIcon = null;
+            // 
+            // SchemaTextBox
+            // 
+            SchemaTextBox.AnimateReadOnly = false;
+            SchemaTextBox.BorderStyle = BorderStyle.None;
+            SchemaTextBox.Depth = 0;
+            SchemaTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            SchemaTextBox.Hint = "Schema (Features;Target)";
+            SchemaTextBox.LeadingIcon = null;
+            SchemaTextBox.Location = new Point(10, 100);
+            SchemaTextBox.MaxLength = 500;
+            SchemaTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            SchemaTextBox.Multiline = false;
+            SchemaTextBox.Name = "SchemaTextBox";
+            SchemaTextBox.Size = new Size(780, 50);
+            SchemaTextBox.TabIndex = 2;
+            SchemaTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+            SchemaTextBox.TrailingIcon = null;
             // 
             // LearningRateTextBox
             // 
-            this.LearningRateTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LearningRateTextBox.Depth = 0;
-            this.LearningRateTextBox.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.LearningRateTextBox.Hint = "Learning Rate (e.g. 0.01)";
-            this.LearningRateTextBox.LeadingIcon = null;
-            this.LearningRateTextBox.Location = new System.Drawing.Point(450, 50);
-            this.LearningRateTextBox.MaxLength = 50;
-            this.LearningRateTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            this.LearningRateTextBox.Multiline = false;
-            this.LearningRateTextBox.Name = "LearningRateTextBox";
-            this.LearningRateTextBox.Size = new System.Drawing.Size(200, 50);
-            this.LearningRateTextBox.TabIndex = 5;
-            this.LearningRateTextBox.Text = "0.01";
-            this.LearningRateTextBox.TrailingIcon = null;
+            LearningRateTextBox.AnimateReadOnly = false;
+            LearningRateTextBox.BorderStyle = BorderStyle.None;
+            LearningRateTextBox.Depth = 0;
+            LearningRateTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            LearningRateTextBox.Hint = "Learning Rate (e.g. 0.01)";
+            LearningRateTextBox.LeadingIcon = null;
+            LearningRateTextBox.Location = new Point(552, 160);
+            LearningRateTextBox.MaxLength = 50;
+            LearningRateTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            LearningRateTextBox.Multiline = false;
+            LearningRateTextBox.Name = "LearningRateTextBox";
+            LearningRateTextBox.Size = new Size(155, 50);
+            LearningRateTextBox.TabIndex = 7;
+            LearningRateTextBox.Text = "0.01";
+            LearningRateTextBox.TrailingIcon = null;
             // 
             // StepTextBox
             // 
-            this.StepTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.StepTextBox.Depth = 0;
-            this.StepTextBox.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.StepTextBox.Hint = "Step";
-            this.StepTextBox.LeadingIcon = null;
-            this.StepTextBox.Location = new System.Drawing.Point(340, 50);
-            this.StepTextBox.MaxLength = 50;
-            this.StepTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            this.StepTextBox.Multiline = false;
-            this.StepTextBox.Name = "StepTextBox";
-            this.StepTextBox.Size = new System.Drawing.Size(100, 50);
-            this.StepTextBox.TabIndex = 4;
-            this.StepTextBox.Text = "5";
-            this.StepTextBox.TrailingIcon = null;
+            StepTextBox.AnimateReadOnly = false;
+            StepTextBox.BorderStyle = BorderStyle.None;
+            StepTextBox.Depth = 0;
+            StepTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            StepTextBox.Hint = "Step";
+            StepTextBox.LeadingIcon = null;
+            StepTextBox.Location = new Point(340, 160);
+            StepTextBox.MaxLength = 50;
+            StepTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            StepTextBox.Multiline = false;
+            StepTextBox.Name = "StepTextBox";
+            StepTextBox.Size = new Size(100, 50);
+            StepTextBox.TabIndex = 6;
+            StepTextBox.Text = "5";
+            StepTextBox.TrailingIcon = null;
             // 
             // EndNeuronTextBox
             // 
-            this.EndNeuronTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.EndNeuronTextBox.Depth = 0;
-            this.EndNeuronTextBox.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.EndNeuronTextBox.Hint = "End Neurons";
-            this.EndNeuronTextBox.LeadingIcon = null;
-            this.EndNeuronTextBox.Location = new System.Drawing.Point(230, 50);
-            this.EndNeuronTextBox.MaxLength = 50;
-            this.EndNeuronTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            this.EndNeuronTextBox.Multiline = false;
-            this.EndNeuronTextBox.Name = "EndNeuronTextBox";
-            this.EndNeuronTextBox.Size = new System.Drawing.Size(100, 50);
-            this.EndNeuronTextBox.TabIndex = 3;
-            this.EndNeuronTextBox.Text = "50";
-            this.EndNeuronTextBox.TrailingIcon = null;
+            EndNeuronTextBox.AnimateReadOnly = false;
+            EndNeuronTextBox.BorderStyle = BorderStyle.None;
+            EndNeuronTextBox.Depth = 0;
+            EndNeuronTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            EndNeuronTextBox.Hint = "End Neurons";
+            EndNeuronTextBox.LeadingIcon = null;
+            EndNeuronTextBox.Location = new Point(230, 160);
+            EndNeuronTextBox.MaxLength = 50;
+            EndNeuronTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            EndNeuronTextBox.Multiline = false;
+            EndNeuronTextBox.Name = "EndNeuronTextBox";
+            EndNeuronTextBox.Size = new Size(100, 50);
+            EndNeuronTextBox.TabIndex = 5;
+            EndNeuronTextBox.Text = "50";
+            EndNeuronTextBox.TrailingIcon = null;
             // 
             // StartNeuronTextBox
             // 
-            this.StartNeuronTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.StartNeuronTextBox.Depth = 0;
-            this.StartNeuronTextBox.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.StartNeuronTextBox.Hint = "Start Neurons";
-            this.StartNeuronTextBox.LeadingIcon = null;
-            this.StartNeuronTextBox.Location = new System.Drawing.Point(120, 50);
-            this.StartNeuronTextBox.MaxLength = 50;
-            this.StartNeuronTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            this.StartNeuronTextBox.Multiline = false;
-            this.StartNeuronTextBox.Name = "StartNeuronTextBox";
-            this.StartNeuronTextBox.Size = new System.Drawing.Size(100, 50);
-            this.StartNeuronTextBox.TabIndex = 2;
-            this.StartNeuronTextBox.Text = "5";
-            this.StartNeuronTextBox.TrailingIcon = null;
+            StartNeuronTextBox.AnimateReadOnly = false;
+            StartNeuronTextBox.BorderStyle = BorderStyle.None;
+            StartNeuronTextBox.Depth = 0;
+            StartNeuronTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            StartNeuronTextBox.Hint = "Start Neurons";
+            StartNeuronTextBox.LeadingIcon = null;
+            StartNeuronTextBox.Location = new Point(120, 160);
+            StartNeuronTextBox.MaxLength = 50;
+            StartNeuronTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            StartNeuronTextBox.Multiline = false;
+            StartNeuronTextBox.Name = "StartNeuronTextBox";
+            StartNeuronTextBox.Size = new Size(100, 50);
+            StartNeuronTextBox.TabIndex = 4;
+            StartNeuronTextBox.Text = "5";
+            StartNeuronTextBox.TrailingIcon = null;
             // 
             // KFoldsTextBox
             // 
-            this.KFoldsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.KFoldsTextBox.Depth = 0;
-            this.KFoldsTextBox.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.KFoldsTextBox.Hint = "K-Folds (e.g. 5)";
-            this.KFoldsTextBox.LeadingIcon = null;
-            this.KFoldsTextBox.Location = new System.Drawing.Point(10, 50);
-            this.KFoldsTextBox.MaxLength = 50;
-            this.KFoldsTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            this.KFoldsTextBox.Multiline = false;
-            this.KFoldsTextBox.Name = "KFoldsTextBox";
-            this.KFoldsTextBox.Size = new System.Drawing.Size(100, 50);
-            this.KFoldsTextBox.TabIndex = 1;
-            this.KFoldsTextBox.Text = "5";
-            this.KFoldsTextBox.TrailingIcon = null;
+            KFoldsTextBox.AnimateReadOnly = false;
+            KFoldsTextBox.BorderStyle = BorderStyle.None;
+            KFoldsTextBox.Depth = 0;
+            KFoldsTextBox.Font = new Font("Microsoft Sans Serif", 12F);
+            KFoldsTextBox.Hint = "K-Folds (e.g. 5)";
+            KFoldsTextBox.LeadingIcon = null;
+            KFoldsTextBox.Location = new Point(10, 160);
+            KFoldsTextBox.MaxLength = 50;
+            KFoldsTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            KFoldsTextBox.Multiline = false;
+            KFoldsTextBox.Name = "KFoldsTextBox";
+            KFoldsTextBox.Size = new Size(100, 50);
+            KFoldsTextBox.TabIndex = 3;
+            KFoldsTextBox.Text = "5";
+            KFoldsTextBox.TrailingIcon = null;
             // 
             // RunGridSearchButton
             // 
-            this.RunGridSearchButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.RunGridSearchButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.RunGridSearchButton.Depth = 0;
-            this.RunGridSearchButton.HighEmphasis = true;
-            this.RunGridSearchButton.Icon = null;
-            this.RunGridSearchButton.Location = new System.Drawing.Point(10, 110);
-            this.RunGridSearchButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.RunGridSearchButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.RunGridSearchButton.Name = "RunGridSearchButton";
-            this.RunGridSearchButton.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.RunGridSearchButton.Size = new System.Drawing.Size(150, 36);
-            this.RunGridSearchButton.TabIndex = 6;
-            this.RunGridSearchButton.Text = "Run Grid Search";
-            this.RunGridSearchButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.RunGridSearchButton.UseAccentColor = false;
-            this.RunGridSearchButton.UseVisualStyleBackColor = true;
-            this.RunGridSearchButton.Click += new System.EventHandler(this.RunGridSearchButton_Click);
+            RunGridSearchButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            RunGridSearchButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            RunGridSearchButton.Depth = 0;
+            RunGridSearchButton.HighEmphasis = true;
+            RunGridSearchButton.Icon = null;
+            RunGridSearchButton.Location = new Point(10, 220);
+            RunGridSearchButton.Margin = new Padding(4, 6, 4, 6);
+            RunGridSearchButton.MouseState = MaterialSkin.MouseState.HOVER;
+            RunGridSearchButton.Name = "RunGridSearchButton";
+            RunGridSearchButton.NoAccentTextColor = Color.Empty;
+            RunGridSearchButton.Size = new Size(147, 36);
+            RunGridSearchButton.TabIndex = 8;
+            RunGridSearchButton.Text = "Run Grid Search";
+            RunGridSearchButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            RunGridSearchButton.UseAccentColor = false;
+            RunGridSearchButton.UseVisualStyleBackColor = true;
+            RunGridSearchButton.Click += RunGridSearchButton_Click;
             // 
             // ConfigLabel
             // 
-            this.ConfigLabel.AutoSize = true;
-            this.ConfigLabel.Depth = 0;
-            this.ConfigLabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ConfigLabel.Location = new System.Drawing.Point(10, 10);
-            this.ConfigLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(161, 19);
-            this.ConfigLabel.TabIndex = 0;
-            this.ConfigLabel.Text = "Configuration";
+            ConfigLabel.AutoSize = true;
+            ConfigLabel.Depth = 0;
+            ConfigLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            ConfigLabel.Location = new Point(10, 10);
+            ConfigLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            ConfigLabel.Name = "ConfigLabel";
+            ConfigLabel.Size = new Size(98, 19);
+            ConfigLabel.TabIndex = 0;
+            ConfigLabel.Text = "Configuration";
             // 
             // LogRichTextBox
             // 
-            this.LogRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogRichTextBox.Location = new System.Drawing.Point(0, 200);
-            this.LogRichTextBox.Name = "LogRichTextBox";
-            this.LogRichTextBox.ReadOnly = true;
-            this.LogRichTextBox.Size = new System.Drawing.Size(800, 400);
-            this.LogRichTextBox.TabIndex = 1;
-            this.LogRichTextBox.Text = "Grid Search Results will appear here...";
+            LogRichTextBox.Dock = DockStyle.Fill;
+            LogRichTextBox.Location = new Point(0, 260);
+            LogRichTextBox.Name = "LogRichTextBox";
+            LogRichTextBox.ReadOnly = true;
+            LogRichTextBox.Size = new Size(800, 340);
+            LogRichTextBox.TabIndex = 1;
+            LogRichTextBox.Text = "Grid Search Results will appear here...";
             // 
             // CrossValidationPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.LogRichTextBox);
-            this.Controls.Add(this.ConfigPanel);
-            this.Name = "CrossValidationPage";
-            this.Size = new System.Drawing.Size(800, 600);
-            this.ConfigPanel.ResumeLayout(false);
-            this.ConfigPanel.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(LogRichTextBox);
+            Controls.Add(ConfigPanel);
+            Name = "CrossValidationPage";
+            Size = new Size(800, 600);
+            ConfigPanel.ResumeLayout(false);
+            ConfigPanel.PerformLayout();
+            ResumeLayout(false);
 
         }
 
@@ -196,5 +261,8 @@ namespace WinForm_RFBN_APP
         private MaterialSkin.Controls.MaterialButton RunGridSearchButton;
         private MaterialSkin.Controls.MaterialLabel ConfigLabel;
         private System.Windows.Forms.RichTextBox LogRichTextBox;
+        private MaterialSkin.Controls.MaterialTextBox CsvPathTextBox;
+        private MaterialSkin.Controls.MaterialTextBox SchemaTextBox;
+        private MaterialSkin.Controls.MaterialTextBox EpochTextBox;
     }
 }

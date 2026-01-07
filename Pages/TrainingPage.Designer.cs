@@ -67,9 +67,9 @@
             MainLayout.Location = new Point(0, 0);
             MainLayout.Name = "MainLayout";
             MainLayout.RowCount = 3;
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 260F)); // Config height
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F)); // Actions height
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Output fills rest
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 260F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             MainLayout.Size = new Size(700, 400);
             MainLayout.TabIndex = 0;
             // 
@@ -112,7 +112,7 @@
             ConfigLayout.Size = new Size(688, 230);
             ConfigLayout.TabIndex = 0;
             // 
-            // materialLabel5 (Input)
+            // materialLabel5
             // 
             materialLabel5.Anchor = AnchorStyles.Left;
             materialLabel5.AutoSize = true;
@@ -143,7 +143,7 @@
             InputDocumentTextbox.Text = "train_80k.csv";
             InputDocumentTextbox.TrailingIcon = null;
             // 
-            // materialLabel4 (Features)
+            // materialLabel4
             // 
             materialLabel4.Anchor = AnchorStyles.Left;
             materialLabel4.AutoSize = true;
@@ -174,7 +174,7 @@
             FeaturesTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
             FeaturesTextBox.TrailingIcon = null;
             // 
-            // materialLabel1 (Epochs)
+            // materialLabel1
             // 
             materialLabel1.Anchor = AnchorStyles.Left;
             materialLabel1.AutoSize = true;
@@ -205,7 +205,7 @@
             EpochsTextBox.Text = "100";
             EpochsTextBox.TrailingIcon = null;
             // 
-            // materialLabel2 (Hidden Neurons)
+            // materialLabel2
             // 
             materialLabel2.Anchor = AnchorStyles.Left;
             materialLabel2.AutoSize = true;
@@ -236,13 +236,13 @@
             HiddenNeuronsTextBox.Text = "25";
             HiddenNeuronsTextBox.TrailingIcon = null;
             // 
-            // materialLabel3 (Learning Rate)
+            // materialLabel3
             // 
             materialLabel3.Anchor = AnchorStyles.Left;
             materialLabel3.AutoSize = true;
             materialLabel3.Depth = 0;
             materialLabel3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel3.Location = new Point(3, 193);
+            materialLabel3.Location = new Point(3, 195);
             materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel3.Name = "materialLabel3";
             materialLabel3.Size = new Size(103, 19);

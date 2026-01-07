@@ -58,9 +58,9 @@
             MainLayout.Location = new Point(0, 0);
             MainLayout.Name = "MainLayout";
             MainLayout.RowCount = 3;
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F)); // Config height
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F)); // Actions height
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Output fills rest
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             MainLayout.Size = new Size(700, 400);
             MainLayout.TabIndex = 0;
             // 
@@ -91,7 +91,7 @@
             ConfigLayout.Size = new Size(688, 50);
             ConfigLayout.TabIndex = 0;
             // 
-            // materialLabel5 (Input)
+            // materialLabel5
             // 
             materialLabel5.Anchor = AnchorStyles.Left;
             materialLabel5.AutoSize = true;
@@ -117,7 +117,7 @@
             InputDocumentTextbox.MouseState = MaterialSkin.MouseState.OUT;
             InputDocumentTextbox.Multiline = false;
             InputDocumentTextbox.Name = "InputDocumentTextbox";
-            InputDocumentTextbox.Size = new Size(582, 44);
+            InputDocumentTextbox.Size = new Size(582, 50);
             InputDocumentTextbox.TabIndex = 1;
             InputDocumentTextbox.Text = "test_20k.csv";
             InputDocumentTextbox.TrailingIcon = null;

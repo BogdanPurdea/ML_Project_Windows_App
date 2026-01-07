@@ -29,6 +29,8 @@ namespace WinForm_RFBN_APP
             this.ExplainButton = new MaterialSkin.Controls.MaterialButton();
             
             // Input Text Boxes
+            this.CsvPathTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            this.SchemaTextBox = new MaterialSkin.Controls.MaterialTextBox();
             this.ProteinBox = new MaterialSkin.Controls.MaterialTextBox();
             this.FatBox = new MaterialSkin.Controls.MaterialTextBox();
             this.CarbBox = new MaterialSkin.Controls.MaterialTextBox();
@@ -51,17 +53,31 @@ namespace WinForm_RFBN_APP
             this.InputPanel.Controls.Add(this.CarbBox);
             this.InputPanel.Controls.Add(this.FatBox);
             this.InputPanel.Controls.Add(this.ProteinBox);
+            this.InputPanel.Controls.Add(this.SchemaTextBox);
+            this.InputPanel.Controls.Add(this.CsvPathTextBox);
             this.InputPanel.Controls.Add(this.ExplainButton);
             this.InputPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.InputPanel.Location = new System.Drawing.Point(0, 0);
             this.InputPanel.Name = "InputPanel";
-            this.InputPanel.Size = new System.Drawing.Size(250, 600);
+            this.InputPanel.Size = new System.Drawing.Size(250, 750); // Increased Height
             this.InputPanel.TabIndex = 0;
 
             // 
             // TextBoxes Layout (Vertical Stack)
             // 
-            int y = 20;
+            int y = 10;
+
+            this.CsvPathTextBox.Hint = "CSV Path";
+            this.CsvPathTextBox.Location = new System.Drawing.Point(10, y);
+            this.CsvPathTextBox.Size = new System.Drawing.Size(220, 50);
+            this.CsvPathTextBox.Text = "train_80k.csv";
+            y += 60;
+
+            this.SchemaTextBox.Hint = "Schema";
+            this.SchemaTextBox.Location = new System.Drawing.Point(10, y);
+            this.SchemaTextBox.Size = new System.Drawing.Size(220, 50);
+            this.SchemaTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+            y += 60;
 
             this.ProteinBox.Hint = "Protein";
             this.ProteinBox.Location = new System.Drawing.Point(10, y);
@@ -127,7 +143,7 @@ namespace WinForm_RFBN_APP
             this.Controls.Add(this.ShapChart);
             this.Controls.Add(this.InputPanel);
             this.Name = "ShapPage";
-            this.Size = new System.Drawing.Size(800, 600);
+            this.Size = new System.Drawing.Size(800, 750); // Increased Height
             this.InputPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ShapChart)).EndInit();
             this.ResumeLayout(false);
@@ -136,6 +152,8 @@ namespace WinForm_RFBN_APP
         private System.Windows.Forms.Panel InputPanel;
         private System.Windows.Forms.DataVisualization.Charting.Chart ShapChart;
         private MaterialSkin.Controls.MaterialButton ExplainButton;
+        private MaterialSkin.Controls.MaterialTextBox CsvPathTextBox;
+        private MaterialSkin.Controls.MaterialTextBox SchemaTextBox;
         private MaterialSkin.Controls.MaterialTextBox ProteinBox;
         private MaterialSkin.Controls.MaterialTextBox FatBox;
         private MaterialSkin.Controls.MaterialTextBox CarbBox;

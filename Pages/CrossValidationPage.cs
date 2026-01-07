@@ -1,11 +1,5 @@
-
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Source;
 using Source.Data;
 
@@ -20,17 +14,27 @@ namespace WinForm_RFBN_APP
 
         private async void RunGridSearchButton_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs(out int kFolds, out int start, out int end, out int step, out double learningRate))
+            if (!ValidateInputs(out int kFolds, out int start, out int end, out int step, out int epochNum, out double learningRate))
                 return;
+
+            string csvPath = CsvPathTextBox.Text.Trim();
+            string schema = SchemaTextBox.Text.Trim();
+
+            if (string.IsNullOrEmpty(csvPath) || string.IsNullOrEmpty(schema))
+            {
+                MessageBox.Show("Please provide both CSV Path and Schema.");
+                return;
+            }
 
             RunGridSearchButton.Enabled = false;
             LogRichTextBox.Clear();
             LogRichTextBox.AppendText($"Starting Grid Search: {kFolds}-Fold CV, Neurons {start}-{end} (step {step}), LR {learningRate}\r\n");
+            LogRichTextBox.AppendText($"File: {csvPath}\r\n");
 
             try
             {
                 // Run in background to keep UI responsive
-                await Task.Run(() => PerformGridSearch(kFolds, start, end, step, learningRate));
+                await Task.Run(() => PerformGridSearch(kFolds, start, end, step, epochNum, learningRate, csvPath, schema));
             }
             catch (Exception ex)
             {
@@ -42,12 +46,10 @@ namespace WinForm_RFBN_APP
             }
         }
 
-        private void PerformGridSearch(int kFolds, int startNeurons, int endNeurons, int step, double learningRate)
+        private void PerformGridSearch(int kFolds, int startNeurons, int endNeurons, int step, int epochNum, double learningRate, string csvPath, string schema)
         {
             // 1. Load Data
-            var (allInputs, allTargets) = DataLoader.LoadCsv(
-                @"e:\_3_Master\_1_Machine_Learning\Project_Repository\Radial_Basis_Function_Neural_Network_Windows_Application\DataSet\train_80k.csv",
-                "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION");
+            var (allInputs, allTargets) = DataLoader.LoadCsv(csvPath, schema);
 
             // 2. Normalize Globally (as per prototype constraints)
             var stats = NormalizationHelper.ComputeZScoreStats(allInputs);
@@ -94,7 +96,7 @@ namespace WinForm_RFBN_APP
 
                     // Train
                     var trainer = new RbfTrainer();
-                    var network = trainer.Train(trainInputs, trainTargets, neuronCount, 20, learningRate); // Fixed 20 epochs for grid search speed
+                    var network = trainer.Train(trainInputs, trainTargets, neuronCount, epochNum, learningRate); // Fixed 20 epochs for grid search speed
 
                     // Validation
                     int correct = 0;
@@ -129,9 +131,9 @@ namespace WinForm_RFBN_APP
             });
         }
 
-        private bool ValidateInputs(out int kFolds, out int start, out int end, out int step, out double learningRate)
+        private bool ValidateInputs(out int kFolds, out int start, out int end, out int step, out int epochNum, out double learningRate)
         {
-            kFolds = start = end = step = 0;
+            kFolds = start = end = step = epochNum = 0;
             learningRate = 0;
 
             if (!int.TryParse(KFoldsTextBox.Text, out kFolds) || kFolds < 2)
@@ -152,6 +154,11 @@ namespace WinForm_RFBN_APP
             if (!int.TryParse(StepTextBox.Text, out step) || step < 1)
             {
                 MessageBox.Show("Invalid Step.");
+                return false;
+            }
+            if (!int.TryParse(EpochTextBox.Text, out epochNum) || epochNum < 1)
+            {
+                MessageBox.Show("Invalid Epoch.");
                 return false;
             }
             if (!double.TryParse(LearningRateTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out learningRate) || learningRate <= 0)

@@ -27,6 +27,15 @@ namespace WinForm_RFBN_APP
             // 1. Validate Feature Inputs
             if (!ParseInputs(out double[] inputFeatures)) return;
 
+            string csvPath = CsvPathTextBox.Text.Trim();
+            string schema = SchemaTextBox.Text.Trim();
+            
+            if (string.IsNullOrEmpty(csvPath) || string.IsNullOrEmpty(schema))
+            {
+                MessageBox.Show("Please provide both CSV Path and Schema.");
+                return;
+            }
+
             ExplainButton.Enabled = false;
 
             try
@@ -40,11 +49,8 @@ namespace WinForm_RFBN_APP
                         _classifier = ModelRepository.LoadClassifier("FoodClassifier_V1");
                         
                         // Load Background Data (Means)
-                        // We use the same cache file or re-calculate from CSV if needed.
-                        // For efficiency, we'll re-calculate means from the CSV here as a "Background Dataset" proxy.
-                        var (inputs, _) = DataLoader.LoadCsv(
-                            @"e:\_3_Master\_1_Machine_Learning\Project_Repository\Radial_Basis_Function_Neural_Network_Windows_Application\DataSet\train_80k.csv",
-                            "PROTEIN;TOTAL_FAT;CARBOHYDRATE;ENERGY_KCAL;FIBER;SATURATED_FAT;SUGAR;CLASSIFICATION");
+                        // Use inputs provided in UI
+                        var (inputs, _) = DataLoader.LoadCsv(csvPath, schema);
 
                         var stats = NormalizationHelper.ComputeZScoreStats(inputs);
                         _backgroundMeans = stats.Mean;
