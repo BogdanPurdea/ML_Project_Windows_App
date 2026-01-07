@@ -19,17 +19,9 @@ namespace WinForm_RFBN_APP
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-
             MainLayout = new TableLayoutPanel();
             ConfigGroupBox = new GroupBox();
             ConfigLayout = new TableLayoutPanel();
-            ActionsGroupBox = new GroupBox();
-            ActionsLayout = new FlowLayoutPanel();
-            OutputGroupBox = new GroupBox();
-            
             CsvPathTextBox = new MaterialSkin.Controls.MaterialTextBox();
             SchemaTextBox = new MaterialSkin.Controls.MaterialTextBox();
             ProteinBox = new MaterialSkin.Controls.MaterialTextBox();
@@ -39,16 +31,15 @@ namespace WinForm_RFBN_APP
             FiberBox = new MaterialSkin.Controls.MaterialTextBox();
             SatFatBox = new MaterialSkin.Controls.MaterialTextBox();
             SugarBox = new MaterialSkin.Controls.MaterialTextBox();
+            ActionsGroupBox = new GroupBox();
+            ActionsLayout = new FlowLayoutPanel();
             ExplainButton = new MaterialSkin.Controls.MaterialButton();
-            ShapChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-
+            OutputGroupBox = new GroupBox();
             MainLayout.SuspendLayout();
             ConfigGroupBox.SuspendLayout();
             ConfigLayout.SuspendLayout();
             ActionsGroupBox.SuspendLayout();
             ActionsLayout.SuspendLayout();
-            OutputGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(ShapChart)).BeginInit();
             SuspendLayout();
             // 
             // MainLayout
@@ -62,8 +53,8 @@ namespace WinForm_RFBN_APP
             MainLayout.Location = new Point(0, 0);
             MainLayout.Name = "MainLayout";
             MainLayout.RowCount = 3;
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 420F)); // Heavier config section
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 484F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 76F));
             MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             MainLayout.Size = new Size(800, 750);
             MainLayout.TabIndex = 0;
@@ -75,16 +66,15 @@ namespace WinForm_RFBN_APP
             ConfigGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             ConfigGroupBox.Location = new Point(3, 3);
             ConfigGroupBox.Name = "ConfigGroupBox";
-            ConfigGroupBox.Size = new Size(794, 414);
+            ConfigGroupBox.Size = new Size(794, 478);
             ConfigGroupBox.TabIndex = 0;
             ConfigGroupBox.TabStop = false;
             ConfigGroupBox.Text = "SHAP Configuration & Inputs";
             // 
             // ConfigLayout
             // 
-            ConfigLayout.ColumnCount = 2;
+            ConfigLayout.ColumnCount = 1;
             ConfigLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
-            ConfigLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             ConfigLayout.Controls.Add(CsvPathTextBox, 1, 0);
             ConfigLayout.Controls.Add(SchemaTextBox, 1, 1);
             ConfigLayout.Controls.Add(ProteinBox, 1, 2);
@@ -98,16 +88,16 @@ namespace WinForm_RFBN_APP
             ConfigLayout.Location = new Point(3, 21);
             ConfigLayout.Name = "ConfigLayout";
             ConfigLayout.RowCount = 9;
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            ConfigLayout.Size = new Size(788, 390);
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            ConfigLayout.Size = new Size(788, 454);
             ConfigLayout.TabIndex = 0;
             // 
             // CsvPathTextBox
@@ -119,12 +109,12 @@ namespace WinForm_RFBN_APP
             CsvPathTextBox.Font = new Font("Microsoft Sans Serif", 12F);
             CsvPathTextBox.Hint = "CSV Path";
             CsvPathTextBox.LeadingIcon = null;
-            CsvPathTextBox.Location = new Point(153, 3);
+            CsvPathTextBox.Location = new Point(3, 3);
             CsvPathTextBox.MaxLength = 500;
             CsvPathTextBox.MouseState = MaterialSkin.MouseState.OUT;
             CsvPathTextBox.Multiline = false;
             CsvPathTextBox.Name = "CsvPathTextBox";
-            CsvPathTextBox.Size = new Size(632, 50);
+            CsvPathTextBox.Size = new Size(782, 50);
             CsvPathTextBox.TabIndex = 0;
             CsvPathTextBox.Text = "train_80k.csv";
             CsvPathTextBox.TrailingIcon = null;
@@ -138,12 +128,12 @@ namespace WinForm_RFBN_APP
             SchemaTextBox.Font = new Font("Microsoft Sans Serif", 12F);
             SchemaTextBox.Hint = "Schema";
             SchemaTextBox.LeadingIcon = null;
-            SchemaTextBox.Location = new Point(153, 43);
+            SchemaTextBox.Location = new Point(3, 53);
             SchemaTextBox.MaxLength = 500;
             SchemaTextBox.MouseState = MaterialSkin.MouseState.OUT;
             SchemaTextBox.Multiline = false;
             SchemaTextBox.Name = "SchemaTextBox";
-            SchemaTextBox.Size = new Size(632, 50);
+            SchemaTextBox.Size = new Size(782, 50);
             SchemaTextBox.TabIndex = 1;
             SchemaTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
             SchemaTextBox.TrailingIcon = null;
@@ -154,15 +144,15 @@ namespace WinForm_RFBN_APP
             ProteinBox.BorderStyle = BorderStyle.None;
             ProteinBox.Depth = 0;
             ProteinBox.Dock = DockStyle.Fill;
-            ProteinBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            ProteinBox.Font = new Font("Microsoft Sans Serif", 12F);
             ProteinBox.Hint = "Protein";
             ProteinBox.LeadingIcon = null;
-            ProteinBox.Location = new Point(153, 83);
+            ProteinBox.Location = new Point(3, 103);
             ProteinBox.MaxLength = 50;
             ProteinBox.MouseState = MaterialSkin.MouseState.OUT;
             ProteinBox.Multiline = false;
             ProteinBox.Name = "ProteinBox";
-            ProteinBox.Size = new Size(632, 50);
+            ProteinBox.Size = new Size(782, 50);
             ProteinBox.TabIndex = 2;
             ProteinBox.Text = "7.41";
             ProteinBox.TrailingIcon = null;
@@ -173,15 +163,15 @@ namespace WinForm_RFBN_APP
             FatBox.BorderStyle = BorderStyle.None;
             FatBox.Depth = 0;
             FatBox.Dock = DockStyle.Fill;
-            FatBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            FatBox.Font = new Font("Microsoft Sans Serif", 12F);
             FatBox.Hint = "Total Fat";
             FatBox.LeadingIcon = null;
-            FatBox.Location = new Point(153, 123);
+            FatBox.Location = new Point(3, 153);
             FatBox.MaxLength = 50;
             FatBox.MouseState = MaterialSkin.MouseState.OUT;
             FatBox.Multiline = false;
             FatBox.Name = "FatBox";
-            FatBox.Size = new Size(632, 50);
+            FatBox.Size = new Size(782, 50);
             FatBox.TabIndex = 3;
             FatBox.Text = "25.93";
             FatBox.TrailingIcon = null;
@@ -192,15 +182,15 @@ namespace WinForm_RFBN_APP
             CarbBox.BorderStyle = BorderStyle.None;
             CarbBox.Depth = 0;
             CarbBox.Dock = DockStyle.Fill;
-            CarbBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            CarbBox.Font = new Font("Microsoft Sans Serif", 12F);
             CarbBox.Hint = "Carbohydrate";
             CarbBox.LeadingIcon = null;
-            CarbBox.Location = new Point(153, 163);
+            CarbBox.Location = new Point(3, 203);
             CarbBox.MaxLength = 50;
             CarbBox.MouseState = MaterialSkin.MouseState.OUT;
             CarbBox.Multiline = false;
             CarbBox.Name = "CarbBox";
-            CarbBox.Size = new Size(632, 50);
+            CarbBox.Size = new Size(782, 50);
             CarbBox.TabIndex = 4;
             CarbBox.Text = "55.56";
             CarbBox.TrailingIcon = null;
@@ -211,15 +201,15 @@ namespace WinForm_RFBN_APP
             KcalBox.BorderStyle = BorderStyle.None;
             KcalBox.Depth = 0;
             KcalBox.Dock = DockStyle.Fill;
-            KcalBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            KcalBox.Font = new Font("Microsoft Sans Serif", 12F);
             KcalBox.Hint = "Energy (Kcal)";
             KcalBox.LeadingIcon = null;
-            KcalBox.Location = new Point(153, 203);
+            KcalBox.Location = new Point(3, 253);
             KcalBox.MaxLength = 50;
             KcalBox.MouseState = MaterialSkin.MouseState.OUT;
             KcalBox.Multiline = false;
             KcalBox.Name = "KcalBox";
-            KcalBox.Size = new Size(632, 50);
+            KcalBox.Size = new Size(782, 50);
             KcalBox.TabIndex = 5;
             KcalBox.Text = "481";
             KcalBox.TrailingIcon = null;
@@ -230,15 +220,15 @@ namespace WinForm_RFBN_APP
             FiberBox.BorderStyle = BorderStyle.None;
             FiberBox.Depth = 0;
             FiberBox.Dock = DockStyle.Fill;
-            FiberBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            FiberBox.Font = new Font("Microsoft Sans Serif", 12F);
             FiberBox.Hint = "Fiber";
             FiberBox.LeadingIcon = null;
-            FiberBox.Location = new Point(153, 243);
+            FiberBox.Location = new Point(3, 303);
             FiberBox.MaxLength = 50;
             FiberBox.MouseState = MaterialSkin.MouseState.OUT;
             FiberBox.Multiline = false;
             FiberBox.Name = "FiberBox";
-            FiberBox.Size = new Size(632, 50);
+            FiberBox.Size = new Size(782, 50);
             FiberBox.TabIndex = 6;
             FiberBox.Text = "3.7";
             FiberBox.TrailingIcon = null;
@@ -249,15 +239,15 @@ namespace WinForm_RFBN_APP
             SatFatBox.BorderStyle = BorderStyle.None;
             SatFatBox.Depth = 0;
             SatFatBox.Dock = DockStyle.Fill;
-            SatFatBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            SatFatBox.Font = new Font("Microsoft Sans Serif", 12F);
             SatFatBox.Hint = "Saturated Fat";
             SatFatBox.LeadingIcon = null;
-            SatFatBox.Location = new Point(153, 283);
+            SatFatBox.Location = new Point(3, 353);
             SatFatBox.MaxLength = 50;
             SatFatBox.MouseState = MaterialSkin.MouseState.OUT;
             SatFatBox.Multiline = false;
             SatFatBox.Name = "SatFatBox";
-            SatFatBox.Size = new Size(632, 50);
+            SatFatBox.Size = new Size(782, 50);
             SatFatBox.TabIndex = 7;
             SatFatBox.Text = "7.41";
             SatFatBox.TrailingIcon = null;
@@ -268,15 +258,15 @@ namespace WinForm_RFBN_APP
             SugarBox.BorderStyle = BorderStyle.None;
             SugarBox.Depth = 0;
             SugarBox.Dock = DockStyle.Fill;
-            SugarBox.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            SugarBox.Font = new Font("Microsoft Sans Serif", 12F);
             SugarBox.Hint = "Sugar";
             SugarBox.LeadingIcon = null;
-            SugarBox.Location = new Point(153, 323);
+            SugarBox.Location = new Point(3, 403);
             SugarBox.MaxLength = 50;
             SugarBox.MouseState = MaterialSkin.MouseState.OUT;
             SugarBox.Multiline = false;
             SugarBox.Name = "SugarBox";
-            SugarBox.Size = new Size(632, 50);
+            SugarBox.Size = new Size(782, 50);
             SugarBox.TabIndex = 8;
             SugarBox.Text = "33.33";
             SugarBox.TrailingIcon = null;
@@ -286,9 +276,9 @@ namespace WinForm_RFBN_APP
             ActionsGroupBox.Controls.Add(ActionsLayout);
             ActionsGroupBox.Dock = DockStyle.Fill;
             ActionsGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            ActionsGroupBox.Location = new Point(3, 423);
+            ActionsGroupBox.Location = new Point(3, 487);
             ActionsGroupBox.Name = "ActionsGroupBox";
-            ActionsGroupBox.Size = new Size(794, 64);
+            ActionsGroupBox.Size = new Size(794, 70);
             ActionsGroupBox.TabIndex = 1;
             ActionsGroupBox.TabStop = false;
             ActionsGroupBox.Text = "Actions";
@@ -299,7 +289,7 @@ namespace WinForm_RFBN_APP
             ActionsLayout.Dock = DockStyle.Fill;
             ActionsLayout.Location = new Point(3, 21);
             ActionsLayout.Name = "ActionsLayout";
-            ActionsLayout.Size = new Size(788, 40);
+            ActionsLayout.Size = new Size(788, 46);
             ActionsLayout.TabIndex = 0;
             // 
             // ExplainButton
@@ -323,33 +313,14 @@ namespace WinForm_RFBN_APP
             // 
             // OutputGroupBox
             // 
-            OutputGroupBox.Controls.Add(ShapChart);
             OutputGroupBox.Dock = DockStyle.Fill;
             OutputGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            OutputGroupBox.Location = new Point(3, 493);
+            OutputGroupBox.Location = new Point(3, 563);
             OutputGroupBox.Name = "OutputGroupBox";
-            OutputGroupBox.Size = new Size(794, 254);
+            OutputGroupBox.Size = new Size(794, 184);
             OutputGroupBox.TabIndex = 2;
             OutputGroupBox.TabStop = false;
             OutputGroupBox.Text = "SHAP Explainability Chart";
-            // 
-            // ShapChart
-            // 
-            chartArea1.Name = "ChartArea1";
-            ShapChart.ChartAreas.Add(chartArea1);
-            ShapChart.Dock = DockStyle.Fill;
-            legend1.Enabled = false;
-            legend1.Name = "Legend1";
-            ShapChart.Legends.Add(legend1);
-            ShapChart.Location = new Point(3, 21);
-            ShapChart.Name = "ShapChart";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = SeriesChartType.Bar;
-            series1.Name = "ShapValues";
-            ShapChart.Series.Add(series1);
-            ShapChart.Size = new Size(788, 230);
-            ShapChart.TabIndex = 0;
-            ShapChart.Text = "SHAP Values";
             // 
             // ShapPage
             // 
@@ -361,12 +332,9 @@ namespace WinForm_RFBN_APP
             MainLayout.ResumeLayout(false);
             ConfigGroupBox.ResumeLayout(false);
             ConfigLayout.ResumeLayout(false);
-            ConfigLayout.PerformLayout();
             ActionsGroupBox.ResumeLayout(false);
             ActionsLayout.ResumeLayout(false);
             ActionsLayout.PerformLayout();
-            OutputGroupBox.ResumeLayout(true); // Changed from false to true for ShapChart
-            ((System.ComponentModel.ISupportInitialize)(ShapChart)).EndInit();
             ResumeLayout(false);
         }
 
