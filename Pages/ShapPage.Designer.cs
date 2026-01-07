@@ -1,4 +1,3 @@
-
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -27,8 +26,8 @@ namespace WinForm_RFBN_APP
             this.InputPanel = new System.Windows.Forms.Panel();
             this.ShapChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ExplainButton = new MaterialSkin.Controls.MaterialButton();
-            
-            // Input Text Boxes
+
+            // Initialize Controls
             this.CsvPathTextBox = new MaterialSkin.Controls.MaterialTextBox();
             this.SchemaTextBox = new MaterialSkin.Controls.MaterialTextBox();
             this.ProteinBox = new MaterialSkin.Controls.MaterialTextBox();
@@ -59,60 +58,79 @@ namespace WinForm_RFBN_APP
             this.InputPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.InputPanel.Location = new System.Drawing.Point(0, 0);
             this.InputPanel.Name = "InputPanel";
-            this.InputPanel.Size = new System.Drawing.Size(250, 750); // Increased Height
+            this.InputPanel.Size = new System.Drawing.Size(250, 750);
             this.InputPanel.TabIndex = 0;
 
             // 
-            // TextBoxes Layout (Vertical Stack)
+            // CsvPathTextBox
             // 
-            int y = 10;
-
             this.CsvPathTextBox.Hint = "CSV Path";
-            this.CsvPathTextBox.Location = new System.Drawing.Point(10, y);
+            this.CsvPathTextBox.Location = new System.Drawing.Point(10, 10);
             this.CsvPathTextBox.Size = new System.Drawing.Size(220, 50);
             this.CsvPathTextBox.Text = "train_80k.csv";
-            y += 60;
 
+            // 
+            // SchemaTextBox
+            // 
             this.SchemaTextBox.Hint = "Schema";
-            this.SchemaTextBox.Location = new System.Drawing.Point(10, y);
+            this.SchemaTextBox.Location = new System.Drawing.Point(10, 70);
             this.SchemaTextBox.Size = new System.Drawing.Size(220, 50);
             this.SchemaTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
-            y += 60;
 
+            // 
+            // ProteinBox
+            // 
             this.ProteinBox.Hint = "Protein";
-            this.ProteinBox.Location = new System.Drawing.Point(10, y);
+            this.ProteinBox.Location = new System.Drawing.Point(10, 130);
             this.ProteinBox.Size = new System.Drawing.Size(220, 50);
-            y += 60;
+
+            // 
+            // FatBox
+            // 
             this.FatBox.Hint = "Total Fat";
-            this.FatBox.Location = new System.Drawing.Point(10, y);
+            this.FatBox.Location = new System.Drawing.Point(10, 190);
             this.FatBox.Size = new System.Drawing.Size(220, 50);
-            y += 60;
+
+            // 
+            // CarbBox
+            // 
             this.CarbBox.Hint = "Carbohydrate";
-            this.CarbBox.Location = new System.Drawing.Point(10, y);
+            this.CarbBox.Location = new System.Drawing.Point(10, 250);
             this.CarbBox.Size = new System.Drawing.Size(220, 50);
-            y += 60;
+
+            // 
+            // KcalBox
+            // 
             this.KcalBox.Hint = "Energy (Kcal)";
-            this.KcalBox.Location = new System.Drawing.Point(10, y);
+            this.KcalBox.Location = new System.Drawing.Point(10, 310);
             this.KcalBox.Size = new System.Drawing.Size(220, 50);
-            y += 60;
+
+            // 
+            // FiberBox
+            // 
             this.FiberBox.Hint = "Fiber";
-            this.FiberBox.Location = new System.Drawing.Point(10, y);
+            this.FiberBox.Location = new System.Drawing.Point(10, 370);
             this.FiberBox.Size = new System.Drawing.Size(220, 50);
-            y += 60;
+
+            // 
+            // SatFatBox
+            // 
             this.SatFatBox.Hint = "Saturated Fat";
-            this.SatFatBox.Location = new System.Drawing.Point(10, y);
+            this.SatFatBox.Location = new System.Drawing.Point(10, 430);
             this.SatFatBox.Size = new System.Drawing.Size(220, 50);
-            y += 60;
+
+            // 
+            // SugarBox
+            // 
             this.SugarBox.Hint = "Sugar";
-            this.SugarBox.Location = new System.Drawing.Point(10, y);
+            this.SugarBox.Location = new System.Drawing.Point(10, 490);
             this.SugarBox.Size = new System.Drawing.Size(220, 50);
-            y += 70;
 
             // 
             // ExplainButton
             // 
             this.ExplainButton.Text = "Explain Prediction";
-            this.ExplainButton.Location = new System.Drawing.Point(10, y);
+            this.ExplainButton.Location = new System.Drawing.Point(10, 560);
             this.ExplainButton.Size = new System.Drawing.Size(220, 36);
             this.ExplainButton.Click += new System.EventHandler(this.ExplainButton_Click);
 
@@ -127,7 +145,7 @@ namespace WinForm_RFBN_APP
             this.ShapChart.Location = new System.Drawing.Point(260, 20);
             this.ShapChart.Name = "ShapChart";
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = SeriesChartType.Bar; // Horizontal Bars
+            series1.ChartType = SeriesChartType.Bar;
             series1.Name = "ShapValues";
             this.ShapChart.Series.Add(series1);
             this.ShapChart.Size = new System.Drawing.Size(500, 500);
@@ -143,7 +161,7 @@ namespace WinForm_RFBN_APP
             this.Controls.Add(this.ShapChart);
             this.Controls.Add(this.InputPanel);
             this.Name = "ShapPage";
-            this.Size = new System.Drawing.Size(800, 750); // Increased Height
+            this.Size = new System.Drawing.Size(800, 750);
             this.InputPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ShapChart)).EndInit();
             this.ResumeLayout(false);
