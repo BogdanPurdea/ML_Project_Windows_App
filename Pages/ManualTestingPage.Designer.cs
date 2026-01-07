@@ -74,9 +74,9 @@
             MainLayout.Location = new Point(0, 0);
             MainLayout.Name = "MainLayout";
             MainLayout.RowCount = 3;
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 340F)); // Input height
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F)); // Actions height
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Output fills rest
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 340F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             MainLayout.Size = new Size(700, 400);
             MainLayout.TabIndex = 0;
             // 
@@ -121,7 +121,7 @@
             InputLayout.Name = "InputLayout";
             InputLayout.RowCount = 6;
             InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
-            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F)); // Header for Custom
+            InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
             InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
             InputLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
@@ -129,7 +129,7 @@
             InputLayout.Size = new Size(688, 310);
             InputLayout.TabIndex = 0;
             // 
-            // materialLabel1 (Full Input)
+            // materialLabel1
             // 
             materialLabel1.Anchor = AnchorStyles.Left;
             materialLabel1.AutoSize = true;
@@ -161,7 +161,7 @@
             FullInputTextBox.Text = "7.41;25.93;55.56;481;3.7;7.41;33.33";
             FullInputTextBox.TrailingIcon = null;
             // 
-            // materialLabel2 (Custom Header)
+            // materialLabel2
             // 
             materialLabel2.Anchor = AnchorStyles.Left;
             materialLabel2.AutoSize = true;
@@ -175,7 +175,7 @@
             materialLabel2.TabIndex = 2;
             materialLabel2.Text = "Custom input:";
             // 
-            // materialLabel3 (Protein)
+            // materialLabel3
             // 
             materialLabel3.Anchor = AnchorStyles.Left;
             materialLabel3.AutoSize = true;
@@ -206,7 +206,7 @@
             ProteinTextBox.Text = "7.41";
             ProteinTextBox.TrailingIcon = null;
             // 
-            // materialLabel4 (Total Fat)
+            // materialLabel4
             // 
             materialLabel4.Anchor = AnchorStyles.Left;
             materialLabel4.AutoSize = true;
@@ -237,7 +237,7 @@
             TotalFatTextBox.Text = "25.93";
             TotalFatTextBox.TrailingIcon = null;
             // 
-            // materialLabel5 (Saturated Fat)
+            // materialLabel5
             // 
             materialLabel5.Anchor = AnchorStyles.Left;
             materialLabel5.AutoSize = true;
@@ -268,7 +268,7 @@
             SaturatedFatTextBox.Text = "7.41";
             SaturatedFatTextBox.TrailingIcon = null;
             // 
-            // materialLabel8 (Carbohydrates)
+            // materialLabel8
             // 
             materialLabel8.Anchor = AnchorStyles.Left;
             materialLabel8.AutoSize = true;
@@ -299,7 +299,7 @@
             CarbohydratesTextBox.Text = "55.56";
             CarbohydratesTextBox.TrailingIcon = null;
             // 
-            // materialLabel7 (Sugar)
+            // materialLabel7
             // 
             materialLabel7.Anchor = AnchorStyles.Left;
             materialLabel7.AutoSize = true;
@@ -330,7 +330,7 @@
             SugarTextBox.Text = "33.33";
             SugarTextBox.TrailingIcon = null;
             // 
-            // materialLabel6 (Fiber)
+            // materialLabel6
             // 
             materialLabel6.Anchor = AnchorStyles.Left;
             materialLabel6.AutoSize = true;
@@ -361,13 +361,13 @@
             FiberTextBox.Text = "3.7";
             FiberTextBox.TrailingIcon = null;
             // 
-            // materialLabel9 (Kilo Calories)
+            // materialLabel9
             // 
             materialLabel9.Anchor = AnchorStyles.Left;
             materialLabel9.AutoSize = true;
             materialLabel9.Depth = 0;
             materialLabel9.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel9.Location = new Point(3, 268);
+            materialLabel9.Location = new Point(3, 270);
             materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel9.Name = "materialLabel9";
             materialLabel9.Size = new Size(89, 19);
@@ -461,7 +461,7 @@
             OutputGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             OutputGroupBox.Location = new Point(3, 413);
             OutputGroupBox.Name = "OutputGroupBox";
-            OutputGroupBox.Size = new Size(694, 0); // Fills rest
+            OutputGroupBox.Size = new Size(694, 1);
             OutputGroupBox.TabIndex = 2;
             OutputGroupBox.TabStop = false;
             OutputGroupBox.Text = "Logs";
