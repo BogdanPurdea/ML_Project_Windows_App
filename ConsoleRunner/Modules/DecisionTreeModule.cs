@@ -8,7 +8,7 @@ namespace ConsoleRunner.Modules
 {
     public static class DecisionTreeModule
     {
-        public static void Run(List<double[]> inputs, List<double> targets, int minSamplesSplit, int maxDepth, string schema)
+        public static DecisionTreeRegressor Run(List<double[]> inputs, List<double> targets, int minSamplesSplit, int minSamplesLeaf, int maxDepth, string schema)
         {
 
             // 1. Split Data (Train/Val)
@@ -31,9 +31,9 @@ namespace ConsoleRunner.Modules
             Console.WriteLine($" > Val Set:   {valInputs.Length} samples");
 
             // 2. Training
-            Console.WriteLine($"\n[3/4] Training Decision Tree (MinSamplesSplit={minSamplesSplit}, MaxDepth={maxDepth})...");
+            Console.WriteLine($"\n[3/4] Training Decision Tree (MinSamplesSplit={minSamplesSplit}, MinSamplesLeaf={minSamplesLeaf}, MaxDepth={maxDepth})...");
             
-            var dt = new DecisionTreeRegressor(minSamplesSplit: minSamplesSplit, maxDepth: maxDepth);
+            var dt = new DecisionTreeRegressor(minSamplesSplit: minSamplesSplit, minSamplesLeaf: minSamplesLeaf, maxDepth: maxDepth);
             dt.Fit(trainInputs, trainTargets);
             Console.WriteLine(" > Training Complete!");
             
@@ -60,6 +60,9 @@ namespace ConsoleRunner.Modules
             {
                  Console.WriteLine($"   Actual: {valTargets[i]:F2} | Predicted: {predictions[i]:F2}");
             }
+
+            
+            return dt;
         }
     }
 }
