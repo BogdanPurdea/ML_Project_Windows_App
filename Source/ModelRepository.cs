@@ -8,14 +8,14 @@ namespace Source.Data
 
         #region Public Methods ------------------------------------------------------
 
-        /// <summary>
+        ///<summary>
         /// Added 'schema' parameter
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="network"></param>
-        /// <param name="meanStr"></param>
-        /// <param name="stdStr"></param>
-        /// <param name="schema"></param>
+        ///</summary>
+        ///<param name="name"></param>
+        ///<param name="network"></param>
+        ///<param name="meanStr"></param>
+        ///<param name="stdStr"></param>
+        ///<param name="schema"></param>
         public static void SaveModel(string name, RbfNetwork network, string meanStr, string stdStr, string schema)
         {
             using var db = new AppDbContext();

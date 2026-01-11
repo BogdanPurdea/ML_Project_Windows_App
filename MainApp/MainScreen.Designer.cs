@@ -28,14 +28,14 @@ namespace WinForm_RFBN_APP
 
         #region Windows Form Designer generated code --------------------------------
 
-        /// <summary>
+        ///<summary>
         ///  Required designer variable.
-        /// </summary>
+        ///</summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        ///<summary>
         ///  Clean up any resources being used.
-        /// </summary>
+        ///</summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
@@ -46,10 +46,10 @@ namespace WinForm_RFBN_APP
             base.Dispose(disposing);
         }
 
-        /// <summary>
+        ///<summary>
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
-        /// </summary>
+        ///</summary>
         private void InitializeComponent()
         {
             NavigationPanel = new Panel();
@@ -229,10 +229,10 @@ namespace WinForm_RFBN_APP
 
         #region Buttons -------------------------------------------------------------
 
-        /// <summary>
+        ///<summary>
         /// Handles the click event for the Training Page button.
         /// Loads the TrainingPage and updates button states.
-        /// </summary>
+        ///</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event data.</param>
         private void TrainingPageButton_Click(object sender, EventArgs e)
@@ -240,10 +240,10 @@ namespace WinForm_RFBN_APP
             LoadPageWithButtonControl(new TrainingPage(), TrainingPageButton);
         }
 
-        /// <summary>
+        ///<summary>
         /// Handles the click event for the Testing Page button.
         /// Loads the TestingPage and updates button states.
-        /// </summary>
+        ///</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event data.</param>
         private void TestingPageButton_Click(object sender, EventArgs e)
@@ -251,10 +251,10 @@ namespace WinForm_RFBN_APP
             LoadPageWithButtonControl(new TestingPage(), TestingPageButton);
         }
 
-        /// <summary>
+        ///<summary>
         /// Handles the click event for the Manual Testing Page button.
         /// Loads the ManualTestingPage and updates button states.
-        /// </summary>
+        ///</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event data.</param>
         private void ManualTestingPageButton_Click(object sender, EventArgs e)
@@ -263,25 +263,25 @@ namespace WinForm_RFBN_APP
             LoadPageWithButtonControl(new ManualTestingPage(), ManualTestingPageButton);
         }
 
-        /// <summary>
+        ///<summary>
         /// Handles the click event for the Cross Validation Page button.
-        /// </summary>
+        ///</summary>
         private void CrossValidationPageButton_Click(object sender, EventArgs e)
         {
             LoadPageWithButtonControl(new CrossValidationPage(), CrossValidationPageButton);
         }
 
-        /// <summary>
+        ///<summary>
         /// Handles the click event for the SHAP Page button.
-        /// </summary>
+        ///</summary>
         private void ShapPageButton_Click(object sender, EventArgs e)
         {
             LoadPageWithButtonControl(new ShapPage(), ShapPageButton);
         }
 
-        /// <summary>
+        ///<summary>
         /// Handles the click event for the SHAP Page button.
-        /// </summary>
+        ///</summary>
         private void GlobalShapPageButton_Click(object sender, EventArgs e)
         {
             LoadPageWithButtonControl(new GlobalShapPage(), GlobalShapPageButton);
@@ -291,10 +291,10 @@ namespace WinForm_RFBN_APP
 
         #region Logics --------------------------------------------------------------
 
-        /// <summary>
+        ///<summary>
         /// Clears the ControlPanel and loads the specified UserControl into it.
         /// Sets the current page reference to the new page.
-        /// </summary>
+        ///</summary>
         /// <param name="page">The UserControl to load.</param>
         private void LoadPage(UserControl page)
         {
@@ -304,10 +304,10 @@ namespace WinForm_RFBN_APP
             currentPage = page;
         }
 
-        /// <summary>
+        ///<summary>
         /// Manages the navigation logic by updating the visual state of buttons and loading the requested page.
         /// Automatically enables all other navigation buttons and disables the clicked button.
-        /// </summary>
+        ///</summary>
         /// <param name="page">The UserControl to display.</param>
         /// <param name="clickedButton">The MaterialButton that triggered the navigation.</param>
         private void LoadPageWithButtonControl(UserControl page, MaterialSkin.Controls.MaterialButton clickedButton)

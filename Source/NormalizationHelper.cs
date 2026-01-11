@@ -2,16 +2,29 @@
 
 namespace Source
 {
+
+    ///<summary>
+    /// Provides utility methods for Z-Score Normalization (Standardization).
+    /// Why is this critical for RBF Networks?
+    /// RBF neurons use Euclidean Distance to measure similarity. If features have different scales 
+    /// (e.g., Calories in 100s vs. Fat in 0.1s), the large features will dominate the distance calculation
+    /// completely masking the smaller features.
+    /// Neuron Saturation Risk:
+    /// Without normalization, distances can be huge. The Gaussian function is exp(-distance). 
+    /// If distance is huge, exp(-huge) = 0. The neuron dies (saturates) and learns nothing.
+    /// Z-Score keeps all values roughly between -3 and +3, ensuring gradients flow.
+    ///</summary>
     public static class NormalizationHelper
     {
 
         #region Logics --------------------------------------------------------------
 
-        /// <summary>
+        ///<summary>
         /// Computes Mean and Standard Deviation for Z-Score Normalization.
         /// Use this on your RAW training data before training starts.
-        /// </summary>
-        /// <returns>Tuple containing Mean array and StdDev array</returns>
+        ///</summary>
+        ///<param name="data">The raw training dataset.</param>
+        ///<returns>A tuple containing (Mean array, StdDev array).</returns>
         public static (double[] Mean, double[] StdDev) ComputeZScoreStats(List<double[]> data)
         {
             if (data == null || data.Count == 0)
@@ -52,17 +65,21 @@ namespace Source
                 stdDev[i] = Math.Sqrt(stdDev[i] / data.Count);
 
                 // SAFETY CHECK: Prevent division by zero if a feature is constant (e.g., all values are 0).
-                // If stdDev is 0, we set it to 1 so division doesn't crash, and value remains 0 after normalization.
+                // If stdDev is 0, we set it to 1.0 (no scaling) so division doesn't crash.
                 if (stdDev[i] == 0) stdDev[i] = 1.0;
             }
 
             return (mean, stdDev);
         }
 
-        /// <summary>
-        /// Applies (x - mean) / stdDev to a single row.
-        /// This is used by both the Training Page (batch) and FoodClassifier (single prediction).
-        /// </summary>
+        ///<summary>
+        /// Applies Z-Score Normalization to a single row.
+        /// Formula: z = (x - mean) / stdDev
+        ///</summary>
+        ///<param name="input">The raw input vector.</param>
+        ///<param name="mean">The pre-computed means.</param>
+        ///<param name="stdDev">The pre-computed standard deviations.</param>
+        ///<returns>A new array containing the normalized values.</returns>
         public static double[] NormalizeRow(double[] input, double[] mean, double[] stdDev)
         {
             if (input.Length != mean.Length)
@@ -75,9 +92,9 @@ namespace Source
             }
             return normalized;
 
-            // Debug
-            // First record normalized excel file:
-            // -1.0069;4.9858;-1.2527;3.1672;-0.7867;1.0905;-0.7852;0  <-- CORRECT
+            // Debug Example:
+            // Raw: [2000 kcal, ...] -> Normalized: [1.5, ...]
+            // This brings it into the same range as other features.
         }
 
         #endregion
@@ -85,21 +102,20 @@ namespace Source
 
         #region Serialization Helpers for Database Storage --------------------------
 
-        /// <summary>
-        /// Converts a double array to a semicolon-separated string.
-        /// Uses InvariantCulture to ensure dots (.) are used for decimals, not commas.
-        /// Example: [1.5, 2.5] -> "1.5;2.5"
-        /// </summary>
+        ///<summary>
+        /// Converts a double array to a semicolon-separated string for database storage.
+        ///</summary>
         public static string SerializeArray(double[] array)
         {
             if (array == null || array.Length == 0) return string.Empty;
 
+            // Use InvariantCulture to ensure we use '.' for decimals, even on European machines.
             return string.Join(";", array.Select(x => x.ToString(CultureInfo.InvariantCulture)));
         }
 
-        /// <summary>
+        ///<summary>
         /// Converts a semicolon-separated string back to a double array.
-        /// </summary>
+        ///</summary>
         public static double[] DeserializeArray(string data)
         {
             if (string.IsNullOrWhiteSpace(data)) return new double[0];

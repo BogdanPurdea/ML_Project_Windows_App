@@ -1,17 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Source
+﻿namespace Source
 {
+
+    ///<summary>
+    /// Data Transfer Object (DTO) holding the results of a binary classification evaluation.
+    /// Confusion Matrix Terms:
+    /// <list type="bullet">
+    /// - TP (True Positive):</b> Correctly predicted as Healthy;
+    /// - TN (True Negative):</b> Correctly predicted as Unhealthy;
+    /// - FP (False Positive):</b> Unhealthy food falsely predicted as Healthy (Type I Error);
+    /// - FN (False Negative):</b> Healthy food falsely predicted as Unhealthy (Type II Error);
+    ///</summary>
     public class EvaluationMetrics
     {
+
+        ///<summary>
+        /// Overall correctness (TP+TN)/Total.
+        ///</summary>
         public double Accuracy { get; set; }
+
+        ///<summary>
+        /// Out of all Predicted Positives, how many are actually Positive? TP/(TP+FP).
+        ///</summary>
         public double Precision { get; set; }
+
+        ///<summary>
+        /// Out of all Actual Positives, how many did we find? TP/(TP+FN).
+        /// (Also known as Sensitivity).
+        ///</summary>
         public double Recall { get; set; } // Same as Sensitivity
+
+        ///<summary>
+        /// Synonym for Recall.
+        ///</summary>
         public double Sensitivity { get; set; }
+
+        ///<summary>
+        /// Harmonic mean of Precision and Recall.
+        /// Balances both metrics.
+        ///</summary>
         public double FMeasure { get; set; }
+
+        ///<summary>
+        /// Area Under the Receiver Operating Characteristic Curve.
+        /// Defines ability to distinguish classes.
+        ///</summary>
         public double AucRoc { get; set; }
+
+        ///<summary>
+        /// Area Under the Precision-Recall Curve.
+        /// Better for imbalanced datasets.
+        ///</summary>
         public double Auprc { get; set; }
 
         // Confusion Matrix
@@ -32,9 +70,19 @@ namespace Source
         }
     }
 
+    ///<summary>
+    /// Static helper class to compute classification metrics.
+    ///</summary>
     public static class MetricsCalculator
     {
-        // FIX: Added threshold parameter (default 0.5)
+
+        ///<summary>
+        /// Calculates metrics based on raw probability scores and ground truth labels.
+        ///</summary>
+        ///<param name="rawScores">List of probability outputs from the model (0.0 to 1.0).</param>
+        ///<param name="actualLabels">List of ground truth labels (0.0 or 1.0).</param>
+        ///<param name="threshold">Cutoff threshold for binary decision (default 0.5).</param>
+        ///<returns>Populated <see cref="EvaluationMetrics"/> object.</returns>
         public static EvaluationMetrics Calculate(List<double> rawScores, List<double> actualLabels, double threshold = 0.5)
         {
             var metrics = new EvaluationMetrics();
@@ -59,7 +107,7 @@ namespace Source
             // Handle division by zero edge cases
             metrics.Precision = (metrics.TP + metrics.FP) > 0 ? (double)metrics.TP / (metrics.TP + metrics.FP) : 0;
             metrics.Recall = (metrics.TP + metrics.FN) > 0 ? (double)metrics.TP / (metrics.TP + metrics.FN) : 0;
-            metrics.Sensitivity = metrics.Recall; // Synonym
+            metrics.Sensitivity = metrics.Recall;   // Synonym
 
             if (metrics.Precision + metrics.Recall > 0)
             {
@@ -77,6 +125,14 @@ namespace Source
             return metrics;
         }
 
+        ///<summary>
+        /// Calculates AUC-ROC using the "Area Under Curve" method.
+        /// Conceptual Explanation:
+        /// This calculates the probability that the model ranks a random positive example higher than a random negative example.
+        /// We iterate through the sorted predictions (high confidence to low).
+        /// - Every time we see a Negative (0), we add the number of Positives (1s) seen so far to the area.
+        /// - This is equivalent to the Mann-Whitney U Test statistic integration.
+        ///</summary>
         private static double CalculateAucRoc(dynamic sortedPredictions)
         {
             // Mann-Whitney U or Trapezoidal integration

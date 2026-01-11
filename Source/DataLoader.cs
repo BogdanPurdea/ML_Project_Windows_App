@@ -4,9 +4,9 @@ namespace Source.Data
 {
     public static class DataLoader
     {
-        /// <summary>
+        ///<summary>
         /// Loads CSV data dynamically based on a provided schema string.
-        /// </summary>
+        ///</summary>
         /// <param name="filePath">Path to the CSV file.</param>
         /// <param name="schema">Semicolon-separated columns to use (e.g., "PROTEIN;FAT;CLASSIFICATION"). Last item is always the Target.</param>
         public static (List<double[]> Inputs, List<double> Targets) LoadCsv(string filePath, string schema)
