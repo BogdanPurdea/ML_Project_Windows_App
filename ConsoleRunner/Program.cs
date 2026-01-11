@@ -6,15 +6,16 @@ using ML_Project_Windows_App;
 using Source;
 using Source.Data;
 
+
 namespace ConsoleRunner
 {
     class Program
     {
         // Default Configuration
-        static string _trainFile = Path.Combine("DataSet", "train_80k.csv");
-        static string _testFile = Path.Combine("DataSet", "test_20k.csv");
-        static string _schema =
-            "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;NUTRI_SCORE;CLASSIFICATION";
+        static string _trainFile = Path.Combine("DataSet", "ML_Training_Data.csv"); 
+        static string _rbfSchema = "energy_kj;sugar_g;sat_fat_g;salt_g;fiber_g;protein_g;is_healthy";
+        static string _dtSchema = "energy_kj;sugar_g;sat_fat_g;salt_g;fiber_g;protein_g;final_score";
+        static string CurrentSchema => _modelType == 1 ? _rbfSchema : _dtSchema;
 
         // RBF Params
         static int _hiddenNeurons = 25;
@@ -23,7 +24,7 @@ namespace ConsoleRunner
 
         // Decision Tree Params
         static int _dtTotalSamples = 0; // 0 = All
-        static int _minSamplesSplit = 10;
+        static int _minSamplesSplit = 20;
         static int _minSamplesLeaf = 1;
         static int _maxDepth = 10;
 
@@ -45,27 +46,7 @@ namespace ConsoleRunner
                 {
                     case "0":
                         _modelType = _modelType == 1 ? 2 : 1;
-                        if (_modelType == 2)
-                        {
-                            // Output a warning about path if not absolute, but let's try to find it
-                            // Using absolute path from context for reliability in this environment
-                            _trainFile = Path.Combine("DataSet", "ML_Training_Data.csv");
-                            _schema =
-                                "energy_kj;sugar_g;sat_fat_g;salt_g;fiber_g;protein_g;final_score";
-                            Console.WriteLine("\n[Switched to Decision Tree]");
-                            Console.WriteLine($"Default Train File set to: {_trainFile}");
-                            Console.WriteLine($"Default Schema set to: {_schema}");
-                        }
-                        else
-                        {
-                            _trainFile = Path.Combine("DataSet", "train_80k.csv");
-                            _schema =
-                                "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;NUTRI_SCORE;CLASSIFICATION";
-                            Console.WriteLine("\n[Switched to RBF Network]");
-                            Console.WriteLine("Defaults restored.");
-                        }
-                        Console.WriteLine("Press Enter...");
-                        Console.ReadLine();
+                        Console.WriteLine($"\n[Switched to {(_modelType == 1 ? "RBF Network" : "Decision Tree")}]");
                         break;
                     case "1":
                         if (_modelType == 1) // RBF - Epochs
@@ -98,7 +79,6 @@ namespace ConsoleRunner
                             if (int.TryParse(Console.ReadLine(), out int ms))
                                 _minSamplesSplit = ms;
                         }
-                        break;
                         break;
                     case "3":
                         if (_modelType == 2)
@@ -145,84 +125,50 @@ namespace ConsoleRunner
                         else
                         {
                             // RBF - Schema
-                            Console.Write($"Enter Schema (Current: {_schema}): ");
+                            Console.Write($"Enter Schema (Current: {_rbfSchema}): ");
                             string? sch = Console.ReadLine();
                             if (!string.IsNullOrWhiteSpace(sch))
-                                _schema = sch;
+                                _rbfSchema = sch;
                         }
                         break;
                     case "6":
                         if (_modelType == 2)
                         {
-                            // DT - Schema
-                            Console.Write($"Enter Schema (Current: {_schema}): ");
+                            Console.Write($"Enter Schema (Current: {_dtSchema}): ");
                             string? sch = Console.ReadLine();
                             if (!string.IsNullOrWhiteSpace(sch))
-                                _schema = sch;
+                                _dtSchema = sch;
                         }
                         else
                         {
-                            // RBF - Run
-                            RunTraining();
-                            Console.WriteLine("\n[Press Enter to return to menu]");
-                            Console.ReadLine();
+                             Console.Write($"Enter Schema (Current: {_rbfSchema}): ");
+                             string? sch = Console.ReadLine();
+                             if (!string.IsNullOrWhiteSpace(sch))
+                                 _rbfSchema = sch; 
                         }
                         break;
+                        
                     case "7":
-                        if (_modelType == 2)
-                        {
-                            // DT - Run
-                            RunTraining();
-                            Console.WriteLine("\n[Press Enter to return to menu]");
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            // RBF - Predict
-                            RunPrediction();
-                            Console.WriteLine("\n[Press Enter to return to menu]");
-                            Console.ReadLine();
-                        }
-                        break;
+                         RunTraining();
+                         Console.WriteLine("\n[Press Enter to return to menu]");
+                         Console.ReadLine();
+                         break;
                     case "8":
-                        if (_modelType == 2)
-                        {
-                            // DT - Predict
-                            RunPrediction();
-                            Console.WriteLine("\n[Press Enter to return to menu]");
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            // RBF - Optimize
-                            RunOptimization();
-                            Console.WriteLine("\n[Press Enter to return to menu]");
-                            Console.ReadLine();
-                        }
-                        break;
+                         RunPrediction();
+                         Console.WriteLine("\n[Press Enter to return to menu]");
+                         Console.ReadLine();
+                         break;
                     case "9":
-                        if (_modelType == 2)
-                        {
-                            // DT - Optimize
-                            RunOptimization();
-                            Console.WriteLine("\n[Press Enter to return to menu]");
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            return; // RBF - Exit
-                        }
-                        break;
+                         RunOptimization();
+                         Console.WriteLine("\n[Press Enter to return to menu]");
+                         Console.ReadLine();
+                         break;
                     case "10":
-                        if (_modelType == 2)
-                            return; // DT - Exit
-                        else
-                            Console.WriteLine("Invalid option. Press Enter...");
-                        break;
+                         return; // Exit for both
                     default:
-                        Console.WriteLine("Invalid option. Press Enter...");
-                        Console.ReadLine();
-                        break;
+                         Console.WriteLine("Invalid option. Press Enter...");
+                         Console.ReadLine();
+                         break;
                 }
             }
         }
@@ -255,7 +201,7 @@ namespace ConsoleRunner
             }
 
             Console.WriteLine($" [5] Training File:    {_trainFile}");
-            Console.WriteLine($" [6] Schema:           {_schema}");
+            Console.WriteLine($" [6] Schema:           {CurrentSchema}");
             Console.WriteLine("--------------------------------------------------");
             Console.WriteLine(" [7] RUN TRAINING");
             Console.WriteLine(" [8] PREDICT (Using trained model)");
@@ -283,12 +229,37 @@ namespace ConsoleRunner
                 return;
             }
 
-            // Load Data
             Console.Write("Loading Data... ");
-            var (inputs, targets) = DataLoader.LoadCsv(_trainFile, _schema);
+            
+            // Updated logic to use same training source as RunTraining
+            string trainSplitPath = Path.Combine("..", "ML_Software_Project", "data", "processed", "train_split.csv");
+            List<double[]> inputs;
+            List<double> targets;
+
+            if (File.Exists(trainSplitPath))
+            {
+                 Console.WriteLine($"[Source] Using Pre-Split Data: {trainSplitPath}");
+                 var trainData = DataLoader.LoadCsv(trainSplitPath, CurrentSchema);
+                 inputs = trainData.Inputs;
+                 targets = trainData.Targets;
+            }
+            else
+            {
+                 Console.WriteLine($"[Source] Using Main Dataset: {_trainFile} (80% Split)");
+                 // Fallback: Load Main & Split manually to emulate training conditions
+                 var (allInputs, allTargets) = DataLoader.LoadCsv(_trainFile, CurrentSchema);
+                 var rand = new Random(42);
+                 int n = allInputs.Count;
+                 var indices = Enumerable.Range(0, n).OrderBy(x => rand.Next()).ToList();
+                 int trainCount = (int)(n * 0.8);
+                 
+                 inputs = indices.Take(trainCount).Select(i => allInputs[i]).ToList();
+                 targets = indices.Take(trainCount).Select(i => allTargets[i]).ToList();
+            }
+            
             _trainingInputs = inputs;
 
-            // Optional: limit data for speed during optimization if dataset is huge
+            // Optional: limit data size for faster optimization
             if (_dtTotalSamples > 0 && _dtTotalSamples < inputs.Count)
             {
                 inputs = inputs.Take(_dtTotalSamples).ToList();
@@ -297,61 +268,24 @@ namespace ConsoleRunner
             Console.WriteLine($"Done ({inputs.Count} records)");
 
             // Define Grid
-            int[] depthGrid = { 5, 10, 30};
-            int[] splitGrid = { 2, 5 };
-            int[] leafGrid = { 1, 5 };
+            int[] depthGrid = { 15, 20, 30 };
+            int[] splitGrid = { 20, 30, 50 };
+            int[] leafGrid = { 20, 30, 50 };
 
-            Console.WriteLine(
-                $"\nGrid: MaxDepth={string.Join(",", depthGrid)}, MinSamplesSplit={string.Join(",", splitGrid)}, MinSamplesLeaf={string.Join(",", leafGrid)}"
+            // Run Optimizer
+            // Use GridSearchOptimizer to find best parameters
+            var (bestDepth, bestSplit, bestLeaf, bestScore) = GridSearchOptimizer.RunGridSearch(
+                inputs, 
+                targets, 
+                5,
+                depthGrid, 
+                splitGrid, 
+                leafGrid
             );
-            Console.WriteLine($"Total Combinations: {depthGrid.Length * splitGrid.Length * leafGrid.Length}");
-            Console.WriteLine("Running 3-Fold Cross Validation for each combination...\n");
-
-            double bestScore = double.MinValue;
-            int bestDepth = -1;
-            int bestSplit = -1;
-            int bestLeaf = -1;
-
-            int count = 1;
-            int total = depthGrid.Length * splitGrid.Length * leafGrid.Length;
-
-            foreach (var d in depthGrid)
-            {
-                foreach (var s in splitGrid)
-                {
-                    foreach (var l in leafGrid)
-                    {
-                        Console.Write($"[{count}/{total}] Depth={d}, Split={s}, Leaf={l} ... ");
-
-                        var (meanR2, stdDev) = CrossValidator.CrossValidate(
-                            inputs,
-                            targets,
-                            3,
-                            (trainX, trainY, valX) =>
-                            {
-                                var dt = new DecisionTreeRegressor(s, l, d);
-                                dt.Fit(trainX.ToArray(), trainY.ToArray());
-                                return dt.Predict(valX.ToArray());
-                            }
-                        );
-
-                        Console.WriteLine($"R2={meanR2:F4} (+/- {stdDev:F4})");
-
-                        if (meanR2 > bestScore)
-                        {
-                            bestScore = meanR2;
-                            bestDepth = d;
-                            bestSplit = s;
-                            bestLeaf = l;
-                        }
-                        count++;
-                    }
-                }
-            }
 
             Console.WriteLine("\n--------------------------------------------------");
             Console.WriteLine($"Optimization Complete!");
-            Console.WriteLine($"Best R2: {bestScore:F4}");
+            Console.WriteLine($"Selected R2: {bestScore:F4}");
             Console.WriteLine($"Best Params: MaxDepth={bestDepth}, MinSamplesSplit={bestSplit}, MinSamplesLeaf={bestLeaf}");
             Console.WriteLine("--------------------------------------------------");
 
@@ -370,51 +304,100 @@ namespace ConsoleRunner
         {
             Console.WriteLine("\nStarting Training Pipeline...");
 
-            if (!File.Exists(_trainFile))
+            List<double[]> trainInputs;
+            List<double> trainTargets;
+            List<double[]> valInputs;
+            List<double> valTargets;
+
+            // Updated path to point to processed data
+            string trainSplitPath = Path.Combine("..", "ML_Software_Project", "data", "processed", "train_split.csv");
+            string valSplitPath = Path.Combine("..", "ML_Software_Project", "data", "processed", "val_split.csv");
+
+            string currentSchema = (_modelType == 1) ? _rbfSchema : _dtSchema;
+            Console.WriteLine($"[Config] Using Schema: {currentSchema}");
+
+            // Load data from splits if available, otherwise fall back to splitting main dataset
+            if (File.Exists(trainSplitPath) && File.Exists(valSplitPath))
             {
-                Console.WriteLine(
-                    $"[Error] Train file not found at: {Path.GetFullPath(_trainFile)}"
-                );
-                return;
+                 Console.WriteLine($"[1/4] Loading Pre-Split Data from {trainSplitPath}...");
+                 
+                 var trainData = DataLoader.LoadCsv(trainSplitPath, currentSchema);
+                 var valData = DataLoader.LoadCsv(valSplitPath, currentSchema);
+                 
+                 trainInputs = trainData.Inputs;
+                 trainTargets = trainData.Targets;
+                 valInputs = valData.Inputs;
+                 valTargets = valData.Targets;
             }
+            else
+            {
+                if (!File.Exists(_trainFile))
+                {
+                    Console.WriteLine(
+                        $"[Error] Dataset file not found at: {Path.GetFullPath(_trainFile)}"
+                    );
+                    return;
+                }
+
+                Console.WriteLine($"[1/4] Loading Main Dataset: {_trainFile}");
+                Console.WriteLine("      Fallback to 80/20 Random Split.");
+
+                var (allInputs, allTargets) = DataLoader.LoadCsv(_trainFile, currentSchema);
+                
+                // Shuffle
+                var rand = new Random(42);
+                int n = allInputs.Count;
+                var indices = Enumerable.Range(0, n).OrderBy(x => rand.Next()).ToList();
+                
+                int trainCount = (int)(n * 0.8);
+                
+                trainInputs = indices.Take(trainCount).Select(i => allInputs[i]).ToList();
+                trainTargets = indices.Take(trainCount).Select(i => allTargets[i]).ToList();
+                
+                valInputs = indices.Skip(trainCount).Select(i => allInputs[i]).ToList();
+                valTargets = indices.Skip(trainCount).Select(i => allTargets[i]).ToList();
+            }
+
+            // Report Sizes
+            Console.WriteLine($"      Train: {trainInputs.Count}, Val: {valInputs.Count}");
 
             try
             {
-                // 1. Load Data
-                Console.Write("\n[1/4] Loading Training Data... ");
-                var (inputs, targets) = DataLoader.LoadCsv(_trainFile, _schema);
-                _trainingInputs = inputs;
-                Console.WriteLine($"Done ({inputs.Count} records)");
-
                 if (_modelType == 1) // RBF Network
                 {
+                    // Update: RbfModule now takes lists, no file paths
                     _trainedRbfNetwork = ConsoleRunner.Modules.RbfModule.Run(
-                        inputs,
-                        targets,
+                        trainInputs,
+                        trainTargets,
+                        valInputs,
+                        valTargets,
                         _hiddenNeurons,
                         _epochs,
                         _learningRate,
-                        _testFile,
-                        _schema
+                        CurrentSchema
                     );
                 }
                 else // Decision Tree
                 {
-                    if (_dtTotalSamples > 0 && _dtTotalSamples < inputs.Count)
+                    // Limit sample size if configured
+                    if (_dtTotalSamples > 0 && _dtTotalSamples < trainInputs.Count)
                     {
-                        Console.WriteLine(
-                            $"[Config] Limiting dataset to {_dtTotalSamples} samples."
+                         Console.WriteLine(
+                            $"[Config] Limiting training set to {_dtTotalSamples} samples."
                         );
-                        inputs = inputs.Take(_dtTotalSamples).ToList();
-                        targets = targets.Take(_dtTotalSamples).ToList();
+                        trainInputs = trainInputs.Take(_dtTotalSamples).ToList();
+                        trainTargets = trainTargets.Take(_dtTotalSamples).ToList();
                     }
+
                     _trainedDecisionTree = ConsoleRunner.Modules.DecisionTreeModule.Run(
-                        inputs,
-                        targets,
+                        trainInputs,
+                        trainTargets,
+                        valInputs,
+                        valTargets,
                         _minSamplesSplit,
                         _minSamplesLeaf,
                         _maxDepth,
-                        _schema
+                        CurrentSchema
                     );
                 }
             }
@@ -435,21 +418,14 @@ namespace ConsoleRunner
             }
             if (_modelType == 2 && _trainedDecisionTree == null)
             {
-                // Check both just in case, though only one should be used.
-                // Actually _trainedDecisionTree was used in RunTraining in turn 206.
-                // But wait, in turn 206 I used _trainedDecisionTree.
-                // In turn 216+ user might have changed things?
-                // Let's rely on standard logic.
                 Console.WriteLine("[Error] No Decision Tree trained yet. Please Option 6 first.");
-                // Note: user edits in 219 changed RunTraining to NOT assign to _trainedDecisionTree static field?
-                // Let's check RunTraining in current file.
                 return;
             }
 
             Console.WriteLine("\n--- Manual Prediction ---");
             Console.WriteLine($"Using {(_modelType == 1 ? "RBF Network" : "Decision Tree")}");
 
-            var columns = _schema.Split(';');
+            var columns = CurrentSchema.Split(';');
             var featureNames = new List<string>();
 
             int targetCount = _modelType == 1 ? 2 : 1;
@@ -495,7 +471,7 @@ namespace ConsoleRunner
                     Console.WriteLine($"\n>> Predicted Score: {result:F4}");
                 }
 
-                // LIME Explanation
+                // Explain prediction
                 if (_trainingInputs != null && _trainingInputs.Count > 0)
                 {
                     Console.WriteLine("\nGenerating LIME Explanation...");
