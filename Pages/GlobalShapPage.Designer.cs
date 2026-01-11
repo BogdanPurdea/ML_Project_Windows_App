@@ -77,7 +77,6 @@ namespace WinForm_RFBN_APP
             MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             MainLayout.Size = new Size(800, 600);
             MainLayout.TabIndex = 0;
-
             // 
             // ConfigGroupBox
             // 
@@ -90,7 +89,6 @@ namespace WinForm_RFBN_APP
             ConfigGroupBox.TabIndex = 0;
             ConfigGroupBox.TabStop = false;
             ConfigGroupBox.Text = "Batch Data Configuration";
-
             // 
             // ConfigLayout
             // 
@@ -107,7 +105,6 @@ namespace WinForm_RFBN_APP
             ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             ConfigLayout.Size = new Size(788, 130);
             ConfigLayout.TabIndex = 0;
-
             // 
             // CsvPathTextBox
             // 
@@ -125,9 +122,8 @@ namespace WinForm_RFBN_APP
             CsvPathTextBox.Name = "CsvPathTextBox";
             CsvPathTextBox.Size = new Size(632, 50);
             CsvPathTextBox.TabIndex = 0;
-            CsvPathTextBox.Text = "train_80k.csv";
+            CsvPathTextBox.Text = "train.csv";
             CsvPathTextBox.TrailingIcon = null;
-
             // 
             // SchemaTextBox
             // 
@@ -145,9 +141,8 @@ namespace WinForm_RFBN_APP
             SchemaTextBox.Name = "SchemaTextBox";
             SchemaTextBox.Size = new Size(632, 50);
             SchemaTextBox.TabIndex = 1;
-            SchemaTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+            SchemaTextBox.Text = "energy_kcal;protein_g;carbohydrate_g;sugar_g;total_fat_g;sat_fat_g;fiber_g;salt_g;is_healthy";
             SchemaTextBox.TrailingIcon = null;
-
             // 
             // ActionsGroupBox
             // 
@@ -160,7 +155,6 @@ namespace WinForm_RFBN_APP
             ActionsGroupBox.TabIndex = 1;
             ActionsGroupBox.TabStop = false;
             ActionsGroupBox.Text = "Actions";
-
             // 
             // ActionsLayout
             // 
@@ -170,7 +164,6 @@ namespace WinForm_RFBN_APP
             ActionsLayout.Name = "ActionsLayout";
             ActionsLayout.Size = new Size(788, 40);
             ActionsLayout.TabIndex = 0;
-
             // 
             // ExplainBatchButton
             // 
@@ -190,7 +183,6 @@ namespace WinForm_RFBN_APP
             ExplainBatchButton.Type = MaterialButton.MaterialButtonType.Contained;
             ExplainBatchButton.UseAccentColor = false;
             ExplainBatchButton.Click += ExplainBatchButton_Click;
-
             // 
             // OutputGroupBox
             // 
