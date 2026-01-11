@@ -28,12 +28,12 @@ namespace WinForm_RFBN_APP
                 RichTextBoxOutput.AppendText("Starting Training Pipeline...\n");
 
                 // 1. Get the Schema from your TextBox (assuming you named it SchemaInputTextBox)
-                // Example text: "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION"
+                // Example text: "energy_kcal;protein_g;carbohydrate_g;sugar_g;total_fat_g;sat_fat_g;fiber_g;salt_g;is_healthy"
                 string userFeatureSchema = FeaturesTextBox.Text.Trim();
 
                 if (userFeatureSchema.Length <= 1)
                 {
-                    userFeatureSchema = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+                    userFeatureSchema = "energy_kcal;protein_g;carbohydrate_g;sugar_g;total_fat_g;sat_fat_g;fiber_g;salt_g;is_healthy";
                 }
 
                 RichTextBoxOutput.AppendText($"Using Schema: {userFeatureSchema}\n");
@@ -44,7 +44,7 @@ namespace WinForm_RFBN_APP
                 
                 if (inputDocumentName.Length <= 1)
                 {
-                    inputDocumentName = "train_80k.csv";
+                    inputDocumentName = "train.csv";
                 }
 
                 var rawData = await Task.Run(() => DataLoader.LoadCsv(inputDocumentName, userFeatureSchema));

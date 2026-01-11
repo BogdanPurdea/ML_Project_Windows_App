@@ -119,7 +119,7 @@
             InputDocumentTextbox.Name = "InputDocumentTextbox";
             InputDocumentTextbox.Size = new Size(582, 50);
             InputDocumentTextbox.TabIndex = 1;
-            InputDocumentTextbox.Text = "test_20k.csv";
+            InputDocumentTextbox.Text = "test.csv";
             InputDocumentTextbox.TrailingIcon = null;
             // 
             // ActionsGroupBox

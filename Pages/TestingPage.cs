@@ -39,7 +39,7 @@ namespace WinForm_RFBN_APP
 
             if (inputDocumentName.Length <= 1)
             {
-                inputDocumentName = "test_20k.csv";
+                inputDocumentName = "test.csv";
             }
 
             var rawTestData = DataLoader.LoadCsv(inputDocumentName, classifier.InputSchema);

@@ -36,10 +36,8 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="copy &quot;$(ProjectDir)\DataSet\train_80k_normalized_data.csv&quot; &quot;$(TargetDir)train_80k_normalized_data.csv&quot; /Y" />
-		<Exec Command="copy &quot;$(ProjectDir)\DataSet\test_20k_normalized_data.csv&quot; &quot;$(TargetDir)test_20k_normalized_data.csv&quot; /Y" />
-		<Exec Command="copy &quot;$(ProjectDir)\DataSet\train_80k.csv&quot; &quot;$(TargetDir)train_80k.csv&quot; /Y" />
-		<Exec Command="copy &quot;$(ProjectDir)\DataSet\test_20k.csv&quot; &quot;$(TargetDir)test_20k.csv&quot; /Y" />
+		<Exec Command="copy &quot;$(ProjectDir)\DataSet\train.csv&quot; &quot;$(TargetDir)train.csv&quot; /Y" />
+		<Exec Command="copy &quot;$(ProjectDir)\DataSet\test.csv&quot; &quot;$(TargetDir)test.csv&quot; /Y" />
 	</Target>
 
 </Project>

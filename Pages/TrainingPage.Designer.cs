@@ -140,7 +140,7 @@
             InputDocumentTextbox.Name = "InputDocumentTextbox";
             InputDocumentTextbox.Size = new Size(532, 50);
             InputDocumentTextbox.TabIndex = 8;
-            InputDocumentTextbox.Text = "train_80k.csv";
+            InputDocumentTextbox.Text = "train.csv";
             InputDocumentTextbox.TrailingIcon = null;
             // 
             // materialLabel4
@@ -171,7 +171,7 @@
             FeaturesTextBox.Name = "FeaturesTextBox";
             FeaturesTextBox.Size = new Size(532, 50);
             FeaturesTextBox.TabIndex = 7;
-            FeaturesTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+            FeaturesTextBox.Text = "energy_kcal;protein_g;carbohydrate_g;sugar_g;total_fat_g;sat_fat_g;fiber_g;salt_g;is_healthy";
             FeaturesTextBox.TrailingIcon = null;
             // 
             // materialLabel1

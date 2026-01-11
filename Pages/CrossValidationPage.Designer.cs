@@ -117,7 +117,7 @@ namespace WinForm_RFBN_APP
             CsvPathTextBox.Name = "CsvPathTextBox";
             CsvPathTextBox.Size = new Size(782, 50);
             CsvPathTextBox.TabIndex = 0;
-            CsvPathTextBox.Text = "train_80k.csv";
+            CsvPathTextBox.Text = "train.csv";
             CsvPathTextBox.TrailingIcon = null;
             // 
             // SchemaTextBox
@@ -136,7 +136,7 @@ namespace WinForm_RFBN_APP
             SchemaTextBox.Name = "SchemaTextBox";
             SchemaTextBox.Size = new Size(782, 50);
             SchemaTextBox.TabIndex = 1;
-            SchemaTextBox.Text = "PROTEIN;TOTAL_FAT;CARBS;ENERGY;FIBER;SATURATED_FAT;SUGARS;CLASSIFICATION";
+            SchemaTextBox.Text = "energy_kcal;protein_g;carbohydrate_g;sugar_g;total_fat_g;sat_fat_g;fiber_g;salt_g;is_healthy";
             SchemaTextBox.TrailingIcon = null;
             // 
             // KFoldsTextBox
@@ -174,7 +174,7 @@ namespace WinForm_RFBN_APP
             StartNeuronTextBox.Name = "StartNeuronTextBox";
             StartNeuronTextBox.Size = new Size(782, 50);
             StartNeuronTextBox.TabIndex = 3;
-            StartNeuronTextBox.Text = "5";
+            StartNeuronTextBox.Text = "10";
             StartNeuronTextBox.TrailingIcon = null;
             // 
             // EndNeuronTextBox
@@ -212,7 +212,7 @@ namespace WinForm_RFBN_APP
             StepTextBox.Name = "StepTextBox";
             StepTextBox.Size = new Size(782, 50);
             StepTextBox.TabIndex = 5;
-            StepTextBox.Text = "5";
+            StepTextBox.Text = "10";
             StepTextBox.TrailingIcon = null;
             // 
             // EpochTextBox
@@ -231,7 +231,7 @@ namespace WinForm_RFBN_APP
             EpochTextBox.Name = "EpochTextBox";
             EpochTextBox.Size = new Size(782, 50);
             EpochTextBox.TabIndex = 6;
-            EpochTextBox.Text = "100";
+            EpochTextBox.Text = "20";
             EpochTextBox.TrailingIcon = null;
             // 
             // LearningRateTextBox

@@ -96,7 +96,7 @@ namespace WinForm_RFBN_APP
 
                     // Train
                     var trainer = new RbfTrainer();
-                    var network = trainer.Train(trainInputs, trainTargets, neuronCount, epochNum, learningRate); // Fixed 20 epochs for grid search speed
+                    var network = trainer.Train(trainInputs, trainTargets, neuronCount, epochNum, learningRate);
 
                     // Validation
                     int correct = 0;
