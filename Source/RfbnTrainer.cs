@@ -66,13 +66,13 @@
 
             for (int epoch = 0; epoch < epochs; epoch++)
             {
-                // Learning Rate Decay:
+                // Learning Rate Decay: EXPERIMENTAL
                 // Helps convergence by taking smaller steps as we get closer to the minimum.
                 // Decays by 5% every 10 epochs.
-                if (epoch > 0 && epoch % 10 == 0)
-                {
-                    currentLearningRate *= 0.95;
-                }
+                //if (epoch > 0 && epoch % 10 == 0)
+                //{
+                //    currentLearningRate *= 0.95;
+                //}
 
                 double totalError = 0;
 

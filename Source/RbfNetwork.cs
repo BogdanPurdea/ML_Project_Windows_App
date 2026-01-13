@@ -93,13 +93,11 @@
                 }
 
                 // Gaussian Activation Function:
-                // Formula: φ(x) = e^( - ||x - c||² / (2 * σ²) )
+                // Formula: (|) (x) = e^( - ||x - c||^2 / (2 * σ^2) )
                 // output = exp( -distanceSquared / (2 * sigmaSquared) )
-                //
-                // Why?
                 // - If distance is 0 (perfect match), exp(0) = 1.0 (Max Activation).
                 // - As distance increases, the term inside exp becomes negative large, so exp -> 0.
-                // - Sigma (σ) controls how fast it drops off.
+                // - Sigma (o') controls how fast it drops off.
                 hiddenActivations[j] = Math.Exp(-distSq / (2 * Math.Pow(Sigmas[j], 2)));
             }
 
@@ -113,7 +111,7 @@
 
             // 3. Sigmoid Activation
             // Saps the linear sum into probability range [0, 1].
-            // Formula: σ(z) = 1 / (1 + e^(-z))
+            // Formula: o'(z) = 1 / (1 + e^(-z))
             return 1.0 / (1.0 + Math.Exp(-outputSum));
         }
     }
