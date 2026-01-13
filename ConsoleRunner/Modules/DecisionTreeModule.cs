@@ -3,41 +3,37 @@ using System.Linq;
 using System.Collections.Generic;
 using ML_Project_Windows_App;
 using Source;
+using System.IO;
 
 namespace ConsoleRunner.Modules
 {
     public static class DecisionTreeModule
     {
-        public static void Run(List<double[]> inputs, List<double> targets, int minSamplesSplit, int maxDepth, string schema)
+        public static DecisionTreeRegressor Run(
+            List<double[]> trainInputs, 
+            List<double> trainTargets, 
+            List<double[]> valInputs, 
+            List<double> valTargets,
+            int minSamplesSplit, 
+            int minSamplesLeaf, 
+            int maxDepth, 
+            string schema)
         {
+            Console.WriteLine($" > Train Set: {trainInputs.Count} samples");
+            Console.WriteLine($" > Val Set:   {valInputs.Count} samples");
 
-            // 1. Split Data (Train/Val)
-            Console.WriteLine("[2/4] Splitting Data (80% Train, 20% Validation)...");
+            // 1. Training
+            Console.WriteLine($"\n[3/4] Training Decision Tree (MinSamplesSplit={minSamplesSplit}, MinSamplesLeaf={minSamplesLeaf}, MaxDepth={maxDepth})...");
             
-            // Simple shuffle and split
-            var rand = new Random(42);
-            int n = inputs.Count;
-            var indices = Enumerable.Range(0, n).OrderBy(x => rand.Next()).ToList();
-            
-            int trainCount = (int)(n * 0.8);
-            
-            var trainInputs = indices.Take(trainCount).Select(i => inputs[i]).ToArray();
-            var trainTargets = indices.Take(trainCount).Select(i => targets[i]).ToArray();
-            
-            var valInputs = indices.Skip(trainCount).Select(i => inputs[i]).ToArray();
-            var valTargets = indices.Skip(trainCount).Select(i => targets[i]).ToArray();
-            
-            Console.WriteLine($" > Train Set: {trainInputs.Length} samples");
-            Console.WriteLine($" > Val Set:   {valInputs.Length} samples");
+            // Convert List to Array for internal use if needed (DecisionTree implementation takes arrays)
+            var trainInputsArray = trainInputs.ToArray();
+            var trainTargetsArray = trainTargets.ToArray();
 
-            // 2. Training
-            Console.WriteLine($"\n[3/4] Training Decision Tree (MinSamplesSplit={minSamplesSplit}, MaxDepth={maxDepth})...");
-            
-            var dt = new DecisionTreeRegressor(minSamplesSplit: minSamplesSplit, maxDepth: maxDepth);
-            dt.Fit(trainInputs, trainTargets);
+            var dt = new DecisionTreeRegressor(minSamplesSplit: minSamplesSplit, minSamplesLeaf: minSamplesLeaf, maxDepth: maxDepth);
+            dt.Fit(trainInputsArray, trainTargetsArray);
             Console.WriteLine(" > Training Complete!");
             
-            // 3. Evaluation
+            // 2. Evaluation
             Console.WriteLine("\n[4/4] Evaluating on Validation Set... ");
             
             var predictor = new ScorePredictor(dt, schema);
@@ -45,7 +41,9 @@ namespace ConsoleRunner.Modules
             var predictions = new List<double>();
             foreach (var input in valInputs)
             {
-                predictions.Add(predictor.Predict(input));
+                // Explicitly typed as double[] to avoid any ambiguity
+                double[] inputVec = input;
+                predictions.Add(predictor.Predict(inputVec));
             }
             
             var metrics = Source.RegressionMetricsCalculator.Calculate(predictions.ToList(), valTargets.ToList());
@@ -60,6 +58,9 @@ namespace ConsoleRunner.Modules
             {
                  Console.WriteLine($"   Actual: {valTargets[i]:F2} | Predicted: {predictions[i]:F2}");
             }
+
+            return dt;
         }
+
     }
 }

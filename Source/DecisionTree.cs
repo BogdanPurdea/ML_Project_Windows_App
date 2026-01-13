@@ -21,12 +21,14 @@ namespace ML_Project_Windows_App
     public class DecisionTreeRegressor
     {
         public int MinSamplesSplit { get; set; }
+        public int MinSamplesLeaf { get; set; }
         public int MaxDepth { get; set; }
         public Node Root { get; set; }
 
-        public DecisionTreeRegressor(int minSamplesSplit = 2, int maxDepth = 2)
+        public DecisionTreeRegressor(int minSamplesSplit = 2, int minSamplesLeaf = 1, int maxDepth = 2)
         {
             MinSamplesSplit = minSamplesSplit;
+            MinSamplesLeaf = minSamplesLeaf;
             MaxDepth = maxDepth;
             Root = null;
         }
@@ -185,6 +187,10 @@ namespace ML_Project_Windows_App
 
                     int nLeft = i + 1;
                     int nRight = nSamples - nLeft;
+
+                    // CHECK: Min Samples Per Leaf
+                    if (nLeft < MinSamplesLeaf || nRight < MinSamplesLeaf)
+                        continue;
 
                     // Left Child Stats (0 to i)
                     double sYL = sumYLeft[i];
