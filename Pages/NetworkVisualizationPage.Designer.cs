@@ -96,6 +96,7 @@ namespace WinForm_RFBN_APP
             this.LoadModelButton.UseVisualStyleBackColor = true;
             this.LoadModelButton.Click += new System.EventHandler(this.LoadModelButton_Click);
 
+            LoadModelButton.Location = new Point(14, 12);
             // 
             // MainContainer
             // 
