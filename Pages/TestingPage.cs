@@ -33,7 +33,6 @@ namespace WinForm_RFBN_APP
             }
 
             // 2. Load RAW Test Data
-            // "test_20k.csv" should contain raw values (Protein, Fat, etc.)
 
             string inputDocumentName = InputDocumentTextbox.Text.Trim();
 
