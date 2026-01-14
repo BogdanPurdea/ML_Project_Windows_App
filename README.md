@@ -4,7 +4,7 @@
 
 A robust **Radial Basis Function Network (RBFN)** built entirely **from scratch** in C# to classify food items as "Healthy" or "Unhealthy" based on nutritional content. This project demonstrates a hybrid training pipeline (K-Means + Gradient Descent) without relying on external ML libraries like TensorFlow or ML.NET for the core algorithm.
 
-<img width="1240" height="570" alt="image" src="https://github.com/user-attachments/assets/95fd469c-fb52-44db-a8d7-18a2ffa66cf5" />
+<img width="2540" height="1360" alt="image" src="https://github.com/user-attachments/assets/488e24ad-0efa-43b8-95ad-720139e4a714" />
 
 ---
 
