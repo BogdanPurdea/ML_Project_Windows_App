@@ -70,7 +70,7 @@ The core logic is isolated in the `Source` folder, separating the math from the 
 * **`ModelRepository.cs`**: Handles SQLite operations using Entity Framework Core to save/load trained models.
 
 ### 🔹 Console Runner
-* **`Program.cs`**: A CLI entry point that exposes advanced experimentation features not found in the GUI (LIME, Optimization).
+* **`Program.cs`**: A CLI entry point for running the application in console mode.
 
 ---
 
