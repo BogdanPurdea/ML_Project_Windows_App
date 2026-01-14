@@ -19,9 +19,6 @@ namespace WinForm_RFBN_APP
         // Model State
         private DecisionTreeRegressor? _trainedDecisionTree;
         private List<double[]>? _trainingInputs;
-        // Default values now in Initializer (or can be set here if not in designer)
-        // Designer sets "Text" properties, so we can rely on that, or set them here if we want defaults that differ from Designer.
-        // The designer file has the defaults I wrote.
         
         public DtRunnerForm()
         {

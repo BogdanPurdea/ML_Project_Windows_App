@@ -33,10 +33,6 @@ namespace WinForm_RFBN_APP
             ModelTypeComboBox.SelectedIndexChanged += ModelTypeComboBox_SelectedIndexChanged;
 
             // 2. Adjust Layout to insert Model Type at Top
-            // Shift existing controls down is hard without strict order, 
-            // so let's just prepend a row if possible or append.
-            // Appending is safer. Let's append to the BOTTOM for now to avoid breaking layout logic.
-            // Actually, Designer has 5 rows. Let's add a 6th row.
             
             ConfigLayout.RowCount++;
             ConfigLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
